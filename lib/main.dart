@@ -36,31 +36,28 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: <Widget>[
-              PrimaryButton(
-                text: "Test",
-                onPressed: () {},
-              ),
-              SecondaryButton(
-                text: "Test",
-                onPressed: () {},
-              ),
-              InputField(
-                label: "Email",
-                hint: "Please enter email",
-              ),
-              LinkButton(
-                text: "Test",
-                onPressed: () {},
-              ),
-            ],
-          ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: <Widget>[
+            InputField(
+              label: "Email",
+              hint: "Please enter email",
+            ),
+            PrimaryButton(
+              text: "Test primary",
+              onPressed: () {},
+            ),
+            SecondaryButton(
+              text: "Test secondary",
+              onPressed: () {},
+            ),
+            LinkButton(
+              text: "Test link",
+              onPressed: () {},
+            ),
+          ],
         ),
       ),
     );
