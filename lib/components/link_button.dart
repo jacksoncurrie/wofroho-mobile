@@ -13,6 +13,7 @@ class LinkButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return FlatButton(
+      padding: EdgeInsets.all(0),
       onPressed: onPressed,
       textColor: Theme.of(context).primaryColor,
       child: Align(
@@ -20,7 +21,7 @@ class LinkButton extends StatelessWidget {
         child: Text(
           text,
           style: TextStyle(
-            fontSize: 18,
+            fontSize: 16,
             fontWeight: FontWeight.w400,
           ),
         ),

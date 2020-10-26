@@ -1,9 +1,11 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:wofroho_mobile/components/input_field.dart';
-import 'package:wofroho_mobile/components/link_button.dart';
-import 'package:wofroho_mobile/components/primary_button.dart';
-import 'package:wofroho_mobile/components/secondary_button.dart';
+import 'details_page.dart';
+import '../components/input_field.dart';
+import '../components/primary_button.dart';
+import '../components/secondary_button.dart';
+import '../components/link_button.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -36,6 +38,10 @@ class _LoginPageState extends State<LoginPage> {
                       label: "Password",
                       hint: "Please enter password",
                     ),
+                    LinkButton(
+                      text: "Forgot details?",
+                      onPressed: () {},
+                    ),
                     Flexible(
                       child: _showBottomButtons(),
                     ),
@@ -65,7 +71,14 @@ class _LoginPageState extends State<LoginPage> {
       children: [
         PrimaryButton(
           text: "Sign in",
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (ctx) => DetailsPage(),
+              ),
+            );
+          },
         ),
         Padding(
           padding: const EdgeInsets.only(top: 10.0),

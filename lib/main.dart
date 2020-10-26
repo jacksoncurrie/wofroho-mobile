@@ -1,9 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wofroho_mobile/components/input_field.dart';
-import 'package:wofroho_mobile/components/link_button.dart';
-import 'package:wofroho_mobile/components/primary_button.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
-import 'components/secondary_button.dart';
 import 'theme.dart' as MyTheme;
 
 void main() {
