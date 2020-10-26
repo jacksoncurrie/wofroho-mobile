@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wofroho_mobile/components/input_field.dart';
 import 'package:wofroho_mobile/components/link_button.dart';
 import 'package:wofroho_mobile/components/primary_button.dart';
+import 'package:wofroho_mobile/pages/login_page.dart';
 import 'components/secondary_button.dart';
 import 'theme.dart' as MyTheme;
 
@@ -32,34 +33,6 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text(widget.title),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: <Widget>[
-            InputField(
-              label: "Email",
-              hint: "Please enter email",
-            ),
-            PrimaryButton(
-              text: "Test primary",
-              onPressed: () {},
-            ),
-            SecondaryButton(
-              text: "Test secondary",
-              onPressed: () {},
-            ),
-            LinkButton(
-              text: "Test link",
-              onPressed: () {},
-            ),
-          ],
-        ),
-      ),
-    );
+    return LoginPage();
   }
 }

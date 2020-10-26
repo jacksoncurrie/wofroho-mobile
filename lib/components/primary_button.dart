@@ -14,13 +14,14 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return RaisedButton(
       onPressed: onPressed,
+      padding: EdgeInsets.symmetric(vertical: 10.0),
       color: Theme.of(context).primaryColor,
       textColor: Theme.of(context).colorScheme.textOnPrimary,
       elevation: 5,
       child: Text(
         text,
         style: TextStyle(
-          fontSize: 18,
+          fontSize: 17,
         ),
       ),
     );

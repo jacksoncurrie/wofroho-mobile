@@ -15,12 +15,14 @@ class SecondaryButton extends StatelessWidget {
     return RaisedButton(
       onPressed: onPressed,
       color: Theme.of(context).colorScheme.secondaryColor,
+      padding: EdgeInsets.symmetric(vertical: 10.0),
       textColor: Theme.of(context).primaryColor,
       elevation: 5,
       child: Text(
         text,
         style: TextStyle(
-          fontSize: 18,
+          fontSize: 17,
+          fontWeight: FontWeight.w400,
         ),
       ),
     );

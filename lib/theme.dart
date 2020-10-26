@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 final ThemeData companyThemeData = new ThemeData(
   primaryColor: _Colors.primary,
   primaryColorBrightness: Brightness.dark,
-  accentColor: _Colors.accent,
+  accentColor: _Colors.primary,
   accentColorBrightness: Brightness.dark,
   errorColor: _Colors.error,
 );
