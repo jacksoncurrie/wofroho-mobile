@@ -12,18 +12,14 @@ class LinkButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FlatButton(
-      padding: EdgeInsets.all(0),
-      onPressed: onPressed,
-      textColor: Theme.of(context).primaryColor,
-      child: Align(
-        alignment: Alignment.centerLeft,
-        child: Text(
-          text,
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w400,
-          ),
+    return GestureDetector(
+      onTap: onPressed,
+      child: Text(
+        text,
+        style: TextStyle(
+          color: Theme.of(context).primaryColor,
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
         ),
       ),
     );

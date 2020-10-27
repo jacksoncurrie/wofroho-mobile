@@ -1,6 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
 import 'details_page.dart';
 import '../components/input_field.dart';
 import '../components/primary_button.dart';
@@ -40,7 +42,9 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     LinkButton(
                       text: "Forgot details?",
-                      onPressed: () {},
+                      onPressed: () {
+                        log("Forgot details");
+                      },
                     ),
                     Flexible(
                       child: _showBottomButtons(),
@@ -84,7 +88,9 @@ class _LoginPageState extends State<LoginPage> {
           padding: const EdgeInsets.only(top: 10.0),
           child: SecondaryButton(
             text: "Do not have an account?",
-            onPressed: () {},
+            onPressed: () {
+              log("Create account");
+            },
           ),
         ),
       ],
