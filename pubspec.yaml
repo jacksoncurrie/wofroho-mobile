@@ -36,6 +36,7 @@ dev_dependencies:
   flutter_launcher_icons: "^0.8.0"
   flutter_native_splash: ^0.1.9
 
+# Run with: flutter pub run flutter_launcher_icons:main
 flutter_icons:
   android: true
   ios: false # iOS done manually at this stage
