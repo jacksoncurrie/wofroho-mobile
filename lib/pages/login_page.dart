@@ -2,13 +2,13 @@ import 'dart:developer';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'details_page.dart';
 import '../components/input_field.dart';
 import '../components/primary_button.dart';
 import '../components/secondary_button.dart';
 import '../components/link_button.dart';
+import '../theme.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -19,6 +19,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.backgroundColor,
       body: LayoutBuilder(builder: (context, viewportConstraints) {
         return SingleChildScrollView(
           child: ConstrainedBox(

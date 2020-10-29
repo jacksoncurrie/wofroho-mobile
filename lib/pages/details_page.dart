@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/components/calendar.dart';
 import 'package:wofroho_mobile/components/link_button.dart';
+import '../theme.dart';
 
 class DetailsPage extends StatefulWidget {
   @override
@@ -23,6 +24,7 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Theme.of(context).colorScheme.backgroundColor,
       body: Padding(
         padding: const EdgeInsets.all(25.0),
         child: Column(

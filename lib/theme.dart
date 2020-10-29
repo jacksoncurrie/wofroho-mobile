@@ -13,7 +13,7 @@ extension myColorScheme on ColorScheme {
   Color get primary => _Colors.primary;
   Color get accent => _Colors.accent;
   Color get secondaryColor => _Colors.secondary;
-  Color get background => _Colors.background;
+  Color get backgroundColor => _Colors.background;
   Color get error => _Colors.error;
   Color get textOnPrimary => _Colors.textOnPrimary;
   Color get text => _Colors.text;
