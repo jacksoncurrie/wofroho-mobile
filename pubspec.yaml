@@ -34,11 +34,19 @@ dev_dependencies:
     sdk: flutter
 
   flutter_launcher_icons: "^0.8.0"
+  flutter_native_splash: ^0.1.9
 
 flutter_icons:
   android: true
   ios: false # iOS done manually at this stage
   image_path: "assets/wofroho_logo.png"
+
+# Run with: flutter pub pub run flutter_native_splash:create
+flutter_native_splash:
+  ios: false # iOS done manually at this stage
+  image: "assets/wofroho_logo.png"
+  color: "FBFBFB"
+  android_disable_fullscreen: true
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
