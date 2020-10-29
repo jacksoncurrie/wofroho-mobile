@@ -1,4 +1,4 @@
-package com.example.wofroho_mobile
+package com.wofroho.app
 
 import io.flutter.embedding.android.FlutterActivity
 
