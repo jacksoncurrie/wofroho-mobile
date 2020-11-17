@@ -45,7 +45,7 @@ flutter_icons:
 # Run with: flutter pub pub run flutter_native_splash:create
 flutter_native_splash:
   ios: false # iOS done manually at this stage
-  image: "assets/wofroho_logo.png"
+  image: "assets/wofroho_logo_full.png"
   color: "FBFBFB"
   android_disable_fullscreen: true
 
@@ -62,8 +62,11 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
     - assets/wofroho.svg
+    - assets/wofroho_logo_full.svg
     - assets/notification.svg
     - assets/settings.svg
+    - assets/arrow_right.svg
+    - assets/arrow_left.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.

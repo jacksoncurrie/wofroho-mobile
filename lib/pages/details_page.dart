@@ -75,7 +75,7 @@ class _DetailsPageState extends State<DetailsPage> {
       child: SvgPicture.asset(
         'assets/notification.svg',
         semanticsLabel: "Notifications",
-        width: 28,
+        width: 24,
       ),
     );
   }
@@ -88,7 +88,7 @@ class _DetailsPageState extends State<DetailsPage> {
       child: SvgPicture.asset(
         'assets/settings.svg',
         semanticsLabel: "Settings",
-        width: 28,
+        width: 24,
       ),
     );
   }

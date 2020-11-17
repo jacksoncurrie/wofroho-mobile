@@ -64,7 +64,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _showLogo() {
     return Center(
       child: SvgPicture.asset(
-        'assets/wofroho.svg',
+        'assets/wofroho_logo_full.svg',
         semanticsLabel: "Wofroho logo",
       ),
     );

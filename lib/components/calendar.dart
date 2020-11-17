@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 import '../theme.dart';
 
 class Calendar extends StatelessWidget {
@@ -18,9 +19,9 @@ class Calendar extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text("<"),
+            _showArrowLeft(),
             Text("October, 2020"),
-            Text(">"),
+            _showArrowRight(),
           ],
         ),
         Padding(
@@ -39,6 +40,20 @@ class Calendar extends StatelessWidget {
           ),
         ),
       ],
+    );
+  }
+
+  Widget _showArrowLeft() {
+    return SvgPicture.asset(
+      'assets/arrow_left.svg',
+      semanticsLabel: "Arrow left",
+    );
+  }
+
+  Widget _showArrowRight() {
+    return SvgPicture.asset(
+      'assets/arrow_right.svg',
+      semanticsLabel: "Arrow right",
     );
   }
 
