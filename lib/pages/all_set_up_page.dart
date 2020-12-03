@@ -1,9 +1,10 @@
 import 'dart:developer';
 
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-import 'package:wofroho_mobile/components/sign_in_button.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wofroho_mobile/components/primary_button.dart';
+import 'package:wofroho_mobile/components/secondary_button.dart';
+import 'package:wofroho_mobile/pages/details_page.dart';
 import '../theme.dart';
 
 class AllSetUpPage extends StatefulWidget {
@@ -22,25 +23,33 @@ class _AllSetUpPageState extends State<AllSetUpPage> {
             constraints:
                 BoxConstraints(minHeight: viewportConstraints.maxHeight),
             child: IntrinsicHeight(
-              child: Container(
-                decoration: BoxDecoration(
-                  image: DecorationImage(
-                    image: SvgPicture.asset(
-                      'assets/microsoft_logo.svg',
-                      semanticsLabel: "Microsft logo",
+              child: Stack(
+                children: [
+                  SvgPicture.asset(
+                    'assets/confetti.svg',
+                    semanticsLabel: "Success confetti",
+                    fit: BoxFit.cover,
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(25.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.stretch,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: <Widget>[
+                        Expanded(
+                          child: Center(
+                            child: SvgPicture.asset(
+                              'assets/all_set_up.svg',
+                              semanticsLabel: "All set up text",
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                        _showBottomButtons(),
+                      ],
                     ),
                   ),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(30.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: <Widget>[
-                      Text("test"),
-                    ],
-                  ),
-                ),
+                ],
               ),
             ),
           ),
@@ -49,12 +58,40 @@ class _AllSetUpPageState extends State<AllSetUpPage> {
     );
   }
 
-  Widget _showLogo() {
-    return Center(
-      child: SvgPicture.asset(
-        'assets/confetti.svg',
-        semanticsLabel: "Confetti background",
-      ),
+  Widget _showBottomButtons() {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Expanded(
+          flex: 12,
+          child: SecondaryButton(
+            text: "Home",
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (ctx) => DetailsPage(),
+                ),
+              );
+            },
+          ),
+        ),
+        Spacer(
+          flex: 1,
+        ),
+        Expanded(
+          flex: 12,
+          child: Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: PrimaryButton(
+              text: "Setup",
+              onPressed: () {
+                log("Setup");
+              },
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
