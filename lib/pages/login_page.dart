@@ -1,13 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'details_page.dart';
-import '../components/input_field.dart';
-import '../components/primary_button.dart';
-import '../components/secondary_button.dart';
-import '../components/link_button.dart';
+import 'package:wofroho_mobile/components/sign_in_button.dart';
+import 'package:wofroho_mobile/pages/all_set_up_page.dart';
 import '../theme.dart';
 
 class LoginPage extends StatefulWidget {
@@ -27,29 +22,29 @@ class _LoginPageState extends State<LoginPage> {
                 BoxConstraints(minHeight: viewportConstraints.maxHeight),
             child: IntrinsicHeight(
               child: Padding(
-                padding: const EdgeInsets.all(25.0),
+                padding: const EdgeInsets.all(30.0),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: <Widget>[
-                    Flexible(
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 50.0),
                       child: _showLogo(),
                     ),
-                    InputField(
-                      label: "Email",
-                      hint: "Please enter email",
-                    ),
-                    InputField(
-                      label: "Password",
-                      hint: "Please enter password",
-                    ),
-                    LinkButton(
-                      text: "Forgot details?",
+                    SignInButton(
+                      text: "Sign in with Microsoft",
+                      image: SvgPicture.asset(
+                        'assets/microsoft_logo.svg',
+                        semanticsLabel: "Microsft logo",
+                      ),
                       onPressed: () {
-                        log("Forgot details");
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (ctx) => AllSetUpPage(),
+                          ),
+                        );
                       },
-                    ),
-                    Flexible(
-                      child: _showBottomButtons(),
                     ),
                   ],
                 ),
@@ -67,35 +62,6 @@ class _LoginPageState extends State<LoginPage> {
         'assets/wofroho_logo_full.svg',
         semanticsLabel: "Wofroho logo",
       ),
-    );
-  }
-
-  Widget _showBottomButtons() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      mainAxisAlignment: MainAxisAlignment.end,
-      children: [
-        PrimaryButton(
-          text: "Sign in",
-          onPressed: () {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (ctx) => DetailsPage(),
-              ),
-            );
-          },
-        ),
-        Padding(
-          padding: const EdgeInsets.only(top: 10.0),
-          child: SecondaryButton(
-            text: "Do not have an account?",
-            onPressed: () {
-              log("Create account");
-            },
-          ),
-        ),
-      ],
     );
   }
 }

@@ -67,6 +67,9 @@ flutter:
     - assets/settings.svg
     - assets/arrow_right.svg
     - assets/arrow_left.svg
+    - assets/microsoft_logo.svg
+    - assets/confetti.svg
+    - assets/all_set_up.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
