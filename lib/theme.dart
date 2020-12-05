@@ -16,6 +16,7 @@ extension myColorScheme on ColorScheme {
   Color get backgroundColor => _Colors.background;
   Color get error => _Colors.error;
   Color get textOnPrimary => _Colors.textOnPrimary;
+  Color get textOnSecondary => _Colors.primary;
   Color get text => _Colors.text;
   Color get disabledText => _Colors.disabledText;
   Color get inputBackground => _Colors.inputBackground;
