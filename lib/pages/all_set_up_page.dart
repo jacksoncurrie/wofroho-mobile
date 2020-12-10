@@ -12,6 +12,19 @@ class AllSetUpPage extends StatefulWidget {
 }
 
 class _AllSetUpPageState extends State<AllSetUpPage> {
+  void _homePressed() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => DetailsPage(),
+      ),
+    );
+  }
+
+  void _beginSetup() {
+    log("Setup");
+  }
+
   @override
   Widget build(BuildContext context) {
     return InputTemplate(
@@ -34,18 +47,9 @@ class _AllSetUpPageState extends State<AllSetUpPage> {
   Widget _showBottomWidget() {
     return ButtonPair(
       primaryText: "Setup",
-      primaryOnPressed: () {
-        log("Setup");
-      },
+      primaryOnPressed: _beginSetup,
       secondaryText: "Home",
-      secondaryOnPressed: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (ctx) => DetailsPage(),
-          ),
-        );
-      },
+      secondaryOnPressed: _homePressed,
     );
   }
 

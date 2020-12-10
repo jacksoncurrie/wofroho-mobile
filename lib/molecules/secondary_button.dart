@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wofroho_mobile/atoms/button.dart';
+import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import '../theme.dart';
 
 class SecondaryButton extends StatelessWidget {
@@ -16,13 +17,7 @@ class SecondaryButton extends StatelessWidget {
     return Button(
       backgroundColor: Theme.of(context).colorScheme.secondaryColor,
       textColor: Theme.of(context).colorScheme.textOnSecondary,
-      child: Text(
-        text,
-        style: TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 17,
-        ),
-      ),
+      child: ParagraphText(text: text),
       onPressed: onPressed,
     );
   }

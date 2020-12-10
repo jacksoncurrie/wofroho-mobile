@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:wofroho_mobile/components/primary_button.dart';
-import 'package:wofroho_mobile/components/secondary_button.dart';
+import 'package:wofroho_mobile/molecules/primary_button.dart';
+import 'package:wofroho_mobile/molecules/secondary_button.dart';
 
 class ButtonPair extends StatelessWidget {
   ButtonPair({

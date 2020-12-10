@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:wofroho_mobile/atoms/button.dart';
+import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import '../theme.dart';
 
 class PrimaryButton extends StatelessWidget {
@@ -14,15 +15,9 @@ class PrimaryButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Button(
-      backgroundColor: Theme.of(context).colorScheme.primary,
+      backgroundColor: Theme.of(context).colorScheme.primaryColor,
       textColor: Theme.of(context).colorScheme.textOnPrimary,
-      child: Text(
-        text,
-        style: TextStyle(
-          fontWeight: FontWeight.w400,
-          fontSize: 17,
-        ),
-      ),
+      child: ParagraphText(text: text),
       onPressed: onPressed,
     );
   }

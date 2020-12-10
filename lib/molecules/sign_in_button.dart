@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wofroho_mobile/atoms/button.dart';
+import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import '../theme.dart';
 
 class SignInButton extends StatelessWidget {
@@ -14,12 +16,9 @@ class SignInButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return RaisedButton(
-      onPressed: onPressed,
-      color: Theme.of(context).colorScheme.secondaryColor,
-      padding: EdgeInsets.symmetric(vertical: 10.0),
-      textColor: Theme.of(context).primaryColor,
-      elevation: 5,
+    return Button(
+      backgroundColor: Theme.of(context).colorScheme.secondaryColor,
+      textColor: Theme.of(context).colorScheme.textOnSecondary,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -28,15 +27,10 @@ class SignInButton extends StatelessWidget {
               padding: const EdgeInsets.only(right: 12.0),
               child: image,
             ),
-          Text(
-            text,
-            style: TextStyle(
-              fontSize: 17,
-              fontWeight: FontWeight.w300,
-            ),
-          ),
+          ParagraphText(text: text),
         ],
       ),
+      onPressed: onPressed,
     );
   }
 }

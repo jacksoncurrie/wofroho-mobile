@@ -10,7 +10,7 @@ final ThemeData companyThemeData = new ThemeData(
 
 // Colors to get from theme
 extension myColorScheme on ColorScheme {
-  Color get primary => _Colors.primary;
+  Color get primaryColor => _Colors.primary;
   Color get accent => _Colors.accent;
   Color get secondaryColor => _Colors.secondary;
   Color get backgroundColor => _Colors.background;
