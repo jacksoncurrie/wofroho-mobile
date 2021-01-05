@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 
-class ParagraphText extends StatelessWidget {
-  ParagraphText({
+class HeadingText extends StatelessWidget {
+  HeadingText({
     @required this.text,
-    this.fontSize = 16,
-    this.textColor,
+    this.fontSize = 32,
   });
 
   final String text;
   final double fontSize;
-  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
     return Text(
       text,
       style: TextStyle(
-        fontWeight: FontWeight.w400,
+        fontWeight: FontWeight.w800,
         fontSize: fontSize,
-        color: textColor,
       ),
     );
   }
