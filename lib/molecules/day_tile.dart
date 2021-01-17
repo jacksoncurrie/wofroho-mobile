@@ -5,12 +5,12 @@ import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 class DayTile extends StatelessWidget {
   DayTile({
     @required this.child,
-    @required this.backgroundColor,
-    @required this.textColor,
+    this.backgroundColor,
+    this.textColor,
     this.borderColor,
   });
 
-  final int child;
+  final String child;
   final Color backgroundColor;
   final Color textColor;
   final Color borderColor;
@@ -19,7 +19,7 @@ class DayTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return ItemTile(
       child: ParagraphText(
-        text: child.toString(),
+        text: child,
         textColor: textColor,
       ),
       backgroundColor: backgroundColor,
