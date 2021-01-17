@@ -22,6 +22,7 @@ class ItemTile extends StatelessWidget {
       height: height,
       decoration: BoxDecoration(
         color: backgroundColor,
+        borderRadius: BorderRadius.circular(1.0),
         border: borderColor == null
             ? null
             : Border.all(
