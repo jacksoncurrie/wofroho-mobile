@@ -6,6 +6,7 @@ final companyThemeData = ThemeData(
   accentColor: _Colors.primary,
   accentColorBrightness: Brightness.dark,
   errorColor: _Colors.error,
+  fontFamily: 'Poppins',
 );
 
 // Colors to get from theme

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/molecules/week_row.dart';
 import 'package:wofroho_mobile/organisms/button_pair.dart';
@@ -16,9 +17,9 @@ class SetupPage extends StatefulWidget {
 }
 
 class _SetupPageState extends State<SetupPage> {
-  int focusedDay = 2;
-  List<int> weekDates = [];
-  List<int> focusedDaysWeek = [];
+  int _focusedDay = 2;
+  DateTime _startWeekDay;
+  List<int> _focusedDaysWeek = [];
 
   void _skipPressed() {
     log('Skip');
@@ -33,21 +34,7 @@ class _SetupPageState extends State<SetupPage> {
     final todaysDate = DateTime.now();
     final mondaysDate =
         todaysDate.subtract(Duration(days: todaysDate.weekday - 1));
-    final tuesdaysDate = mondaysDate.add(Duration(days: 1));
-    final wednesdaysDate = mondaysDate.add(Duration(days: 2));
-    final thursdaysDate = mondaysDate.add(Duration(days: 3));
-    final fridaysDate = mondaysDate.add(Duration(days: 4));
-    final saturdaysDate = mondaysDate.add(Duration(days: 5));
-    final sundaysDate = mondaysDate.add(Duration(days: 6));
-    weekDates = [
-      mondaysDate.day,
-      tuesdaysDate.day,
-      wednesdaysDate.day,
-      thursdaysDate.day,
-      fridaysDate.day,
-      saturdaysDate.day,
-      sundaysDate.day,
-    ];
+    _startWeekDay = mondaysDate;
 
     super.initState();
   }
@@ -77,11 +64,11 @@ class _SetupPageState extends State<SetupPage> {
   }
 
   void _numberPerWeekChange(int day) {
-    while (focusedDaysWeek.length > day) {
-      focusedDaysWeek.removeAt(0);
+    while (_focusedDaysWeek.length > day) {
+      _focusedDaysWeek.removeAt(0);
     }
     setState(() {
-      focusedDay = day;
+      _focusedDay = day;
     });
   }
 
@@ -94,20 +81,20 @@ class _SetupPageState extends State<SetupPage> {
       inputWidget: WeekRow(
         days: [1, 2, 3, 4, 5, 6, 7],
         dayTapped: (day) => _numberPerWeekChange(day),
-        focusedDays: [focusedDay],
+        focusedDays: [_focusedDay],
       ),
     );
   }
 
   void _updateWeek(int day) {
-    if (focusedDaysWeek.contains(day)) {
-      setState(() => focusedDaysWeek.remove(day));
+    if (_focusedDaysWeek.contains(day)) {
+      setState(() => _focusedDaysWeek.remove(day));
       return;
     }
-    if (focusedDaysWeek.length >= focusedDay) {
-      setState(() => focusedDaysWeek.removeAt(0));
+    if (_focusedDaysWeek.length >= _focusedDay) {
+      setState(() => _focusedDaysWeek.removeAt(0));
     }
-    setState(() => focusedDaysWeek.add(day));
+    setState(() => _focusedDaysWeek.add(day));
   }
 
   Widget _showThisWeekWofroho() {
@@ -117,9 +104,9 @@ class _SetupPageState extends State<SetupPage> {
         fontSize: 20.0,
       ),
       inputWidget: CalendarWeekPicker(
-        days: weekDates,
+        dayBegin: _startWeekDay,
         dayTapped: (day) => _updateWeek(day),
-        focusedDays: focusedDaysWeek,
+        focusedDays: _focusedDaysWeek,
       ),
     );
   }
