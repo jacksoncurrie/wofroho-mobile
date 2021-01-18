@@ -43,7 +43,7 @@ class _LoginPageState extends State<LoginPage> {
   Widget _showLogo() {
     return Center(
       child: SvgPicture.asset(
-        'assets/wofroho_logo_full.svg',
+        'assets/images/wofroho_logo_full.svg',
         semanticsLabel: "Wofroho logo",
       ),
     );
@@ -53,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
     return SignInButton(
       text: "Sign in with Microsoft",
       image: SvgPicture.asset(
-        'assets/microsoft_logo.svg',
+        'assets/images/microsoft_logo.svg',
         semanticsLabel: "Microsft logo",
       ),
       onPressed: _loginWithMicrosoft,

@@ -45,14 +45,14 @@ class Calendar extends StatelessWidget {
 
   Widget _showArrowLeft() {
     return SvgPicture.asset(
-      'assets/arrow_left.svg',
+      'assets/images/arrow_left.svg',
       semanticsLabel: "Arrow left",
     );
   }
 
   Widget _showArrowRight() {
     return SvgPicture.asset(
-      'assets/arrow_right.svg',
+      'assets/images/arrow_right.svg',
       semanticsLabel: "Arrow right",
     );
   }
