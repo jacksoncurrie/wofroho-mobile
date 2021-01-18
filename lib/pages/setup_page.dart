@@ -19,6 +19,7 @@ class _SetupPageState extends State<SetupPage> {
   int _focusedDay = 2;
   DateTime _startWeekDay;
   List<int> _focusedDaysWeek = [];
+  int _currentDay;
 
   void _skipPressed() {
     log('Skip');
@@ -34,6 +35,7 @@ class _SetupPageState extends State<SetupPage> {
     final mondaysDate =
         todaysDate.subtract(Duration(days: todaysDate.weekday - 1));
     _startWeekDay = mondaysDate;
+    _currentDay = todaysDate.day;
 
     super.initState();
   }
@@ -106,7 +108,13 @@ class _SetupPageState extends State<SetupPage> {
         dayBegin: _startWeekDay,
         dayTapped: (day) => _updateWeek(day),
         focusedDays: _focusedDaysWeek,
-        weekChanged: (i) => setState(() => _focusedDaysWeek.clear()),
+        weekChanged: (weekNumber) {
+          setState(() {
+            _focusedDaysWeek.clear();
+            _currentDay = weekNumber == 0 ? DateTime.now().day : 0;
+          });
+        },
+        secondaryDay: _currentDay,
       ),
     );
   }

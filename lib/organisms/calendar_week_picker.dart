@@ -11,6 +11,7 @@ class CalendarWeekPicker extends StatelessWidget {
     @required this.focusedDays,
     this.startDay = 1,
     this.weekChanged,
+    this.secondaryDay,
   });
 
   final DateTime dayBegin;
@@ -18,6 +19,7 @@ class CalendarWeekPicker extends StatelessWidget {
   final List<int> focusedDays;
   final int startDay;
   final void Function(int) weekChanged;
+  final int secondaryDay;
 
   final pageViewController = PageController(
     initialPage: 0,
@@ -56,6 +58,7 @@ class CalendarWeekPicker extends StatelessWidget {
                 days: weekDetails.days,
                 dayTapped: dayTapped,
                 focusedDays: focusedDays,
+                secondaryDay: secondaryDay,
               ),
             ],
           );
