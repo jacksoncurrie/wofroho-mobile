@@ -107,6 +107,7 @@ class _SetupPageState extends State<SetupPage> {
         dayBegin: _startWeekDay,
         dayTapped: (day) => _updateWeek(day),
         focusedDays: _focusedDaysWeek,
+        weekChanged: (i) => setState(() => _focusedDaysWeek.clear()),
       ),
     );
   }

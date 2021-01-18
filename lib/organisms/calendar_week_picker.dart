@@ -10,32 +10,33 @@ class CalendarWeekPicker extends StatelessWidget {
     @required this.dayTapped,
     @required this.focusedDays,
     this.startDay = 1,
+    this.weekChanged,
   });
 
   final DateTime dayBegin;
   final void Function(int) dayTapped;
   final List<int> focusedDays;
   final int startDay;
-
-  var _month = "";
-  var _year = 0;
+  final void Function(int) weekChanged;
 
   final pageViewController = PageController(
     initialPage: 0,
   );
 
-  List<int> _getDays(int weekNumber) {
+  WeekDetails _getDays(int weekNumber) {
     var days = List<int>();
+    int year;
+    String month;
     for (var i = 0; i < 7; i++) {
       final day = dayBegin.add(Duration(days: i + (weekNumber * 7)));
       days.add(day.day);
       if (i == 0) {
         final formatter = DateFormat('MMMM');
-        _month = formatter.format(day);
-        _year = day.year;
+        month = formatter.format(day);
+        year = day.year;
       }
     }
-    return days;
+    return WeekDetails(year: year, month: month, days: days);
   }
 
   @override
@@ -44,15 +45,15 @@ class CalendarWeekPicker extends StatelessWidget {
       height: 120.0,
       child: PageView.builder(
         itemBuilder: (context, index) {
-          final days = _getDays(index);
+          final weekDetails = _getDays(index);
           return Column(
             children: [
-              _showMonthAndYear(_month, _year),
+              _showMonthAndYear(weekDetails.month, weekDetails.year),
               WeekdayNameRow(
                 startDay: startDay,
               ),
               WeekRow(
-                days: days,
+                days: weekDetails.days,
                 dayTapped: dayTapped,
                 focusedDays: focusedDays,
               ),
@@ -60,6 +61,7 @@ class CalendarWeekPicker extends StatelessWidget {
           );
         },
         controller: pageViewController,
+        onPageChanged: weekChanged,
       ),
     );
   }
@@ -72,4 +74,16 @@ class CalendarWeekPicker extends StatelessWidget {
       ),
     );
   }
+}
+
+class WeekDetails {
+  WeekDetails({
+    this.year,
+    this.month,
+    this.days,
+  });
+
+  int year;
+  String month;
+  List<int> days;
 }
