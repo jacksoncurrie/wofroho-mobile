@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wofroho_mobile/templates/simple_template.dart';
-import '../theme.dart';
 
 class InputTemplate extends StatelessWidget {
   InputTemplate({
