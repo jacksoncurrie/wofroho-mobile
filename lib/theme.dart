@@ -25,7 +25,7 @@ extension myColorScheme on ColorScheme {
 // Theme colors
 class _Colors {
   static const Color primary = const Color(0xFF3756F6);
-  static const Color accent = const Color(0xFFFF3E3E);
+  static const Color accent = const Color(0xFFEDD036);
   static const Color secondary = const Color(0xFFFBFBFB);
   static const Color background = const Color(0xFFFBFBFB);
   static const Color error = const Color(0xFFFF3E3E);

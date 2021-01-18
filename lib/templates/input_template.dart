@@ -16,8 +16,12 @@ class InputTemplate extends StatelessWidget {
   Widget build(BuildContext context) {
     return SimpleTemplate(
       pageWidgets: Stack(
-        children: [
-          if (background != null) background,
+        children: <Widget>[
+          if (background != null)
+            Positioned(
+              top: 0,
+              child: background,
+            ),
           Padding(
             padding: const EdgeInsets.all(25.0),
             child: Column(

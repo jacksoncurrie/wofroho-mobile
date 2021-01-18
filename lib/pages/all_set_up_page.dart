@@ -1,9 +1,8 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:wofroho_mobile/organisms/button_pair.dart';
 import 'package:wofroho_mobile/pages/details_page.dart';
+import 'package:wofroho_mobile/pages/setup_page.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
 
 class AllSetUpPage extends StatefulWidget {
@@ -22,7 +21,12 @@ class _AllSetUpPageState extends State<AllSetUpPage> {
   }
 
   void _beginSetup() {
-    log("Setup");
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => SetupPage(),
+      ),
+    );
   }
 
   @override
