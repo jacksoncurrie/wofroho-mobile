@@ -25,6 +25,8 @@ class CalendarWeekPicker extends StatelessWidget {
     initialPage: 0,
   );
 
+  static const _monthStringFormat = 'MMMM';
+
   WeekDetails _getDays(int weekNumber) {
     var days = List<int>();
     int year;
@@ -33,7 +35,7 @@ class CalendarWeekPicker extends StatelessWidget {
       final day = dayBegin.add(Duration(days: i + (weekNumber * 7)));
       days.add(day.day);
       if (i == 0) {
-        final formatter = DateFormat('MMMM');
+        final formatter = DateFormat(_monthStringFormat);
         month = formatter.format(day);
         year = day.year;
       }
@@ -42,7 +44,8 @@ class CalendarWeekPicker extends StatelessWidget {
   }
 
   void _dayTapped(int day, String month, int year) {
-    final dayTap = DateFormat('d MMMM yyyy').parse("$day $month $year");
+    final dayTap =
+        DateFormat('d $_monthStringFormat yyyy').parse("$day $month $year");
     dayTapped(dayTap);
   }
 
