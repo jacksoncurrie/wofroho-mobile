@@ -18,7 +18,7 @@ class SetupPage extends StatefulWidget {
 class _SetupPageState extends State<SetupPage> {
   int _focusedDay = 2;
   DateTime _startWeekDay;
-  List<int> _focusedDaysWeek = [];
+  List<DateTime> _focusedDaysWeek = [];
   int _currentDay;
 
   void _skipPressed() {
@@ -81,13 +81,13 @@ class _SetupPageState extends State<SetupPage> {
       ),
       inputWidget: WeekRow(
         days: [1, 2, 3, 4, 5, 6, 7],
-        dayTapped: (day) => _numberPerWeekChange(day),
+        dayTapped: _numberPerWeekChange,
         focusedDays: [_focusedDay],
       ),
     );
   }
 
-  void _updateWeek(int day) {
+  void _updateWeek(DateTime day) {
     if (_focusedDaysWeek.contains(day)) {
       setState(() => _focusedDaysWeek.remove(day));
       return;
@@ -98,6 +98,13 @@ class _SetupPageState extends State<SetupPage> {
     setState(() => _focusedDaysWeek.add(day));
   }
 
+  void _weekChanged(int weekNumber) {
+    setState(() {
+      _focusedDaysWeek.clear();
+      _currentDay = weekNumber == 0 ? DateTime.now().day : 0;
+    });
+  }
+
   Widget _showThisWeekWofroho() {
     return SettingInputTemplate(
       labelWidget: ParagraphText(
@@ -106,14 +113,9 @@ class _SetupPageState extends State<SetupPage> {
       ),
       inputWidget: CalendarWeekPicker(
         dayBegin: _startWeekDay,
-        dayTapped: (day) => _updateWeek(day),
-        focusedDays: _focusedDaysWeek,
-        weekChanged: (weekNumber) {
-          setState(() {
-            _focusedDaysWeek.clear();
-            _currentDay = weekNumber == 0 ? DateTime.now().day : 0;
-          });
-        },
+        dayTapped: _updateWeek,
+        focusedDays: _focusedDaysWeek.map((i) => i.day).toList(),
+        weekChanged: _weekChanged,
         secondaryDay: _currentDay,
       ),
     );

@@ -15,7 +15,7 @@ class CalendarWeekPicker extends StatelessWidget {
   });
 
   final DateTime dayBegin;
-  final void Function(int) dayTapped;
+  final void Function(DateTime) dayTapped;
   final List<int> focusedDays;
   final int startDay;
   final void Function(int) weekChanged;
@@ -41,6 +41,11 @@ class CalendarWeekPicker extends StatelessWidget {
     return WeekDetails(year: year, month: month, days: days);
   }
 
+  void _dayTapped(int day, String month, int year) {
+    final dayTap = DateFormat('d MMMM yyyy').parse("$day $month $year");
+    dayTapped(dayTap);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -56,7 +61,8 @@ class CalendarWeekPicker extends StatelessWidget {
               ),
               WeekRow(
                 days: weekDetails.days,
-                dayTapped: dayTapped,
+                dayTapped: (day) =>
+                    _dayTapped(day, weekDetails.month, weekDetails.year),
                 focusedDays: focusedDays,
                 secondaryDay: secondaryDay,
               ),
