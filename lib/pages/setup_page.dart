@@ -59,6 +59,7 @@ class _SetupPageState extends State<SetupPage> {
         children: <Widget>[
           _showHowManyDaysInput(),
           _showThisWeekWofroho(),
+          _showRemainderText(),
         ],
       ),
     );
@@ -117,6 +118,20 @@ class _SetupPageState extends State<SetupPage> {
         focusedDays: _focusedDaysWeek.map((i) => i.day).toList(),
         weekChanged: _weekChanged,
         secondaryDay: _currentDay,
+      ),
+    );
+  }
+
+  Widget _showRemainderText() {
+    final selections = _focusedDay - _focusedDaysWeek.length;
+    final plural = selections == 1 ? "" : "s";
+
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: Center(
+        child: ParagraphText(
+          text: "You have $selections selection$plural left",
+        ),
       ),
     );
   }
