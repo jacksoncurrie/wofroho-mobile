@@ -1,10 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/molecules/week_row.dart';
 import 'package:wofroho_mobile/organisms/button_pair.dart';
 import 'package:wofroho_mobile/organisms/calendar_week_picker.dart';
+import 'package:wofroho_mobile/pages/details_page.dart';
 import 'package:wofroho_mobile/templates/close_page_template.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
 import 'package:wofroho_mobile/templates/page_heading_template.dart';
@@ -22,11 +21,21 @@ class _SetupPageState extends State<SetupPage> {
   int _currentDay;
 
   void _skipPressed() {
-    log('Skip');
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => DetailsPage(),
+      ),
+    );
   }
 
   void _savePressed() {
-    log('Save');
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => DetailsPage(),
+      ),
+    );
   }
 
   @override

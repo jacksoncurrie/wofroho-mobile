@@ -17,11 +17,9 @@ class Calendar extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            _showArrowLeft(),
             Text("October, 2020"),
-            _showArrowRight(),
           ],
         ),
         Padding(

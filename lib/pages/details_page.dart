@@ -36,9 +36,8 @@ class _DetailsPageState extends State<DetailsPage> {
                 right: 20,
               ),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  _showNotifications(),
                   _showSettings(),
                 ],
               ),
