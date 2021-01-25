@@ -13,7 +13,7 @@ class AllSetUpPage extends StatefulWidget {
 
 class _AllSetUpPageState extends State<AllSetUpPage> {
   void _homePressed() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (ctx) => DetailsPage(),
@@ -22,7 +22,7 @@ class _AllSetUpPageState extends State<AllSetUpPage> {
   }
 
   void _beginSetup() {
-    Navigator.push(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(
         builder: (ctx) => SetupPage(),
