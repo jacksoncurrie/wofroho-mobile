@@ -12,6 +12,7 @@ class SimpleTemplate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.backgroundColor,
+      appBar: _showAppBar(context),
       body: LayoutBuilder(builder: (context, viewportConstraints) {
         return SingleChildScrollView(
           child: ConstrainedBox(
@@ -21,6 +22,18 @@ class SimpleTemplate extends StatelessWidget {
           ),
         );
       }),
+    );
+  }
+
+  Widget _showAppBar(BuildContext context) {
+    // Empty app bar
+    return PreferredSize(
+      preferredSize: Size.fromHeight(0),
+      child: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.backgroundColor,
+        brightness: Brightness.light,
+        shadowColor: Colors.transparent,
+      ),
     );
   }
 }

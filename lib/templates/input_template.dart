@@ -25,7 +25,7 @@ class InputTemplate extends StatelessWidget {
           SafeArea(
             child: Padding(
               padding: const EdgeInsets.only(
-                top: 5.0,
+                top: 15.0,
                 left: 25.0,
                 right: 25.0,
                 bottom: 25.0,
