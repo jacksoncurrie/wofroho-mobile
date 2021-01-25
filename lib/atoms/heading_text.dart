@@ -14,7 +14,7 @@ class HeadingText extends StatelessWidget {
     return Text(
       text,
       style: TextStyle(
-        fontWeight: FontWeight.w800,
+        fontWeight: FontWeight.w700,
         fontSize: fontSize,
       ),
     );

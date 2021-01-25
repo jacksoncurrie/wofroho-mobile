@@ -41,7 +41,7 @@ class _AllSetUpPageState extends State<AllSetUpPage> {
   Widget _showPageWidgets() {
     return Center(
       child: SvgPicture.asset(
-        'assets/all_set_up.svg',
+        'assets/images/all_set_up.svg',
         semanticsLabel: "All set up text",
         fit: BoxFit.contain,
       ),
@@ -59,7 +59,7 @@ class _AllSetUpPageState extends State<AllSetUpPage> {
 
   Widget _showBackground() {
     return SvgPicture.asset(
-      'assets/confetti.svg',
+      'assets/images/confetti.svg',
       semanticsLabel: "Success confetti",
       fit: BoxFit.cover,
     );

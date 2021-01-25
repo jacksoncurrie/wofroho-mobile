@@ -22,15 +22,22 @@ class InputTemplate extends StatelessWidget {
               top: 0,
               child: background,
             ),
-          Padding(
-            padding: const EdgeInsets.all(25.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                Expanded(child: pageWidgets),
-                bottomWidget,
-              ],
+          SafeArea(
+            child: Padding(
+              padding: const EdgeInsets.only(
+                top: 5.0,
+                left: 25.0,
+                right: 25.0,
+                bottom: 25.0,
+              ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  Expanded(child: pageWidgets),
+                  bottomWidget,
+                ],
+              ),
             ),
           ),
         ],
