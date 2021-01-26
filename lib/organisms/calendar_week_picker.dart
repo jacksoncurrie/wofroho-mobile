@@ -12,6 +12,10 @@ class CalendarWeekPicker extends StatelessWidget {
     this.startDay = 1,
     this.weekChanged,
     this.secondaryDay,
+    this.focusedBackgroundColor,
+    this.focusedTextColor,
+    this.outlinedDays,
+    this.outlinedColor,
   });
 
   final DateTime dayBegin;
@@ -20,6 +24,10 @@ class CalendarWeekPicker extends StatelessWidget {
   final int startDay;
   final void Function(int) weekChanged;
   final int secondaryDay;
+  final Color focusedBackgroundColor;
+  final Color focusedTextColor;
+  final List<int> outlinedDays;
+  final Color outlinedColor;
 
   final pageViewController = PageController(
     initialPage: 0,
@@ -68,6 +76,10 @@ class CalendarWeekPicker extends StatelessWidget {
                     _dayTapped(day, weekDetails.month, weekDetails.year),
                 focusedDays: focusedDays,
                 secondaryDay: secondaryDay,
+                focusedBackgroundColor: focusedBackgroundColor,
+                focusedTextColor: focusedTextColor,
+                outlinedDays: outlinedDays,
+                outlinedColor: outlinedColor,
               ),
             ],
           );

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wofroho_mobile/templates/simple_template.dart';
+import 'package:wofroho_mobile/templates/padded_page_template.dart';
 
 class InputTemplate extends StatelessWidget {
   InputTemplate({
@@ -14,34 +14,16 @@ class InputTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SimpleTemplate(
-      pageWidgets: Stack(
+    return PaddedPageTemplate(
+      pageWidgets: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          if (background != null)
-            Positioned(
-              top: 0,
-              child: background,
-            ),
-          SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.only(
-                top: 15.0,
-                left: 25.0,
-                right: 25.0,
-                bottom: 25.0,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  Expanded(child: pageWidgets),
-                  bottomWidget,
-                ],
-              ),
-            ),
-          ),
+          Expanded(child: pageWidgets),
+          bottomWidget,
         ],
       ),
+      background: background,
     );
   }
 }

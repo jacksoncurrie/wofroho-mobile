@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
+import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/molecules/week_row.dart';
 import 'package:wofroho_mobile/organisms/button_pair.dart';
 import 'package:wofroho_mobile/organisms/calendar_week_picker.dart';
 import 'package:wofroho_mobile/pages/details_page.dart';
-import 'package:wofroho_mobile/templates/close_page_template.dart';
+import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
 import 'package:wofroho_mobile/templates/page_heading_template.dart';
 import 'package:wofroho_mobile/templates/setting_input_template.dart';
@@ -52,11 +54,24 @@ class _SetupPageState extends State<SetupPage> {
   @override
   Widget build(BuildContext context) {
     return InputTemplate(
-      pageWidgets: ClosePageTemplate(
-        closePressed: _skipPressed,
+      pageWidgets: ActionPageTemplate(
+        actionWidget: _showCloseAction(),
         pageWidgets: _showPageWidgets(),
       ),
       bottomWidget: _showBottomWidget(),
+    );
+  }
+
+  Widget _showCloseAction() {
+    return Align(
+      alignment: Alignment.centerRight,
+      child: SingleIconButton(
+        icon: SvgPicture.asset(
+          'assets/images/close.svg',
+          semanticsLabel: "Close icon",
+        ),
+        onPressed: _skipPressed,
+      ),
     );
   }
 
