@@ -42,10 +42,7 @@ flutter:
   assets:
     - assets/images/wofroho.svg
     - assets/images/wofroho_logo_full.svg
-    - assets/images/notification.svg
     - assets/images/settings.svg
-    - assets/images/arrow_right.svg
-    - assets/images/arrow_left.svg
     - assets/images/microsoft_logo.svg
     - assets/images/confetti.svg
     - assets/images/party_popper.svg

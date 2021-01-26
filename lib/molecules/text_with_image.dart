@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/heading_text.dart';
-import 'package:wofroho_mobile/atoms/item_tile.dart';
-import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 
 class TextWithImage extends StatelessWidget {
   TextWithImage({

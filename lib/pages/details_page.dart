@@ -66,19 +66,6 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
-  Widget _showNotifications() {
-    return GestureDetector(
-      onTap: () {
-        log("Notifications");
-      },
-      child: SvgPicture.asset(
-        'assets/images/notification.svg',
-        semanticsLabel: "Notifications",
-        width: 24,
-      ),
-    );
-  }
-
   Widget _showSettings() {
     return GestureDetector(
       onTap: () {

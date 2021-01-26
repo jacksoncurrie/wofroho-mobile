@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:wofroho_mobile/molecules/day_tile.dart';
-import '../theme.dart';
 
 class WeekdayNameRow extends StatelessWidget {
   WeekdayNameRow({
@@ -8,17 +7,17 @@ class WeekdayNameRow extends StatelessWidget {
   });
 
   final int startDay;
-  final List<String> weekdayNames = [
-    "Mo",
-    "Tu",
-    "We",
-    "Th",
-    "Fr",
-    "Sa",
-    "Su",
-  ];
+  final weekdayNames = {
+    1: "Mo",
+    2: "Tu",
+    3: "We",
+    4: "Th",
+    5: "Fr",
+    6: "Sa",
+    7: "Su",
+  };
 
-  List<Object> _rotate(List<Object> list, int v) {
+  List<T> _rotate<T>(List<T> list, int v) {
     if (list == null || list.isEmpty) return list;
     var i = v % list.length;
     return list.sublist(i)..addAll(list.sublist(0, i));
@@ -26,7 +25,8 @@ class WeekdayNameRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final rotatedWeekdayNames = _rotate(weekdayNames, startDay - 1);
+    final rotatedWeekdayNames =
+        _rotate(weekdayNames.values.toList(), startDay - 1);
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: rotatedWeekdayNames
