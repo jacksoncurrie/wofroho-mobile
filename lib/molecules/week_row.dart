@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:wofroho_mobile/molecules/day_tile.dart';
 import '../theme.dart';
 
@@ -26,6 +27,11 @@ class WeekRow extends StatelessWidget {
   final Color secondaryTextColor;
   final List<int> outlinedDays;
   final Color outlinedColor;
+
+  void _dayTappedInitial(int day) {
+    HapticFeedback.mediumImpact();
+    dayTapped(day);
+  }
 
   Color _getBackgroundColor(
     BuildContext context,
@@ -73,7 +79,7 @@ class WeekRow extends StatelessWidget {
             ? outlinedColor ?? Theme.of(context).colorScheme.accent
             : null,
       ),
-      onTap: () => dayTapped(day),
+      onTap: () => _dayTappedInitial(day),
     );
   }
 }
