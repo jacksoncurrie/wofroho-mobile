@@ -52,6 +52,7 @@ class PersonListItem extends StatelessWidget {
     return ParagraphText(
       text: name,
       fontSize: 20,
+      overflow: TextOverflow.ellipsis,
     );
   }
 
@@ -59,6 +60,7 @@ class PersonListItem extends StatelessWidget {
     return ParagraphText(
       text: role,
       fontSize: 14,
+      overflow: TextOverflow.ellipsis,
     );
   }
 
