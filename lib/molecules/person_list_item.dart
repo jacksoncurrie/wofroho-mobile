@@ -12,6 +12,7 @@ class PersonListItem extends StatelessWidget {
     this.personOutlined = false,
     @required this.role,
     @required this.dates,
+    this.onTap,
   });
 
   final ImageProvider<Object> image;
@@ -19,11 +20,12 @@ class PersonListItem extends StatelessWidget {
   final bool personOutlined;
   final String role;
   final List<DateTime> dates;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 15.0,
