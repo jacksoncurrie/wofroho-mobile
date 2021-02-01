@@ -7,6 +7,7 @@ import '../theme.dart';
 
 class PersonListItem extends StatelessWidget {
   PersonListItem({
+    @required this.personId,
     @required this.image,
     @required this.name,
     this.personOutlined = false,
@@ -15,6 +16,7 @@ class PersonListItem extends StatelessWidget {
     this.onTap,
   });
 
+  final String personId;
   final ImageProvider<Object> image;
   final String name;
   final bool personOutlined;
@@ -42,11 +44,15 @@ class PersonListItem extends StatelessWidget {
   }
 
   Widget _showImage(BuildContext context) {
-    return UserImage(
-      height: 50,
-      width: 50,
-      image: image,
-      borderColor: personOutlined ? Theme.of(context).colorScheme.accent : null,
+    return Hero(
+      tag: personId,
+      child: UserImage(
+        height: 50,
+        width: 50,
+        image: image,
+        borderColor:
+            personOutlined ? Theme.of(context).colorScheme.accent : null,
+      ),
     );
   }
 

@@ -6,11 +6,13 @@ class UserImage extends StatelessWidget {
     @required this.width,
     @required this.height,
     this.borderColor,
+    this.borderRadius = 3.0,
   });
 
   final ImageProvider<Object> image;
   final double width;
   final double height;
+  final double borderRadius;
   final Color borderColor;
 
   @override
@@ -19,7 +21,7 @@ class UserImage extends StatelessWidget {
       width: width,
       height: height,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(3.0),
+        borderRadius: BorderRadius.circular(borderRadius),
         border: borderColor == null
             ? null
             : Border.all(

@@ -149,6 +149,7 @@ class _DetailsPageState extends State<DetailsPage> {
         personTapped: _personTapped,
         people: [
           Person(
+            id: "1",
             imageUrl: "http://placekitten.com/300/300",
             name: "Bruce Wayne",
             role: "Businessman, entrepreneur, accountant",
@@ -159,6 +160,7 @@ class _DetailsPageState extends State<DetailsPage> {
             isUser: true,
           ),
           Person(
+            id: "2",
             imageUrl: "http://placekitten.com/400/400",
             name: "Lucius Fox",
             role: "CEO",
