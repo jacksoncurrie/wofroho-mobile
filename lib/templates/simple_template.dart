@@ -12,21 +12,12 @@ class SimpleTemplate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.backgroundColor,
-      appBar: _showAppBar(context),
-      body: LayoutBuilder(builder: (context, viewportConstraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints:
-                BoxConstraints(minHeight: viewportConstraints.maxHeight),
-            child: IntrinsicHeight(child: pageWidgets),
-          ),
-        );
-      }),
+      appBar: _showEmptyAppBar(context),
+      body: pageWidgets,
     );
   }
 
-  Widget _showAppBar(BuildContext context) {
-    // Empty app bar
+  Widget _showEmptyAppBar(BuildContext context) {
     return PreferredSize(
       preferredSize: Size.fromHeight(0),
       child: AppBar(

@@ -20,6 +20,7 @@ class ParagraphText extends StatelessWidget {
         fontSize: fontSize,
         color: textColor,
       ),
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

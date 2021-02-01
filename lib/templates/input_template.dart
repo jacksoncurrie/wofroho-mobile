@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:wofroho_mobile/templates/padded_page_template.dart';
+import 'package:wofroho_mobile/templates/padded_scroll_page_template.dart';
 
 class InputTemplate extends StatelessWidget {
   InputTemplate({
@@ -14,7 +14,7 @@ class InputTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return PaddedPageTemplate(
+    return PaddedScrollPageTemplate(
       pageWidgets: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         mainAxisAlignment: MainAxisAlignment.center,

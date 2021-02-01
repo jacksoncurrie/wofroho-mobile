@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/molecules/sign_in_button.dart';
 import 'package:wofroho_mobile/pages/all_set_up_page.dart';
+import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
 import 'package:wofroho_mobile/templates/simple_template.dart';
 
 class LoginPage extends StatefulWidget {
@@ -23,18 +24,20 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     return SimpleTemplate(
-      pageWidgets: Padding(
-        padding: const EdgeInsets.all(25.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(bottom: 50.0),
-              child: _showLogo(),
-            ),
-            _showSignInWithMicrosoft(),
-          ],
+      pageWidgets: SimpleScrollTemplate(
+        pageWidgets: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              Padding(
+                padding: const EdgeInsets.only(bottom: 50.0),
+                child: _showLogo(),
+              ),
+              _showSignInWithMicrosoft(),
+            ],
+          ),
         ),
       ),
     );

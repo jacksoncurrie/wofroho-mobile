@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
+import 'package:wofroho_mobile/models/person.dart';
+import 'package:wofroho_mobile/molecules/empty_state.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/organisms/calendar_week_picker.dart';
+import 'package:wofroho_mobile/organisms/person_list.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/padded_page_template.dart';
 import '../theme.dart';
@@ -16,7 +21,7 @@ class _DetailsPageState extends State<DetailsPage> {
   DateTime _startWeekDay;
   int _currentDay = 0;
   DateTime _focusedDay;
-  List<int> _outlinedDays = [27, 28];
+  List<int> _outlinedDays = [3, 4];
 
   @override
   void initState() {
@@ -38,6 +43,10 @@ class _DetailsPageState extends State<DetailsPage> {
           children: [
             _showCalendar(),
             _showEditLink(),
+            _showCompanyTitle(),
+            Expanded(
+              child: _showPersonList(),
+            ),
           ],
         ),
         actionWidget: _showTopActions(),
@@ -68,8 +77,9 @@ class _DetailsPageState extends State<DetailsPage> {
     setState(() {
       _focusedDay = newWeekMonday;
       _currentDay = weekNumber == 0 ? DateTime.now().day : 0;
-      _outlinedDays = weekNumber == 0 ? [27, 28] : [];
+      _outlinedDays = weekNumber == 0 ? [3, 4] : [];
     });
+    HapticFeedback.mediumImpact();
   }
 
   Widget _showCalendar() {
@@ -95,6 +105,56 @@ class _DetailsPageState extends State<DetailsPage> {
         text: "Edit this week wofroho",
         onTap: () {},
       ),
+    );
+  }
+
+  Widget _showCompanyTitle() {
+    return Align(
+      alignment: Alignment.topLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 30.0),
+        child: ParagraphText(
+          text: "Wayne Enterprises",
+          fontSize: 22,
+        ),
+      ),
+    );
+  }
+
+  Widget _showEmptyState() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 40.0),
+      child: EmptyState(
+        text: "No one is wofroho today",
+      ),
+    );
+  }
+
+  Widget _showPersonList() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 20.0),
+      child: PersonList(people: [
+        Person(
+          imageUrl: "http://placekitten.com/300/300",
+          name: "Bruce Wayne",
+          role: "Businessman, entrepreneur, accountant",
+          datesFromHome: [
+            DateTime.now().add(Duration(days: 2)),
+            DateTime.now().add(Duration(days: 3)),
+          ],
+          isUser: true,
+        ),
+        Person(
+          imageUrl: "http://placekitten.com/400/400",
+          name: "Lucius Fox",
+          role: "CEO",
+          datesFromHome: [
+            DateTime.now().add(Duration(days: 5)),
+            DateTime.now().add(Duration(days: 6)),
+          ],
+          isUser: false,
+        ),
+      ]),
     );
   }
 }
