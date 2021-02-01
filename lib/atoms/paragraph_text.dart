@@ -5,11 +5,13 @@ class ParagraphText extends StatelessWidget {
     @required this.text,
     this.fontSize = 16,
     this.textColor,
+    this.overflow,
   });
 
   final String text;
   final double fontSize;
   final Color textColor;
+  final TextOverflow overflow;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +22,7 @@ class ParagraphText extends StatelessWidget {
         fontSize: fontSize,
         color: textColor,
       ),
-      overflow: TextOverflow.ellipsis,
+      overflow: overflow,
     );
   }
 }

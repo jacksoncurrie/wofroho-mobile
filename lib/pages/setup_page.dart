@@ -80,7 +80,7 @@ class _SetupPageState extends State<SetupPage> {
       title: "Setup",
       pageWidgets: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: <Widget>[
+        children: [
           _showHowManyDaysInput(),
           _showThisWeekWofroho(),
           _showRemainderText(),

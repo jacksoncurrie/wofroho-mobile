@@ -7,23 +7,27 @@ import '../theme.dart';
 
 class PersonListItem extends StatelessWidget {
   PersonListItem({
+    @required this.personId,
     @required this.image,
     @required this.name,
     this.personOutlined = false,
     @required this.role,
     @required this.dates,
+    this.onTap,
   });
 
+  final String personId;
   final ImageProvider<Object> image;
   final String name;
   final bool personOutlined;
   final String role;
   final List<DateTime> dates;
+  final void Function() onTap;
 
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: onTap,
       child: Padding(
         padding: const EdgeInsets.symmetric(
           vertical: 15.0,
@@ -40,11 +44,15 @@ class PersonListItem extends StatelessWidget {
   }
 
   Widget _showImage(BuildContext context) {
-    return UserImage(
-      height: 50,
-      width: 50,
-      image: image,
-      borderColor: personOutlined ? Theme.of(context).colorScheme.accent : null,
+    return Hero(
+      tag: personId,
+      child: UserImage(
+        height: 50,
+        width: 50,
+        image: image,
+        borderColor:
+            personOutlined ? Theme.of(context).colorScheme.accent : null,
+      ),
     );
   }
 
@@ -52,6 +60,7 @@ class PersonListItem extends StatelessWidget {
     return ParagraphText(
       text: name,
       fontSize: 20,
+      overflow: TextOverflow.ellipsis,
     );
   }
 
@@ -59,6 +68,7 @@ class PersonListItem extends StatelessWidget {
     return ParagraphText(
       text: role,
       fontSize: 14,
+      overflow: TextOverflow.ellipsis,
     );
   }
 

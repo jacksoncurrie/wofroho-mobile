@@ -8,6 +8,7 @@ import 'package:wofroho_mobile/molecules/empty_state.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/organisms/calendar_week_picker.dart';
 import 'package:wofroho_mobile/organisms/person_list.dart';
+import 'package:wofroho_mobile/pages/profile_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/padded_page_template.dart';
 import '../theme.dart';
@@ -130,31 +131,47 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
+  void _personTapped(Person person) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => ProfilePage(
+          person: person,
+        ),
+      ),
+    );
+  }
+
   Widget _showPersonList() {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
-      child: PersonList(people: [
-        Person(
-          imageUrl: "http://placekitten.com/300/300",
-          name: "Bruce Wayne",
-          role: "Businessman, entrepreneur, accountant",
-          datesFromHome: [
-            DateTime.now().add(Duration(days: 2)),
-            DateTime.now().add(Duration(days: 3)),
-          ],
-          isUser: true,
-        ),
-        Person(
-          imageUrl: "http://placekitten.com/400/400",
-          name: "Lucius Fox",
-          role: "CEO",
-          datesFromHome: [
-            DateTime.now().add(Duration(days: 5)),
-            DateTime.now().add(Duration(days: 6)),
-          ],
-          isUser: false,
-        ),
-      ]),
+      child: PersonList(
+        personTapped: _personTapped,
+        people: [
+          Person(
+            id: "1",
+            imageUrl: "http://placekitten.com/300/300",
+            name: "Bruce Wayne",
+            role: "Businessman, entrepreneur, accountant",
+            datesFromHome: [
+              DateTime.now().add(Duration(days: 2)),
+              DateTime.now().add(Duration(days: 3)),
+            ],
+            isUser: true,
+          ),
+          Person(
+            id: "2",
+            imageUrl: "http://placekitten.com/400/400",
+            name: "Lucius Fox",
+            role: "CEO",
+            datesFromHome: [
+              DateTime.now().add(Duration(days: 5)),
+              DateTime.now().add(Duration(days: 6)),
+            ],
+            isUser: false,
+          ),
+        ],
+      ),
     );
   }
 }
