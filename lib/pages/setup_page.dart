@@ -11,6 +11,8 @@ import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
 import 'package:wofroho_mobile/templates/page_heading_template.dart';
 import 'package:wofroho_mobile/templates/setting_input_template.dart';
+import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
+import 'package:wofroho_mobile/templates/simple_template.dart';
 
 class SetupPage extends StatefulWidget {
   SetupPage({
@@ -64,38 +66,65 @@ class _SetupPageState extends State<SetupPage> {
 
   @override
   Widget build(BuildContext context) {
-    return InputTemplate(
-      pageWidgets: ActionPageTemplate(
-        actionWidget: _showCloseAction(),
-        pageWidgets: _showPageWidgets(),
+    return SimpleTemplate(
+      pageWidgets: SimpleScrollTemplate(
+        pageWidgets: InputTemplate(
+          pageWidgets: ActionPageTemplate(
+            actionWidget:
+                widget.initialSetup ? _showCloseAction() : _showBackAction(),
+            pageWidgets: _showPageWidgets(),
+          ),
+          bottomWidget: _showBottomWidget(),
+        ),
       ),
-      bottomWidget: _showBottomWidget(),
     );
   }
 
   Widget _showCloseAction() {
     return Align(
       alignment: Alignment.centerRight,
-      child: SingleIconButton(
-        icon: SvgPicture.asset(
-          'assets/images/close.svg',
-          semanticsLabel: "Close icon",
+      child: Padding(
+        padding: const EdgeInsets.only(top: 15, right: 25),
+        child: SingleIconButton(
+          icon: SvgPicture.asset(
+            'assets/images/close.svg',
+            semanticsLabel: "Close icon",
+          ),
+          onPressed: _skipPressed,
         ),
-        onPressed: _skipPressed,
+      ),
+    );
+  }
+
+  Widget _showBackAction() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 15, left: 8),
+        child: SingleIconButton(
+          icon: SvgPicture.asset(
+            'assets/images/back.svg',
+            semanticsLabel: "BAck icon",
+          ),
+          onPressed: _skipPressed,
+        ),
       ),
     );
   }
 
   Widget _showPageWidgets() {
-    return PageHeadingTemplate(
-      title: widget.initialSetup ? "Setup" : "General",
-      pageWidgets: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
-        children: [
-          _showHowManyDaysInput(),
-          _showThisWeekWofroho(),
-          _showRemainderText(),
-        ],
+    return Padding(
+      padding: const EdgeInsets.only(left: 25, right: 25),
+      child: PageHeadingTemplate(
+        title: widget.initialSetup ? "Setup" : "General",
+        pageWidgets: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _showHowManyDaysInput(),
+            _showThisWeekWofroho(),
+            _showRemainderText(),
+          ],
+        ),
       ),
     );
   }
@@ -186,16 +215,19 @@ class _SetupPageState extends State<SetupPage> {
   }
 
   Widget _showBottomWidget() {
-    return widget.initialSetup
-        ? ButtonPair(
-            primaryText: "Save",
-            primaryOnPressed: _savePressed,
-            secondaryText: "Skip",
-            secondaryOnPressed: _skipPressed,
-          )
-        : PrimaryButton(
-            text: "Save",
-            onPressed: _savePressed,
-          );
+    return Padding(
+      padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
+      child: widget.initialSetup
+          ? ButtonPair(
+              primaryText: "Save",
+              primaryOnPressed: _savePressed,
+              secondaryText: "Skip",
+              secondaryOnPressed: _skipPressed,
+            )
+          : PrimaryButton(
+              text: "Save",
+              onPressed: _savePressed,
+            ),
+    );
   }
 }

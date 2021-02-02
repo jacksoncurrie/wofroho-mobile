@@ -5,6 +5,7 @@ import 'package:wofroho_mobile/organisms/button_pair.dart';
 import 'package:wofroho_mobile/pages/details_page.dart';
 import 'package:wofroho_mobile/pages/setup_page.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
+import 'package:wofroho_mobile/templates/padded_scroll_page_template.dart';
 
 class AllSetUpPage extends StatefulWidget {
   @override
@@ -32,9 +33,11 @@ class _AllSetUpPageState extends State<AllSetUpPage> {
 
   @override
   Widget build(BuildContext context) {
-    return InputTemplate(
-      pageWidgets: _showPageWidgets(),
-      bottomWidget: _showBottomWidget(),
+    return PaddedScrollPageTemplate(
+      pageWidgets: InputTemplate(
+        pageWidgets: _showPageWidgets(),
+        bottomWidget: _showBottomWidget(),
+      ),
       background: _showBackground(),
     );
   }
