@@ -25,7 +25,7 @@ class _AllSetUpPageState extends State<AllSetUpPage> {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (ctx) => SetupPage(),
+        builder: (ctx) => SetupPage(initialSetup: true),
       ),
     );
   }

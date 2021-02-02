@@ -30,7 +30,7 @@ class _DetailsPageState extends State<DetailsPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (ctx) => SetupPage(),
+        builder: (ctx) => SetupPage(initialSetup: false),
       ),
     );
   }
@@ -166,7 +166,7 @@ class _DetailsPageState extends State<DetailsPage> {
           ),
           Person(
             id: "2",
-            imageUrl: "http://placekitten.com/400/400",
+            imageUrl: "http://placekitten.com/400/320",
             name: "Lucius Fox",
             role: "CEO",
             datesFromHome: [

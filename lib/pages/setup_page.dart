@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
+import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/molecules/week_row.dart';
 import 'package:wofroho_mobile/organisms/button_pair.dart';
 import 'package:wofroho_mobile/organisms/calendar_week_picker.dart';
@@ -12,6 +13,12 @@ import 'package:wofroho_mobile/templates/page_heading_template.dart';
 import 'package:wofroho_mobile/templates/setting_input_template.dart';
 
 class SetupPage extends StatefulWidget {
+  SetupPage({
+    @required this.initialSetup,
+  });
+
+  final bool initialSetup;
+
   @override
   _SetupPageState createState() => _SetupPageState();
 }
@@ -23,21 +30,25 @@ class _SetupPageState extends State<SetupPage> {
   int _currentDay;
 
   void _skipPressed() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => DetailsPage(),
-      ),
-    );
+    widget.initialSetup
+        ? Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (ctx) => DetailsPage(),
+            ),
+          )
+        : Navigator.pop(context);
   }
 
   void _savePressed() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => DetailsPage(),
-      ),
-    );
+    widget.initialSetup
+        ? Navigator.pushReplacement(
+            context,
+            MaterialPageRoute(
+              builder: (ctx) => DetailsPage(),
+            ),
+          )
+        : Navigator.pop(context);
   }
 
   @override
@@ -77,7 +88,7 @@ class _SetupPageState extends State<SetupPage> {
 
   Widget _showPageWidgets() {
     return PageHeadingTemplate(
-      title: "Setup",
+      title: widget.initialSetup ? "Setup" : "General",
       pageWidgets: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
@@ -161,11 +172,16 @@ class _SetupPageState extends State<SetupPage> {
   }
 
   Widget _showBottomWidget() {
-    return ButtonPair(
-      primaryText: "Save",
-      primaryOnPressed: _savePressed,
-      secondaryText: "Skip",
-      secondaryOnPressed: _skipPressed,
-    );
+    return widget.initialSetup
+        ? ButtonPair(
+            primaryText: "Save",
+            primaryOnPressed: _savePressed,
+            secondaryText: "Skip",
+            secondaryOnPressed: _skipPressed,
+          )
+        : PrimaryButton(
+            text: "Save",
+            onPressed: _savePressed,
+          );
   }
 }
