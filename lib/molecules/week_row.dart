@@ -69,7 +69,7 @@ class WeekRow extends StatelessWidget {
   }
 
   Widget _showDayTile(BuildContext context, int day) {
-    return GestureDetector(
+    return InkWell(
       child: DayTile(
         child: day.toString(),
         backgroundColor:
