@@ -157,16 +157,30 @@ class _SetupPageState extends State<SetupPage> {
     );
   }
 
+  Widget _showCheckIcon() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 5.0),
+      child: SvgPicture.asset(
+        'assets/images/check.svg',
+        semanticsLabel: "Check icon",
+      ),
+    );
+  }
+
   Widget _showRemainderText() {
     final selections = _focusedDay - _focusedDaysWeek.length;
     final plural = selections == 1 ? "" : "s";
 
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
-      child: Center(
-        child: ParagraphText(
-          text: "You have $selections selection$plural left",
-        ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          ParagraphText(
+            text: "You have $selections selection$plural left",
+          ),
+          if (selections == 0) _showCheckIcon(),
+        ],
       ),
     );
   }
