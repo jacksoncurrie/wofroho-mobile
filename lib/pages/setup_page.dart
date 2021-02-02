@@ -100,7 +100,7 @@ class _SetupPageState extends State<SetupPage> {
     return Align(
       alignment: Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.only(top: 15, left: 8),
+        padding: const EdgeInsets.only(top: 15, left: 10),
         child: SingleIconButton(
           icon: SvgPicture.asset(
             'assets/images/back.svg',
