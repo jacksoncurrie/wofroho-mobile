@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wofroho_mobile/animations/fade_page_transition.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/models/person.dart';
@@ -142,14 +143,8 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   void _personTapped(Person person) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => ProfilePage(
-          person: person,
-        ),
-      ),
-    );
+    var profilePage = ProfilePage(person: person);
+    Navigator.of(context).push(FadePageTransition(profilePage));
   }
 
   Widget _showPersonList() {
