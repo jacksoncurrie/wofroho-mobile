@@ -5,13 +5,11 @@ class Button extends StatelessWidget {
     @required this.child,
     @required this.onPressed,
     this.backgroundColor,
-    this.textColor,
   });
 
   final Widget child;
   final Function onPressed;
   final Color backgroundColor;
-  final Color textColor;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +17,6 @@ class Button extends StatelessWidget {
       onPressed: onPressed,
       padding: EdgeInsets.symmetric(vertical: 10.0),
       color: backgroundColor,
-      textColor: textColor,
       elevation: 5,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(1.0),

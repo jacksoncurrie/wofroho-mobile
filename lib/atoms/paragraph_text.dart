@@ -15,14 +15,17 @@ class ParagraphText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(
-      text,
-      style: TextStyle(
-        fontWeight: FontWeight.w400,
-        fontSize: fontSize,
-        color: textColor,
+    return Material(
+      color: Colors.transparent,
+      child: Text(
+        text,
+        style: TextStyle(
+          fontWeight: FontWeight.w400,
+          fontSize: fontSize,
+          color: textColor,
+        ),
+        overflow: overflow,
       ),
-      overflow: overflow,
     );
   }
 }

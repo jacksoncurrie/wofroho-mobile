@@ -16,8 +16,10 @@ class PrimaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Button(
       backgroundColor: Theme.of(context).colorScheme.primaryColor,
-      textColor: Theme.of(context).colorScheme.textOnPrimary,
-      child: ParagraphText(text: text),
+      child: ParagraphText(
+        text: text,
+        textColor: Theme.of(context).colorScheme.textOnPrimary,
+      ),
       onPressed: onPressed,
     );
   }

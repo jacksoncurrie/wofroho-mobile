@@ -4,19 +4,19 @@ import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 class DataField extends StatelessWidget {
   DataField({
     @required this.title,
-    @required this.value,
+    @required this.child,
   });
 
   final String title;
-  final String value;
+  final Widget child;
 
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
+      crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _showTitle(),
-        _showValue(),
+        child,
       ],
     );
   }
@@ -28,12 +28,6 @@ class DataField extends StatelessWidget {
         text: title,
         fontSize: 14,
       ),
-    );
-  }
-
-  Widget _showValue() {
-    return ParagraphText(
-      text: value,
     );
   }
 }

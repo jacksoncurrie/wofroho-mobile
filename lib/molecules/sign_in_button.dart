@@ -18,7 +18,6 @@ class SignInButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Button(
       backgroundColor: Theme.of(context).colorScheme.secondaryColor,
-      textColor: Theme.of(context).colorScheme.textOnSecondary,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
@@ -27,7 +26,9 @@ class SignInButton extends StatelessWidget {
               padding: const EdgeInsets.only(right: 12.0),
               child: image,
             ),
-          ParagraphText(text: text),
+          ParagraphText(
+              text: text,
+              textColor: Theme.of(context).colorScheme.textOnSecondary),
         ],
       ),
       onPressed: onPressed,

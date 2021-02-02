@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
+import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/user_image.dart';
 import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/padded_scroll_page_template.dart';
-
-import 'details_page.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({
@@ -22,13 +21,8 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  void _skipPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => DetailsPage(),
-      ),
-    );
+  void _closePressed() {
+    Navigator.pop(context);
   }
 
   @override
@@ -49,7 +43,7 @@ class _ProfilePageState extends State<ProfilePage> {
           'assets/images/close.svg',
           semanticsLabel: "Close icon",
         ),
-        onPressed: _skipPressed,
+        onPressed: _closePressed,
       ),
     );
   }
@@ -71,7 +65,7 @@ class _ProfilePageState extends State<ProfilePage> {
       child: Align(
         alignment: Alignment.centerLeft,
         child: Hero(
-          tag: widget.person.id,
+          tag: "${widget.person.id}_image",
           child: UserImage(
             height: 100,
             width: 100,
@@ -87,7 +81,10 @@ class _ProfilePageState extends State<ProfilePage> {
     return FormItemSpace(
       child: DataField(
         title: 'Name',
-        value: widget.person.name,
+        child: Hero(
+          tag: "${widget.person.id}_name",
+          child: ParagraphText(text: widget.person.name),
+        ),
       ),
     );
   }
@@ -96,7 +93,10 @@ class _ProfilePageState extends State<ProfilePage> {
     return FormItemSpace(
       child: DataField(
         title: 'Role',
-        value: widget.person.role,
+        child: Hero(
+          tag: "${widget.person.id}_role",
+          child: ParagraphText(text: widget.person.role),
+        ),
       ),
     );
   }

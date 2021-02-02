@@ -45,7 +45,7 @@ class PersonListItem extends StatelessWidget {
 
   Widget _showImage(BuildContext context) {
     return Hero(
-      tag: personId,
+      tag: "${personId}_image",
       child: UserImage(
         height: 50,
         width: 50,
@@ -57,18 +57,24 @@ class PersonListItem extends StatelessWidget {
   }
 
   Widget _showName() {
-    return ParagraphText(
-      text: name,
-      fontSize: 20,
-      overflow: TextOverflow.ellipsis,
+    return Hero(
+      tag: "${personId}_name",
+      child: ParagraphText(
+        text: name,
+        fontSize: 20,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 
   Widget _showRole() {
-    return ParagraphText(
-      text: role,
-      fontSize: 14,
-      overflow: TextOverflow.ellipsis,
+    return Hero(
+      tag: "${personId}_role",
+      child: ParagraphText(
+        text: role,
+        fontSize: 14,
+        overflow: TextOverflow.ellipsis,
+      ),
     );
   }
 

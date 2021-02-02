@@ -16,8 +16,10 @@ class SecondaryButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Button(
       backgroundColor: Theme.of(context).colorScheme.secondaryColor,
-      textColor: Theme.of(context).colorScheme.textOnSecondary,
-      child: ParagraphText(text: text),
+      child: ParagraphText(
+        text: text,
+        textColor: Theme.of(context).colorScheme.textOnSecondary,
+      ),
       onPressed: onPressed,
     );
   }
