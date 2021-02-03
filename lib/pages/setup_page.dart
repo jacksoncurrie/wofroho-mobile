@@ -104,7 +104,7 @@ class _SetupPageState extends State<SetupPage> {
         child: SingleIconButton(
           icon: SvgPicture.asset(
             'assets/images/back.svg',
-            semanticsLabel: "BAck icon",
+            semanticsLabel: "Back icon",
           ),
           onPressed: _skipPressed,
         ),
