@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/pages/about_page.dart';
+import 'package:wofroho_mobile/pages/account_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
 import 'package:wofroho_mobile/pages/setup_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
@@ -30,7 +31,14 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void _accountPressed() {}
+  void _accountPressed() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (ctx) => AccountPage(),
+      ),
+    );
+  }
 
   void _aboutPressed() {
     Navigator.push(
