@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
+import 'package:wofroho_mobile/atoms/text_input.dart';
 import 'package:wofroho_mobile/atoms/user_image.dart';
 import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
@@ -27,12 +28,27 @@ class _AccountPageState extends State<AccountPage> {
     role: "Businessman, entrepreneur, accountant",
   );
 
+  final nameController = TextEditingController();
+  final roleController = TextEditingController();
+  final organisationController = TextEditingController();
+
   void _skipPressed() {
     Navigator.pop(context);
   }
 
   void _savePressed() {
     Navigator.pop(context);
+  }
+
+  void _editPhoto() {}
+
+  @override
+  void initState() {
+    nameController.text = person.name;
+    roleController.text = person.role;
+    organisationController.text = 'Wayne Enterprises';
+
+    super.initState();
   }
 
   @override
@@ -99,7 +115,7 @@ class _AccountPageState extends State<AccountPage> {
             padding: const EdgeInsets.only(left: 15.0),
             child: LinkText(
               text: 'Edit photo',
-              onTap: () {},
+              onTap: _editPhoto,
             ),
           ),
         ],
@@ -111,7 +127,7 @@ class _AccountPageState extends State<AccountPage> {
     return FormItemSpace(
       child: DataField(
         title: 'Name',
-        child: ParagraphText(text: person.name),
+        child: TextInput(controller: nameController),
       ),
     );
   }
@@ -120,7 +136,7 @@ class _AccountPageState extends State<AccountPage> {
     return FormItemSpace(
       child: DataField(
         title: 'Role',
-        child: ParagraphText(text: person.role),
+        child: TextInput(controller: roleController),
       ),
     );
   }
@@ -129,7 +145,7 @@ class _AccountPageState extends State<AccountPage> {
     return FormItemSpace(
       child: DataField(
         title: 'Organisation',
-        child: ParagraphText(text: 'Wayne Enterprises'),
+        child: TextInput(controller: organisationController),
       ),
     );
   }
