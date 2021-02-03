@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wofroho_mobile/molecules/sign_in_button.dart';
-import 'package:wofroho_mobile/pages/all_set_up_page.dart';
+import 'package:wofroho_mobile/atoms/data_field.dart';
+import 'package:wofroho_mobile/atoms/text_input.dart';
+import 'package:wofroho_mobile/molecules/primary_button.dart';
+import 'package:wofroho_mobile/pages/setup_page.dart';
+import 'package:wofroho_mobile/templates/form_item_space.dart';
+import 'package:wofroho_mobile/templates/input_template.dart';
 import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
 import 'package:wofroho_mobile/templates/simple_template.dart';
 
@@ -11,11 +15,15 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  void _loginWithMicrosoft() {
+  final numberController = TextEditingController();
+
+  void _signInPressed() {
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(
-        builder: (ctx) => AllSetUpPage(),
+        builder: (ctx) => SetupPage(
+          initialSetup: true,
+        ),
       ),
     );
   }
@@ -26,16 +34,19 @@ class _LoginPageState extends State<LoginPage> {
       pageWidgets: SimpleScrollTemplate(
         pageWidgets: Padding(
           padding: const EdgeInsets.all(25.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Padding(
-                padding: const EdgeInsets.only(bottom: 50.0),
-                child: _showLogo(),
-              ),
-              _showSignInWithMicrosoft(),
-            ],
+          child: InputTemplate(
+            pageWidgets: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 50.0),
+                  child: _showLogo(),
+                ),
+                _showPhoneField(),
+              ],
+            ),
+            bottomWidget: _showBottomWidget(),
           ),
         ),
       ),
@@ -51,14 +62,22 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  Widget _showSignInWithMicrosoft() {
-    return SignInButton(
-      text: "Sign in with Microsoft",
-      image: SvgPicture.asset(
-        'assets/images/microsoft_logo.svg',
-        semanticsLabel: "Microsft logo",
+  Widget _showPhoneField() {
+    return FormItemSpace(
+      child: DataField(
+        title: 'Phone number',
+        child: TextInput(
+          controller: numberController,
+          hintText: 'Please enter phone number',
+        ),
       ),
-      onPressed: _loginWithMicrosoft,
+    );
+  }
+
+  Widget _showBottomWidget() {
+    return PrimaryButton(
+      onPressed: _signInPressed,
+      text: 'Sign In',
     );
   }
 }

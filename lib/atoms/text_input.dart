@@ -4,9 +4,11 @@ import '../theme.dart';
 class TextInput extends StatelessWidget {
   TextInput({
     @required this.controller,
+    this.hintText,
   });
 
   final TextEditingController controller;
+  final String hintText;
 
   @override
   Widget build(BuildContext context) {
@@ -18,6 +20,7 @@ class TextInput extends StatelessWidget {
         fillColor: Theme.of(context).colorScheme.inputBackground,
         filled: true,
         contentPadding: const EdgeInsets.all(10),
+        hintText: hintText,
       ),
       controller: controller,
     );
