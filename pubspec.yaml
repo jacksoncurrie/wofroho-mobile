@@ -48,6 +48,7 @@ flutter:
     - assets/images/party_popper.svg
     - assets/images/close.svg
     - assets/images/back.svg
+    - assets/images/check.svg
 
   fonts:
     - family: Poppins

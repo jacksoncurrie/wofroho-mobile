@@ -10,7 +10,7 @@ import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/organisms/calendar_week_picker.dart';
 import 'package:wofroho_mobile/organisms/person_list.dart';
 import 'package:wofroho_mobile/pages/profile_page.dart';
-import 'package:wofroho_mobile/pages/setup_page.dart';
+import 'package:wofroho_mobile/pages/settings_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/padded_page_template.dart';
 import '../theme.dart';
@@ -30,7 +30,7 @@ class _DetailsPageState extends State<DetailsPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (ctx) => SetupPage(initialSetup: false),
+        builder: (ctx) => SettingsPage(),
       ),
     );
   }

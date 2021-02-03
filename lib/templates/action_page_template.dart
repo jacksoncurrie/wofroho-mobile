@@ -12,7 +12,7 @@ class ActionPageTemplate extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[
+      children: [
         actionWidget,
         Expanded(child: pageWidgets),
       ],

@@ -6,8 +6,8 @@ class Person {
     @required this.imageUrl,
     @required this.name,
     @required this.role,
-    @required this.datesFromHome,
-    @required this.isUser,
+    this.datesFromHome,
+    this.isUser,
   });
 
   final String id;
