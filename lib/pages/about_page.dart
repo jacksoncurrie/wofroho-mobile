@@ -59,37 +59,34 @@ class _AboutPageState extends State<AboutPage> {
   Widget _showPageWidgets() {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
-          child: ParagraphText(
-            text:
-                'We all know our companies wanted us to work from home/romote working but did not know how to implement it. Covid19 hit us all hard and we will never go back to how we worked before.',
-          ),
+        _showParagraph(
+          'We all know our companies wanted us to work from home/romote working but did not know how to implement it. Covid19 hit us all hard and we will never go back to how we worked before.',
         ),
-        Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
-          child: ParagraphText(
-            text:
-                'Thus we created rewo to keep up with your work or organisation.',
-          ),
+        _showParagraph(
+          'Thus we created rewo to keep up with your work or organisation.',
         ),
-        ParagraphText(
-          text:
-              'Thank you for your support! Please let us know if you have any suggestions at help@rewo.com',
+        _showParagraph(
+          'Thank you for your support! Please let us know if you have any suggestions at help@rewo.com',
         ),
       ],
+    );
+  }
+
+  Widget _showParagraph(String text) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20),
+      child: ParagraphText(
+        text: text,
+      ),
     );
   }
 
   Widget _showAboutDetails() {
     return Column(
       children: [
-        Padding(
-          padding: const EdgeInsets.only(top: 20.0),
-          child: ParagraphText(
-            text: "Designed by Duann Schlechter",
-            textColor: Theme.of(context).colorScheme.disabledText,
-          ),
+        ParagraphText(
+          text: "Designed by Duann Schlechter",
+          textColor: Theme.of(context).colorScheme.disabledText,
         ),
         Padding(
           padding: const EdgeInsets.only(bottom: 25.0),
