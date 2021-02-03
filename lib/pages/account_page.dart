@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
-import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
 import 'package:wofroho_mobile/atoms/user_image.dart';
