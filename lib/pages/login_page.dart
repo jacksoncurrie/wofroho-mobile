@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
+import 'package:wofroho_mobile/models/country.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
+import 'package:wofroho_mobile/organisms/country_list_bottom_sheet.dart';
 import 'package:wofroho_mobile/pages/setup_page.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -15,7 +17,10 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
+  final areaCodeController = TextEditingController();
   final numberController = TextEditingController();
+  final countryController = TextEditingController();
+  Country country;
 
   void _signInPressed() {
     Navigator.pushReplacement(
@@ -26,6 +31,13 @@ class _LoginPageState extends State<LoginPage> {
         ),
       ),
     );
+  }
+
+  @override
+  void initState() {
+    areaCodeController.text = "+64";
+    countryController.text = "New Zealand";
+    super.initState();
   }
 
   @override
@@ -43,6 +55,7 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.only(bottom: 50.0),
                   child: _showLogo(),
                 ),
+                _showCountryField(),
                 _showPhoneField(),
               ],
             ),
@@ -62,13 +75,57 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  void _showCountryPicker() {
+    showCountryListBottomSheet(
+      context: context,
+      showPhoneCode: true,
+      onSelect: (countryPicked) {
+        setState(() {
+          country = countryPicked;
+        });
+        countryController.text = countryPicked.name;
+        areaCodeController.text = "+${countryPicked.phoneCode}";
+      },
+    );
+  }
+
+  Widget _showCountryField() {
+    return FormItemSpace(
+      child: DataField(
+        title: 'Country',
+        child: TextInput(
+          controller: countryController,
+          hintText: 'Please select country',
+          enabled: false,
+          onTap: _showCountryPicker,
+        ),
+      ),
+    );
+  }
+
   Widget _showPhoneField() {
     return FormItemSpace(
       child: DataField(
         title: 'Phone number',
-        child: TextInput(
-          controller: numberController,
-          hintText: 'Please enter phone number',
+        child: Row(
+          children: [
+            Container(
+              width: 80.0,
+              child: Padding(
+                padding: const EdgeInsets.only(right: 10),
+                child: TextInput(
+                  controller: areaCodeController,
+                  hintText: '+64',
+                ),
+              ),
+            ),
+            Expanded(
+              child: TextInput(
+                controller: numberController,
+                hintText: 'Please enter phone number',
+              ),
+            ),
+          ],
         ),
       ),
     );
