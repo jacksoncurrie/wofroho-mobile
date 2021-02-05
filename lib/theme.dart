@@ -15,7 +15,7 @@ extension myColorScheme on ColorScheme {
   Color get accent => _Colors.accent;
   Color get secondaryColor => _Colors.secondary;
   Color get backgroundColor => _Colors.background;
-  Color get error => _Colors.error;
+  Color get errorColor => _Colors.error;
   Color get textOnPrimary => _Colors.textOnPrimary;
   Color get textOnSecondary => _Colors.primary;
   Color get text => _Colors.text;

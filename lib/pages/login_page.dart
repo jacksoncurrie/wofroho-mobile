@@ -20,7 +20,8 @@ class _LoginPageState extends State<LoginPage> {
   final areaCodeController = TextEditingController();
   final numberController = TextEditingController();
   final countryController = TextEditingController();
-  Country country;
+
+  bool _validatePhone() {}
 
   void _signInPressed() {
     Navigator.pushReplacement(
@@ -80,9 +81,6 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       showPhoneCode: true,
       onSelect: (countryPicked) {
-        setState(() {
-          country = countryPicked;
-        });
         countryController.text = countryPicked.name;
         areaCodeController.text = "+${countryPicked.phoneCode}";
       },
@@ -116,6 +114,7 @@ class _LoginPageState extends State<LoginPage> {
                 child: TextInput(
                   controller: areaCodeController,
                   hintText: '+64',
+                  keyboardType: TextInputType.phone,
                 ),
               ),
             ),
@@ -123,6 +122,8 @@ class _LoginPageState extends State<LoginPage> {
               child: TextInput(
                 controller: numberController,
                 hintText: 'Please enter phone number',
+                keyboardType: TextInputType.phone,
+                validationType: ValidationType.error,
               ),
             ),
           ],
