@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
+import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
-import 'package:wofroho_mobile/models/country.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/organisms/country_list_bottom_sheet.dart';
 import 'package:wofroho_mobile/pages/setup_page.dart';
@@ -10,6 +10,7 @@ import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
 import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
 import 'package:wofroho_mobile/templates/simple_template.dart';
+import '../theme.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -20,8 +21,26 @@ class _LoginPageState extends State<LoginPage> {
   final areaCodeController = TextEditingController();
   final numberController = TextEditingController();
   final countryController = TextEditingController();
+  ValidationType validationType;
 
-  bool _validatePhone() {}
+  void _unsetValidation() {
+    setState(() {
+      validationType = ValidationType.none;
+    });
+  }
+
+  bool _validatePhone() {
+    var error = false;
+    if (!areaCodeController.text.startsWith('+')) error = true;
+    if (numberController.text.isEmpty) error = true;
+    if (error) {
+      setState(() {
+        validationType = ValidationType.error;
+      });
+      return false;
+    }
+    return true;
+  }
 
   void _signInPressed() {
     Navigator.pushReplacement(
@@ -38,6 +57,7 @@ class _LoginPageState extends State<LoginPage> {
   void initState() {
     areaCodeController.text = "+64";
     countryController.text = "New Zealand";
+    validationType = ValidationType.none;
     super.initState();
   }
 
@@ -58,6 +78,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 _showCountryField(),
                 _showPhoneField(),
+                if (validationType == ValidationType.error) _showErrorMessage()
               ],
             ),
             bottomWidget: _showBottomWidget(),
@@ -115,6 +136,9 @@ class _LoginPageState extends State<LoginPage> {
                   controller: areaCodeController,
                   hintText: '+64',
                   keyboardType: TextInputType.phone,
+                  validationType: validationType,
+                  showIconWithValidation: false,
+                  onChanged: (_) => _unsetValidation(),
                 ),
               ),
             ),
@@ -123,7 +147,8 @@ class _LoginPageState extends State<LoginPage> {
                 controller: numberController,
                 hintText: 'Please enter phone number',
                 keyboardType: TextInputType.phone,
-                validationType: ValidationType.error,
+                validationType: validationType,
+                onChanged: (_) => _unsetValidation(),
               ),
             ),
           ],
@@ -132,9 +157,21 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  Widget _showErrorMessage() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: ParagraphText(
+        text: 'Phone number is not valid',
+        textColor: Theme.of(context).colorScheme.disabledText,
+      ),
+    );
+  }
+
   Widget _showBottomWidget() {
     return PrimaryButton(
-      onPressed: _signInPressed,
+      onPressed: () {
+        if (_validatePhone()) _signInPressed();
+      },
       text: 'Sign In',
     );
   }
