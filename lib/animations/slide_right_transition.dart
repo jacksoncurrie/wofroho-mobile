@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class FadePageTransition<T> extends PageRoute<T> {
-  FadePageTransition(this.child);
+class SlideRightTransition<T> extends PageRoute<T> {
+  SlideRightTransition(this.child);
 
   final Widget child;
 
@@ -14,8 +14,13 @@ class FadePageTransition<T> extends PageRoute<T> {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
-    return FadeTransition(
-      opacity: animation,
+    var begin = Offset(1.0, 0.0);
+    var end = Offset.zero;
+    var tween = Tween(begin: begin, end: end);
+    var offsetAnimation = animation.drive(tween);
+
+    return SlideTransition(
+      position: offsetAnimation,
       child: child,
     );
   }
@@ -24,5 +29,5 @@ class FadePageTransition<T> extends PageRoute<T> {
   bool get maintainState => true;
 
   @override
-  Duration get transitionDuration => Duration(milliseconds: 300);
+  Duration get transitionDuration => Duration(milliseconds: 200);
 }

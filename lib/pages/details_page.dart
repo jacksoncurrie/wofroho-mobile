@@ -126,7 +126,7 @@ class _DetailsPageState extends State<DetailsPage> {
       child: Padding(
         padding: const EdgeInsets.only(top: 30.0),
         child: ParagraphText(
-          text: "Wayne Enterprises",
+          text: "Who's wofroho?",
           fontSize: 22,
         ),
       ),

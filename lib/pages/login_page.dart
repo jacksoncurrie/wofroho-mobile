@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/organisms/country_list_bottom_sheet.dart';
-import 'package:wofroho_mobile/pages/setup_page.dart';
+import 'package:wofroho_mobile/pages/validate_phone_page.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
 import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
@@ -43,14 +44,10 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _signInPressed() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => SetupPage(
-          initialSetup: true,
-        ),
-      ),
+    var nextPage = ValidatePhonePage(
+      number: '${areaCodeController.text}${numberController.text}',
     );
+    Navigator.of(context).pushReplacement(SlideRightTransition(nextPage));
   }
 
   @override
