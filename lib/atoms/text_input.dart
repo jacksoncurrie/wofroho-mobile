@@ -11,6 +11,7 @@ class TextInput extends StatelessWidget {
     this.onChanged,
     this.keyboardType,
     this.validationType = ValidationType.none,
+    this.showIconWithValidation = true,
   });
 
   final TextEditingController controller;
@@ -20,6 +21,7 @@ class TextInput extends StatelessWidget {
   final void Function(String) onChanged;
   final TextInputType keyboardType;
   final ValidationType validationType;
+  final bool showIconWithValidation;
 
   static final _borderRadius = BorderRadius.circular(2);
 
@@ -37,6 +39,7 @@ class TextInput extends StatelessWidget {
   }
 
   Widget _getSuffixIcon(ValidationType validationType) {
+    if (!showIconWithValidation) return null;
     switch (validationType) {
       case ValidationType.none:
         return null;
