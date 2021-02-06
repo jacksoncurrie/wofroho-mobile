@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
+import '../theme.dart';
 
 class UserImage extends StatelessWidget {
   UserImage({
-    @required this.image,
+    this.image,
     @required this.width,
     @required this.height,
     this.borderColor,
@@ -28,10 +30,24 @@ class UserImage extends StatelessWidget {
                 color: borderColor,
                 width: 2,
               ),
-        image: DecorationImage(
-          image: image,
-          fit: BoxFit.cover,
-        ),
+        image: image == null
+            ? null
+            : DecorationImage(
+                image: image,
+                fit: BoxFit.cover,
+              ),
+        color: Theme.of(context).colorScheme.emptyPhoto,
+      ),
+      child: _showEmptyImage(),
+    );
+  }
+
+  Widget _showEmptyImage() {
+    return Center(
+      child: SvgPicture.asset(
+        'assets/images/add.svg',
+        semanticsLabel: "Add icon",
+        width: 16,
       ),
     );
   }

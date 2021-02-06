@@ -35,7 +35,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (ctx) => AccountPage(),
+        builder: (ctx) => AccountPage(initialSetup: false),
       ),
     );
   }

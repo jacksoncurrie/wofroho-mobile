@@ -19,24 +19,26 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final areaCodeController = TextEditingController();
-  final numberController = TextEditingController();
-  final countryController = TextEditingController();
-  ValidationType validationType;
+  final _areaCodeController = TextEditingController();
+  final _numberController = TextEditingController();
+  final _countryController = TextEditingController();
+  ValidationType _validationType;
 
   void _unsetValidation() {
-    setState(() {
-      validationType = ValidationType.none;
-    });
+    if (_validationType != ValidationType.none) {
+      setState(() {
+        _validationType = ValidationType.none;
+      });
+    }
   }
 
   bool _validatePhone() {
     var error = false;
-    if (!areaCodeController.text.startsWith('+')) error = true;
-    if (numberController.text.isEmpty) error = true;
+    if (!_areaCodeController.text.startsWith('+')) error = true;
+    if (_numberController.text.isEmpty) error = true;
     if (error) {
       setState(() {
-        validationType = ValidationType.error;
+        _validationType = ValidationType.error;
       });
       return false;
     }
@@ -45,16 +47,16 @@ class _LoginPageState extends State<LoginPage> {
 
   void _signInPressed() {
     var nextPage = ValidatePhonePage(
-      number: '${areaCodeController.text}${numberController.text}',
+      number: '${_areaCodeController.text}${_numberController.text}',
     );
     Navigator.of(context).pushReplacement(SlideRightTransition(nextPage));
   }
 
   @override
   void initState() {
-    areaCodeController.text = "+64";
-    countryController.text = "New Zealand";
-    validationType = ValidationType.none;
+    _areaCodeController.text = "+64";
+    _countryController.text = "New Zealand";
+    _validationType = ValidationType.none;
     super.initState();
   }
 
@@ -75,7 +77,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 _showCountryField(),
                 _showPhoneField(),
-                if (validationType == ValidationType.error) _showErrorMessage()
+                if (_validationType == ValidationType.error) _showErrorMessage()
               ],
             ),
             bottomWidget: _showBottomWidget(),
@@ -99,8 +101,8 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       showPhoneCode: true,
       onSelect: (countryPicked) {
-        countryController.text = countryPicked.name;
-        areaCodeController.text = "+${countryPicked.phoneCode}";
+        _countryController.text = countryPicked.name;
+        _areaCodeController.text = "+${countryPicked.phoneCode}";
       },
     );
   }
@@ -110,7 +112,7 @@ class _LoginPageState extends State<LoginPage> {
       child: DataField(
         title: 'Country',
         child: TextInput(
-          controller: countryController,
+          controller: _countryController,
           hintText: 'Please select country',
           enabled: false,
           onTap: _showCountryPicker,
@@ -130,10 +132,10 @@ class _LoginPageState extends State<LoginPage> {
               child: Padding(
                 padding: const EdgeInsets.only(right: 10),
                 child: TextInput(
-                  controller: areaCodeController,
+                  controller: _areaCodeController,
                   hintText: '+64',
                   keyboardType: TextInputType.phone,
-                  validationType: validationType,
+                  validationType: _validationType,
                   showIconWithValidation: false,
                   onChanged: (_) => _unsetValidation(),
                 ),
@@ -141,10 +143,10 @@ class _LoginPageState extends State<LoginPage> {
             ),
             Expanded(
               child: TextInput(
-                controller: numberController,
+                controller: _numberController,
                 hintText: 'Please enter phone number',
                 keyboardType: TextInputType.phone,
-                validationType: validationType,
+                validationType: _validationType,
                 onChanged: (_) => _unsetValidation(),
               ),
             ),

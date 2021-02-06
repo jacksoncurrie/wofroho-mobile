@@ -29,13 +29,13 @@ class ValidatePhonePage extends StatefulWidget {
 }
 
 class _ValidatePhonePageState extends State<ValidatePhonePage> {
-  final codeController = TextEditingController();
-  ValidationType validationType;
+  final _codeController = TextEditingController();
+  ValidationType _validationType;
 
   bool _validateCode() {
-    if (codeController.text.isEmpty) {
+    if (_codeController.text.isEmpty) {
       setState(() {
-        validationType = ValidationType.error;
+        _validationType = ValidationType.error;
       });
       return false;
     }
@@ -43,9 +43,11 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
   }
 
   void _unsetValidation() {
-    setState(() {
-      validationType = ValidationType.none;
-    });
+    if (_validationType != ValidationType.none) {
+      setState(() {
+        _validationType = ValidationType.none;
+      });
+    }
   }
 
   void _skipPressed() {
@@ -58,13 +60,13 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
   }
 
   void _nextPressed() {
-    var nextPage = AccountPage();
+    var nextPage = AccountPage(initialSetup: true);
     Navigator.of(context).pushReplacement(SlideRightTransition(nextPage));
   }
 
   @override
   void initState() {
-    validationType = ValidationType.none;
+    _validationType = ValidationType.none;
     super.initState();
   }
 
@@ -109,7 +111,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
           children: [
             _showInformation(),
             _showCodeField(),
-            if (validationType == ValidationType.error) _showErrorMessage(),
+            if (_validationType == ValidationType.error) _showErrorMessage(),
             _showResend(),
           ],
         ),
@@ -133,10 +135,10 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
       child: DataField(
         title: 'Enter code',
         child: TextInput(
-          controller: codeController,
+          controller: _codeController,
           hintText: '123-456',
           keyboardType: TextInputType.number,
-          validationType: validationType,
+          validationType: _validationType,
           onChanged: (_) => _unsetValidation(),
         ),
       ),
