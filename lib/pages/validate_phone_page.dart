@@ -10,7 +10,6 @@ import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/pages/account_page.dart';
-import 'package:wofroho_mobile/pages/details_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
