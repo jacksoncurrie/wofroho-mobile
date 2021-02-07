@@ -38,7 +38,7 @@ class UserImage extends StatelessWidget {
               ),
         color: Theme.of(context).colorScheme.emptyPhoto,
       ),
-      child: _showEmptyImage(),
+      child: image == null ? _showEmptyImage() : null,
     );
   }
 

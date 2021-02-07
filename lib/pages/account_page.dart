@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
@@ -9,6 +10,7 @@ import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
+import 'package:wofroho_mobile/pages/setup_organisation_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -17,27 +19,20 @@ import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
 import 'package:wofroho_mobile/templates/simple_template.dart';
 import '../theme.dart';
 
-import 'details_page.dart';
-
 class AccountPage extends StatefulWidget {
   AccountPage({
     @required this.initialSetup,
+    @required this.person,
   });
 
   final bool initialSetup;
+  final Person person;
 
   @override
   _AccountPageState createState() => _AccountPageState();
 }
 
 class _AccountPageState extends State<AccountPage> {
-  final _person = Person(
-    id: "1",
-    imageUrl: "http://placekitten.com/300/300",
-    name: "Bruce Wayne",
-    role: "Businessman, entrepreneur, accountant",
-  );
-
   final _nameController = TextEditingController();
   final _roleController = TextEditingController();
   final _organisationController = TextEditingController();
@@ -94,10 +89,11 @@ class _AccountPageState extends State<AccountPage> {
 
   void _nextPressed() {
     widget.initialSetup
-        ? Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (ctx) => DetailsPage(),
+        ? Navigator.of(context).push(
+            SlideRightTransition(
+              SetupOrganisationPage(
+                person: widget.person,
+              ),
             ),
           )
         : Navigator.pop(context);
@@ -107,16 +103,16 @@ class _AccountPageState extends State<AccountPage> {
 
   @override
   void initState() {
+    super.initState();
+
     if (!widget.initialSetup) {
-      _nameController.text = _person.name;
-      _roleController.text = _person.role;
+      _nameController.text = widget.person.name;
+      _roleController.text = widget.person.role;
       _organisationController.text = 'Wayne Enterprises';
     }
 
     _nameValidationType = ValidationType.none;
     _roleValidationType = ValidationType.none;
-
-    super.initState();
   }
 
   @override
@@ -149,7 +145,7 @@ class _AccountPageState extends State<AccountPage> {
         child: SingleIconButton(
           icon: SvgPicture.asset(
             'assets/images/close.svg',
-            semanticsLabel: "Close icon",
+            semanticsLabel: 'Close icon',
           ),
           onPressed: _skipPressed,
         ),
@@ -165,7 +161,7 @@ class _AccountPageState extends State<AccountPage> {
         child: SingleIconButton(
           icon: SvgPicture.asset(
             'assets/images/back.svg',
-            semanticsLabel: "Back icon",
+            semanticsLabel: 'Back icon',
           ),
           onPressed: _skipPressed,
         ),
@@ -197,7 +193,9 @@ class _AccountPageState extends State<AccountPage> {
           UserImage(
             height: 100,
             width: 100,
-            image: widget.initialSetup ? null : NetworkImage(_person.imageUrl),
+            image: widget.initialSetup
+                ? null
+                : NetworkImage(widget.person.imageUrl),
             borderRadius: 4,
           ),
           Padding(
@@ -271,7 +269,7 @@ class _AccountPageState extends State<AccountPage> {
     return Padding(
       padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
       child: PrimaryButton(
-        text: widget.initialSetup ? "Next" : "Save",
+        text: widget.initialSetup ? 'Next' : 'Save',
         onPressed: () {
           if (_validateInputs()) _nextPressed();
         },

@@ -7,7 +7,7 @@ import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
 import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
-import 'package:wofroho_mobile/molecules/primary_button.dart';
+import 'package:wofroho_mobile/organisms/button_pair.dart';
 import 'package:wofroho_mobile/pages/account_page.dart';
 import 'package:wofroho_mobile/pages/details_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
@@ -18,23 +18,23 @@ import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
 import 'package:wofroho_mobile/templates/simple_template.dart';
 import '../theme.dart';
 
-class ValidatePhonePage extends StatefulWidget {
-  ValidatePhonePage({
-    @required this.number,
+class SetupOrganisationPage extends StatefulWidget {
+  SetupOrganisationPage({
+    @required this.person,
   });
 
-  final String number;
+  final Person person;
 
   @override
-  _ValidatePhonePageState createState() => _ValidatePhonePageState();
+  _SetupOrganisationPageState createState() => _SetupOrganisationPageState();
 }
 
-class _ValidatePhonePageState extends State<ValidatePhonePage> {
-  final _codeController = TextEditingController();
+class _SetupOrganisationPageState extends State<SetupOrganisationPage> {
+  final _organisationController = TextEditingController();
   ValidationType _validationType;
 
   bool _validateCode() {
-    if (_codeController.text.isEmpty) {
+    if (_organisationController.text.isEmpty) {
       setState(() {
         _validationType = ValidationType.error;
       });
@@ -44,9 +44,9 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
   }
 
   void _unsetValidation() {
-    if (_validationType != ValidationType.none) {
+    if (_validationType != ValidationType.success) {
       setState(() {
-        _validationType = ValidationType.none;
+        _validationType = ValidationType.success;
       });
     }
   }
@@ -60,13 +60,20 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     );
   }
 
+  void _previousPressed() {
+    Navigator.pop(context);
+    // Hide keyboard
+    FocusScope.of(context).unfocus();
+  }
+
   void _nextPressed() {
     var nextPage = AccountPage(
       initialSetup: true,
       person: Person(
-        name: '',
-        role: '',
-        imageUrl: '',
+        id: "1",
+        imageUrl: "http://placekitten.com/300/300",
+        name: "Bruce Wayne",
+        role: "Businessman, entrepreneur, accountant",
       ),
     );
     Navigator.of(context).pushReplacement(SlideRightTransition(nextPage));
@@ -113,12 +120,12 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     return Padding(
       padding: const EdgeInsets.only(left: 25, right: 25),
       child: PageHeadingTemplate(
-        title: "Check your messages for a code",
+        title: 'Join an organisation',
         pageWidgets: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _showInformation(),
-            _showCodeField(),
+            _showOrganisationField(),
             if (_validationType == ValidationType.error) _showErrorMessage(),
             _showResend(),
           ],
@@ -131,20 +138,19 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: ParagraphText(
-        text:
-            'We\'ve sent a 6-digit code to ${widget.number}. The code expires shortly, so please enter it soon.',
+        text: 'Enter the name of your organisation, or create a new one.',
         fontSize: 20,
       ),
     );
   }
 
-  Widget _showCodeField() {
+  Widget _showOrganisationField() {
     return FormItemSpace(
       child: DataField(
-        title: 'Enter code',
+        title: 'Organisation name',
         child: TextInput(
-          controller: _codeController,
-          hintText: '123-456',
+          controller: _organisationController,
+          hintText: 'Please enter organisation name',
           keyboardType: TextInputType.number,
           validationType: _validationType,
           onChanged: (_) => _unsetValidation(),
@@ -157,7 +163,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: ParagraphText(
-        text: 'Code invalid',
+        text: 'Organisation not found',
         textColor: Theme.of(context).colorScheme.disabledText,
       ),
     );
@@ -167,7 +173,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: LinkText(
-        text: 'Did not get code? Resend',
+        text: 'Organisation not there? Create it',
         onTap: () {},
       ),
     );
@@ -176,11 +182,13 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
   Widget _showBottomWidget() {
     return Padding(
       padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
-      child: PrimaryButton(
-        text: "Next",
-        onPressed: () {
+      child: ButtonPair(
+        primaryText: 'Next',
+        primaryOnPressed: () {
           if (_validateCode()) _nextPressed();
         },
+        secondaryText: 'Previous',
+        secondaryOnPressed: _previousPressed,
       ),
     );
   }
