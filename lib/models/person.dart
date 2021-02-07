@@ -2,7 +2,7 @@ import 'package:flutter/foundation.dart';
 
 class Person {
   Person({
-    @required this.id,
+    this.id,
     @required this.imageUrl,
     @required this.name,
     @required this.role,

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wofroho_mobile/animations/fade_page_transition.dart';
+import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
+import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/pages/about_page.dart';
 import 'package:wofroho_mobile/pages/account_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
+import 'package:wofroho_mobile/pages/manage_organisation_page.dart';
 import 'package:wofroho_mobile/pages/setup_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -23,38 +27,49 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _generalPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => SetupPage(initialSetup: false),
-      ),
+    Navigator.of(context).push(
+      SlideRightTransition(SetupPage(initialSetup: false)),
     );
   }
 
   void _accountPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => AccountPage(),
+    Navigator.of(context).push(
+      SlideRightTransition(
+        AccountPage(
+          initialSetup: false,
+          person: Person(
+            id: "1",
+            imageUrl: "http://placekitten.com/300/300",
+            name: "Bruce Wayne",
+            role: "Businessman, entrepreneur, accountant",
+          ),
+        ),
       ),
     );
   }
 
   void _aboutPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => AboutPage(),
+    Navigator.of(context).push(
+      SlideRightTransition(
+        AboutPage(),
+      ),
+    );
+  }
+
+  void _organisationPressed() {
+    Navigator.of(context).push(
+      SlideRightTransition(
+        ManageOrganisationPage(),
       ),
     );
   }
 
   void _logoutPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => LoginPage(),
+    Navigator.of(context).pushAndRemoveUntil(
+      FadePageTransition(
+        LoginPage(),
       ),
+      (_) => false,
     );
   }
 
@@ -98,6 +113,8 @@ class _SettingsPageState extends State<SettingsPage> {
         _showSettingItem("Account", _accountPressed),
         _showSettingDivider(),
         _showSettingItem("About", _aboutPressed),
+        _showSettingDivider(),
+        _showSettingItem("Organisation", _organisationPressed),
         _showSettingDivider(),
         _showSettingItem("Logout", _logoutPressed),
         _showSettingDivider(),

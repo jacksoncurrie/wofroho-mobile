@@ -1,0 +1,26 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Fetch (prune)",
+            "type": "shell",
+            "command": "git fetch -p",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Flutter clean",
+            "type": "shell",
+            "command": "flutter clean",
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "Flutter release",
+            "type": "shell",
+            "command": "flutter run --release",
+            "group": "build",
+            "problemMatcher": []
+        }
+    ]
+}
