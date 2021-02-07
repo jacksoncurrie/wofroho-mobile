@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:wofroho_mobile/models/country.dart';
 import 'package:wofroho_mobile/molecules/country_list_view.dart';
+import '../theme.dart';
 
 void showCountryListBottomSheet({
   @required BuildContext context,
@@ -30,15 +31,7 @@ Widget _builder(
   final device = MediaQuery.of(context).size.height;
   final statusBarHeight = MediaQuery.of(context).padding.top;
   final height = device - (statusBarHeight + (kToolbarHeight / 1.5));
-
-  Color backgroundColor = Theme.of(context).bottomSheetTheme.backgroundColor;
-  if (backgroundColor == null) {
-    if (Theme.of(context).brightness == Brightness.light) {
-      backgroundColor = Colors.white;
-    } else {
-      backgroundColor = Colors.black;
-    }
-  }
+  Color backgroundColor = Theme.of(context).colorScheme.backgroundColor;
 
   return Container(
     height: height,
