@@ -78,7 +78,7 @@ class _AccountPageState extends State<AccountPage> {
     return true;
   }
 
-  void _skipPressed() {
+  void _backPressed() {
     widget.initialSetup
         ? Navigator.of(context).pushAndRemoveUntil(
             FadePageTransition(LoginPage()),
@@ -177,7 +177,7 @@ class _AccountPageState extends State<AccountPage> {
             'assets/images/close.svg',
             semanticsLabel: 'Close icon',
           ),
-          onPressed: _skipPressed,
+          onPressed: _backPressed,
         ),
       ),
     );
@@ -193,7 +193,7 @@ class _AccountPageState extends State<AccountPage> {
             'assets/images/back.svg',
             semanticsLabel: 'Back icon',
           ),
-          onPressed: _skipPressed,
+          onPressed: _backPressed,
         ),
       ),
     );

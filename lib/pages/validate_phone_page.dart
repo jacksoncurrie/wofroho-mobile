@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wofroho_mobile/animations/fade_page_transition.dart';
 import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
@@ -10,6 +11,7 @@ import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/pages/account_page.dart';
 import 'package:wofroho_mobile/pages/details_page.dart';
+import 'package:wofroho_mobile/pages/login_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -51,12 +53,12 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     }
   }
 
-  void _skipPressed() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => DetailsPage(),
+  void _closePressed() {
+    Navigator.of(context).pushAndRemoveUntil(
+      FadePageTransition(
+        LoginPage(),
       ),
+      (_) => false,
     );
   }
 
@@ -103,7 +105,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
             'assets/images/close.svg',
             semanticsLabel: "Close icon",
           ),
-          onPressed: _skipPressed,
+          onPressed: _closePressed,
         ),
       ),
     );

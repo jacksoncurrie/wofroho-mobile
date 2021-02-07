@@ -27,10 +27,9 @@ class _DetailsPageState extends State<DetailsPage> {
   List<int> _outlinedDays = [3, 4];
 
   void _settingsPressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => SettingsPage(),
+    Navigator.of(context).push(
+      FadePageTransition(
+        SettingsPage(),
       ),
     );
   }

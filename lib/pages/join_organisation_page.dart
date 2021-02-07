@@ -11,7 +11,7 @@ import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/organisms/button_pair.dart';
 import 'package:wofroho_mobile/pages/create_organisation_page.dart';
-import 'package:wofroho_mobile/pages/details_page.dart';
+import 'package:wofroho_mobile/pages/login_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -57,11 +57,11 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
   }
 
   void _closePressed() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => DetailsPage(),
+    Navigator.of(context).pushAndRemoveUntil(
+      FadePageTransition(
+        LoginPage(),
       ),
+      (_) => false,
     );
   }
 
