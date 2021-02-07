@@ -45,7 +45,7 @@ class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
     }
   }
 
-  void _skipPressed() {
+  void _backPressed() {
     Navigator.pop(context);
     // Hide keyboard
     FocusScope.of(context).unfocus();
@@ -53,8 +53,8 @@ class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
 
   void _createPressed() {
     var nextPage = AllSetUpPage();
-    Navigator.of(context).pushAndRemoveUntil(
-        SlideRightTransition(nextPage), ModalRoute.withName('/'));
+    Navigator.of(context)
+        .pushAndRemoveUntil(SlideRightTransition(nextPage), (_) => false);
   }
 
   @override
@@ -88,7 +88,7 @@ class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
             'assets/images/back.svg',
             semanticsLabel: "Back icon",
           ),
-          onPressed: _skipPressed,
+          onPressed: _backPressed,
         ),
       ),
     );

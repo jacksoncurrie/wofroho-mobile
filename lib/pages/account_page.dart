@@ -1,5 +1,7 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wofroho_mobile/animations/fade_page_transition.dart';
 import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
@@ -78,11 +80,9 @@ class _AccountPageState extends State<AccountPage> {
 
   void _skipPressed() {
     widget.initialSetup
-        ? Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (ctx) => LoginPage(),
-            ),
+        ? Navigator.of(context).pushAndRemoveUntil(
+            FadePageTransition(LoginPage()),
+            (_) => false,
           )
         : Navigator.pop(context);
   }
@@ -93,6 +93,7 @@ class _AccountPageState extends State<AccountPage> {
             SlideRightTransition(
               JoinOrganisationPage(
                 person: widget.person,
+                initialSetup: true,
               ),
             ),
           )
@@ -100,6 +101,35 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   void _editPhoto() {}
+
+  void _changeOrganisation() {
+    var nextPage = JoinOrganisationPage(
+      person: widget.person,
+      initialSetup: false,
+    );
+    Navigator.of(context)
+        .pushAndRemoveUntil(FadePageTransition(nextPage), (_) => false);
+  }
+
+  void _openChangeOrganisation() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        content: ParagraphText(
+            text: "Are you sure you want to change organisation?"),
+        actions: [
+          FlatButton(
+            child: Text('Cancel'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          FlatButton(
+            child: Text('Continue'),
+            onPressed: _changeOrganisation,
+          ),
+        ],
+      ),
+    );
+  }
 
   @override
   void initState() {
@@ -260,7 +290,11 @@ class _AccountPageState extends State<AccountPage> {
     return FormItemSpace(
       child: DataField(
         title: 'Organisation',
-        child: TextInput(controller: _organisationController),
+        child: TextInput(
+          controller: _organisationController,
+          onTap: _openChangeOrganisation,
+          enabled: false,
+        ),
       ),
     );
   }

@@ -8,6 +8,7 @@ import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
 import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
+import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/organisms/button_pair.dart';
 import 'package:wofroho_mobile/pages/create_organisation_page.dart';
 import 'package:wofroho_mobile/pages/details_page.dart';
@@ -17,14 +18,16 @@ import 'package:wofroho_mobile/templates/input_template.dart';
 import 'package:wofroho_mobile/templates/page_heading_template.dart';
 import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
 import 'package:wofroho_mobile/templates/simple_template.dart';
+import 'package:wofroho_mobile/pages/all_set_up_page.dart';
 import '../theme.dart';
-import 'all_set_up_page.dart';
 
 class JoinOrganisationPage extends StatefulWidget {
   JoinOrganisationPage({
     @required this.person,
+    @required this.initialSetup,
   });
 
+  final bool initialSetup;
   final Person person;
 
   @override
@@ -70,8 +73,8 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
 
   void _nextPressed() {
     var nextPage = AllSetUpPage();
-    Navigator.of(context).pushAndRemoveUntil(
-        SlideRightTransition(nextPage), ModalRoute.withName('/'));
+    Navigator.of(context)
+        .pushAndRemoveUntil(SlideRightTransition(nextPage), (_) => false);
   }
 
   void _createOrganisationPressed() {
@@ -182,14 +185,21 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
   Widget _showBottomWidget() {
     return Padding(
       padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
-      child: ButtonPair(
-        primaryText: 'Join',
-        primaryOnPressed: () {
-          if (_validateCode()) _nextPressed();
-        },
-        secondaryText: 'Previous',
-        secondaryOnPressed: _previousPressed,
-      ),
+      child: widget.initialSetup
+          ? ButtonPair(
+              primaryText: 'Join',
+              primaryOnPressed: () {
+                if (_validateCode()) _nextPressed();
+              },
+              secondaryText: 'Previous',
+              secondaryOnPressed: _previousPressed,
+            )
+          : PrimaryButton(
+              text: 'Join',
+              onPressed: () {
+                if (_validateCode()) _nextPressed();
+              },
+            ),
     );
   }
 }
