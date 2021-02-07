@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:wofroho_mobile/animations/fade_page_transition.dart';
+import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/molecules/text_with_image.dart';
-import 'package:wofroho_mobile/organisms/button_pair.dart';
 import 'package:wofroho_mobile/pages/details_page.dart';
-import 'package:wofroho_mobile/pages/setup_page.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
 import 'package:wofroho_mobile/templates/padded_scroll_page_template.dart';
 
@@ -14,21 +14,8 @@ class AllSetUpPage extends StatefulWidget {
 
 class _AllSetUpPageState extends State<AllSetUpPage> {
   void _homePressed() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => DetailsPage(),
-      ),
-    );
-  }
-
-  void _beginSetup() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => SetupPage(initialSetup: true),
-      ),
-    );
+    var nextPage = DetailsPage();
+    Navigator.of(context).pushReplacement(FadePageTransition(nextPage));
   }
 
   @override
@@ -61,11 +48,9 @@ class _AllSetUpPageState extends State<AllSetUpPage> {
   }
 
   Widget _showBottomWidget() {
-    return ButtonPair(
-      primaryText: "Setup",
-      primaryOnPressed: _beginSetup,
-      secondaryText: "Home",
-      secondaryOnPressed: _homePressed,
+    return PrimaryButton(
+      text: 'Let\'s get started',
+      onPressed: _homePressed,
     );
   }
 

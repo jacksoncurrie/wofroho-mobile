@@ -5,11 +5,8 @@ import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
-import 'package:wofroho_mobile/models/person.dart';
-import 'package:wofroho_mobile/molecules/link_text.dart';
-import 'package:wofroho_mobile/organisms/button_pair.dart';
-import 'package:wofroho_mobile/pages/account_page.dart';
-import 'package:wofroho_mobile/pages/details_page.dart';
+import 'package:wofroho_mobile/molecules/primary_button.dart';
+import 'package:wofroho_mobile/pages/all_set_up_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -18,24 +15,20 @@ import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
 import 'package:wofroho_mobile/templates/simple_template.dart';
 import '../theme.dart';
 
-class SetupOrganisationPage extends StatefulWidget {
-  SetupOrganisationPage({
-    @required this.person,
-  });
-
-  final Person person;
-
+class CreateOrganisationPage extends StatefulWidget {
   @override
-  _SetupOrganisationPageState createState() => _SetupOrganisationPageState();
+  _CreateOrganisationPageState createState() => _CreateOrganisationPageState();
 }
 
-class _SetupOrganisationPageState extends State<SetupOrganisationPage> {
+class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
   final _organisationController = TextEditingController();
   ValidationType _validationType;
+  String _message;
 
   bool _validateCode() {
     if (_organisationController.text.isEmpty) {
       setState(() {
+        _message = 'Name is taken';
         _validationType = ValidationType.error;
       });
       return false;
@@ -46,37 +39,22 @@ class _SetupOrganisationPageState extends State<SetupOrganisationPage> {
   void _unsetValidation() {
     if (_validationType != ValidationType.success) {
       setState(() {
+        _message = 'Name is available';
         _validationType = ValidationType.success;
       });
     }
   }
 
   void _skipPressed() {
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => DetailsPage(),
-      ),
-    );
-  }
-
-  void _previousPressed() {
     Navigator.pop(context);
     // Hide keyboard
     FocusScope.of(context).unfocus();
   }
 
-  void _nextPressed() {
-    var nextPage = AccountPage(
-      initialSetup: true,
-      person: Person(
-        id: "1",
-        imageUrl: "http://placekitten.com/300/300",
-        name: "Bruce Wayne",
-        role: "Businessman, entrepreneur, accountant",
-      ),
-    );
-    Navigator.of(context).pushReplacement(SlideRightTransition(nextPage));
+  void _createPressed() {
+    var nextPage = AllSetUpPage();
+    Navigator.of(context).pushAndRemoveUntil(
+        SlideRightTransition(nextPage), ModalRoute.withName('/'));
   }
 
   @override
@@ -91,7 +69,7 @@ class _SetupOrganisationPageState extends State<SetupOrganisationPage> {
       pageWidgets: SimpleScrollTemplate(
         pageWidgets: InputTemplate(
           pageWidgets: ActionPageTemplate(
-            actionWidget: _showCloseAction(),
+            actionWidget: _showBackAction(),
             pageWidgets: _showPageWidgets(),
           ),
           bottomWidget: _showBottomWidget(),
@@ -100,15 +78,15 @@ class _SetupOrganisationPageState extends State<SetupOrganisationPage> {
     );
   }
 
-  Widget _showCloseAction() {
+  Widget _showBackAction() {
     return Align(
-      alignment: Alignment.centerRight,
+      alignment: Alignment.centerLeft,
       child: Padding(
-        padding: const EdgeInsets.only(top: 15, right: 25),
+        padding: const EdgeInsets.only(top: 15, left: 15),
         child: SingleIconButton(
           icon: SvgPicture.asset(
-            'assets/images/close.svg',
-            semanticsLabel: "Close icon",
+            'assets/images/back.svg',
+            semanticsLabel: "Back icon",
           ),
           onPressed: _skipPressed,
         ),
@@ -120,14 +98,13 @@ class _SetupOrganisationPageState extends State<SetupOrganisationPage> {
     return Padding(
       padding: const EdgeInsets.only(left: 25, right: 25),
       child: PageHeadingTemplate(
-        title: 'Join an organisation',
+        title: 'Create an organisation',
         pageWidgets: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _showInformation(),
             _showOrganisationField(),
-            if (_validationType == ValidationType.error) _showErrorMessage(),
-            _showResend(),
+            if (_validationType != ValidationType.none) _showErrorMessage(),
           ],
         ),
       ),
@@ -138,7 +115,8 @@ class _SetupOrganisationPageState extends State<SetupOrganisationPage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: ParagraphText(
-        text: 'Enter the name of your organisation, or create a new one.',
+        text:
+            'This will be the name of your wofroho workspace - choose something that your team will recognize.',
         fontSize: 20,
       ),
     );
@@ -163,18 +141,8 @@ class _SetupOrganisationPageState extends State<SetupOrganisationPage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
       child: ParagraphText(
-        text: 'Organisation not found',
+        text: _message,
         textColor: Theme.of(context).colorScheme.disabledText,
-      ),
-    );
-  }
-
-  Widget _showResend() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: LinkText(
-        text: 'Organisation not there? Create it',
-        onTap: () {},
       ),
     );
   }
@@ -182,13 +150,11 @@ class _SetupOrganisationPageState extends State<SetupOrganisationPage> {
   Widget _showBottomWidget() {
     return Padding(
       padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
-      child: ButtonPair(
-        primaryText: 'Next',
-        primaryOnPressed: () {
-          if (_validateCode()) _nextPressed();
+      child: PrimaryButton(
+        text: 'Create',
+        onPressed: () {
+          if (_validateCode()) _createPressed();
         },
-        secondaryText: 'Previous',
-        secondaryOnPressed: _previousPressed,
       ),
     );
   }

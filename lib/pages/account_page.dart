@@ -9,8 +9,8 @@ import 'package:wofroho_mobile/atoms/user_image.dart';
 import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
+import 'package:wofroho_mobile/pages/join_organisation_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
-import 'package:wofroho_mobile/pages/setup_organisation_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -91,7 +91,7 @@ class _AccountPageState extends State<AccountPage> {
     widget.initialSetup
         ? Navigator.of(context).push(
             SlideRightTransition(
-              SetupOrganisationPage(
+              JoinOrganisationPage(
                 person: widget.person,
               ),
             ),
