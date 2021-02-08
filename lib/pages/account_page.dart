@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -11,6 +13,7 @@ import 'package:wofroho_mobile/atoms/user_image.dart';
 import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
+import 'package:wofroho_mobile/organisms/pick_image_bottom_sheet.dart';
 import 'package:wofroho_mobile/pages/join_organisation_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
@@ -19,6 +22,7 @@ import 'package:wofroho_mobile/templates/input_template.dart';
 import 'package:wofroho_mobile/templates/page_heading_template.dart';
 import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
 import 'package:wofroho_mobile/templates/simple_template.dart';
+import 'package:image_picker/image_picker.dart';
 import '../theme.dart';
 
 class AccountPage extends StatefulWidget {
@@ -100,7 +104,39 @@ class _AccountPageState extends State<AccountPage> {
         : Navigator.pop(context);
   }
 
-  void _editPhoto() {}
+  File _image;
+
+  _imgFromCamera() async {
+    PickedFile image = await ImagePicker().getImage(
+      source: ImageSource.camera,
+      imageQuality: 50,
+      maxWidth: 300,
+    );
+
+    setState(() {
+      _image = File(image.path);
+    });
+  }
+
+  _imgFromGallery() async {
+    PickedFile image = await ImagePicker().getImage(
+      source: ImageSource.gallery,
+      imageQuality: 50,
+      maxWidth: 300,
+    );
+
+    setState(() {
+      _image = File(image.path);
+    });
+  }
+
+  void _editPhoto() {
+    pickImageBottomSheet(
+      context: context,
+      imgFromGallery: _imgFromGallery,
+      imgFromCamera: _imgFromCamera,
+    );
+  }
 
   void _changeOrganisation() {
     var nextPage = JoinOrganisationPage(
@@ -224,9 +260,12 @@ class _AccountPageState extends State<AccountPage> {
             height: 100,
             width: 100,
             image: widget.initialSetup
-                ? null
+                ? _image == null
+                    ? null
+                    : FileImage(_image)
                 : NetworkImage(widget.person.imageUrl),
             borderRadius: 4,
+            onTap: _editPhoto,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 15.0),
