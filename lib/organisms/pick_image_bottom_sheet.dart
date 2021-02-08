@@ -1,4 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
+import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import '../theme.dart';
 
 void pickImageBottomSheet({
@@ -31,43 +34,43 @@ Widget _builder(
     ),
     child: Wrap(
       children: [
-        Material(
-          // Need material widget to show inkwell
-          color: Colors.transparent,
-          borderRadius: const BorderRadius.only(
-            topLeft: Radius.circular(15.0),
-            topRight: Radius.circular(15.0),
-          ),
-          child: ListTile(
-            leading: Icon(Icons.photo_library),
-            title: Text(
-              'Photo library',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            contentPadding: EdgeInsets.all(10),
-            onTap: () {
-              imgFromGallery();
-              Navigator.of(context).pop();
-            },
-          ),
+        Padding(
+          padding: const EdgeInsets.only(left: 20.0, top: 20.0, bottom: 10),
+          child: ParagraphText(text: 'Choose image provider', fontSize: 14),
         ),
-        Material(
-          // Need material widget to show inkwell
-          color: Colors.transparent,
-          child: ListTile(
-            leading: Icon(Icons.photo_camera),
-            title: Text(
-              'Camera',
-              style: TextStyle(fontSize: 18.0),
-            ),
-            contentPadding: EdgeInsets.all(10),
-            onTap: () {
-              imgFromCamera();
-              Navigator.of(context).pop();
-            },
-          ),
+        _showListItem(
+          Icon(Icons.photo_library),
+          'Photo library',
+          imgFromGallery,
+          context,
+        ),
+        _showListItem(
+          Icon(Icons.photo_camera),
+          'Camera',
+          imgFromCamera,
+          context,
         ),
       ],
+    ),
+  );
+}
+
+Widget _showListItem(
+  Widget leadingIcon,
+  String text,
+  void Function() onTap,
+  BuildContext context,
+) {
+  return Material(
+    // Need material widget to show inkwell
+    child: ListTile(
+      leading: leadingIcon,
+      title: ParagraphText(text: text),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      onTap: () {
+        onTap();
+        Navigator.of(context).pop();
+      },
     ),
   );
 }
