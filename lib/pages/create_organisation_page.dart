@@ -129,9 +129,10 @@ class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
         child: TextInput(
           controller: _organisationController,
           hintText: 'Please enter organisation name',
-          keyboardType: TextInputType.number,
+          keyboardType: TextInputType.name,
           validationType: _validationType,
           onChanged: (_) => _unsetValidation(),
+          textCapitalization: TextCapitalization.words,
         ),
       ),
     );

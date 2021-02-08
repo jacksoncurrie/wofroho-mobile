@@ -12,6 +12,7 @@ class TextInput extends StatelessWidget {
     this.keyboardType,
     this.validationType = ValidationType.none,
     this.showIconWithValidation = true,
+    this.textCapitalization = TextCapitalization.none,
   });
 
   final TextEditingController controller;
@@ -22,6 +23,7 @@ class TextInput extends StatelessWidget {
   final TextInputType keyboardType;
   final ValidationType validationType;
   final bool showIconWithValidation;
+  final TextCapitalization textCapitalization;
 
   static final _borderRadius = BorderRadius.circular(2);
 
@@ -93,6 +95,7 @@ class TextInput extends StatelessWidget {
           enabled: enabled,
           onChanged: onChanged,
           keyboardType: keyboardType,
+          textCapitalization: textCapitalization,
         ),
       ),
     );

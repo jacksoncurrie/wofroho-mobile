@@ -287,6 +287,8 @@ class _AccountPageState extends State<AccountPage> {
           controller: _nameController,
           validationType: _nameValidationType,
           onChanged: (_) => _unsetNameValidation(),
+          keyboardType: TextInputType.name,
+          textCapitalization: TextCapitalization.words,
         ),
       ),
     );
@@ -310,6 +312,8 @@ class _AccountPageState extends State<AccountPage> {
           controller: _roleController,
           validationType: _roleValidationType,
           onChanged: (_) => _unsetRoleValidation(),
+          keyboardType: TextInputType.text,
+          textCapitalization: TextCapitalization.sentences,
         ),
       ),
     );

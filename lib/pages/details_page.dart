@@ -24,7 +24,7 @@ class _DetailsPageState extends State<DetailsPage> {
   DateTime _startWeekDay;
   int _currentDay = 0;
   DateTime _focusedDay;
-  List<int> _outlinedDays = [3, 4];
+  List<int> _outlinedDays = [9, 11];
 
   void _settingsPressed() {
     Navigator.of(context).push(
@@ -88,7 +88,7 @@ class _DetailsPageState extends State<DetailsPage> {
     setState(() {
       _focusedDay = newWeekMonday;
       _currentDay = weekNumber == 0 ? DateTime.now().day : 0;
-      _outlinedDays = weekNumber == 0 ? [3, 4] : [];
+      _outlinedDays = weekNumber == 0 ? [9, 11] : [];
     });
     HapticFeedback.mediumImpact();
   }
@@ -154,7 +154,8 @@ class _DetailsPageState extends State<DetailsPage> {
         people: [
           Person(
             id: "1",
-            imageUrl: "http://placekitten.com/300/300",
+            imageUrl:
+                "https://upload.wikimedia.org/wikipedia/en/thumb/1/19/Bruce_Wayne_%28The_Dark_Knight_Trilogy%29.jpg/220px-Bruce_Wayne_%28The_Dark_Knight_Trilogy%29.jpg",
             name: "Bruce Wayne",
             role: "Businessman, entrepreneur, accountant",
             datesFromHome: [
@@ -165,7 +166,8 @@ class _DetailsPageState extends State<DetailsPage> {
           ),
           Person(
             id: "2",
-            imageUrl: "http://placekitten.com/400/320",
+            imageUrl:
+                "https://upload.wikimedia.org/wikipedia/en/thumb/c/c8/News-batbegins2-2.jpg/170px-News-batbegins2-2.jpg",
             name: "Lucius Fox",
             role: "CEO",
             datesFromHome: [

@@ -16,11 +16,12 @@ class SlideRightTransition<T> extends PageRoute<T> {
       Animation<double> secondaryAnimation) {
     var begin = Offset(1.0, 0.0);
     var end = Offset.zero;
-    var tween = Tween(begin: begin, end: end);
-    var offsetAnimation = animation.drive(tween);
+    var curve = Curves.ease;
+    var curveTween = CurveTween(curve: curve);
+    var tween = Tween(begin: begin, end: end).chain(curveTween);
 
     return SlideTransition(
-      position: offsetAnimation,
+      position: animation.drive(tween),
       child: child,
     );
   }
@@ -29,5 +30,5 @@ class SlideRightTransition<T> extends PageRoute<T> {
   bool get maintainState => true;
 
   @override
-  Duration get transitionDuration => Duration(milliseconds: 200);
+  Duration get transitionDuration => Duration(milliseconds: 300);
 }
