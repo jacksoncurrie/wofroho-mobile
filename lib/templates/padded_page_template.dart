@@ -5,10 +5,12 @@ class PaddedPageTemplate extends StatelessWidget {
   PaddedPageTemplate({
     @required this.pageWidgets,
     this.background,
+    this.overlayWidget,
   });
 
   final Widget pageWidgets;
   final Widget background;
+  final Widget overlayWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class PaddedPageTemplate extends StatelessWidget {
           ),
         ],
       ),
+      overlayWidget: overlayWidget,
     );
   }
 }
