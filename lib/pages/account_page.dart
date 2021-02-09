@@ -241,11 +241,7 @@ class _AccountPageState extends State<AccountPage> {
       children: [
         _showProfileImage(),
         _showNameField(),
-        if (_nameValidationType == ValidationType.error)
-          _showNameErrorMessage(),
         _showRoleField(),
-        if (_roleValidationType == ValidationType.error)
-          _showRoleErrorMessage(),
         if (!widget.initialSetup) _showOrganisationField(),
       ],
     );
@@ -291,16 +287,16 @@ class _AccountPageState extends State<AccountPage> {
           textCapitalization: TextCapitalization.words,
         ),
       ),
+      validationMessage: _nameValidationType == ValidationType.error
+          ? _showNameErrorMessage()
+          : null,
     );
   }
 
   Widget _showNameErrorMessage() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: ParagraphText(
-        text: 'Name is required',
-        textColor: Theme.of(context).colorScheme.disabledText,
-      ),
+    return ParagraphText(
+      text: 'Name is required',
+      textColor: Theme.of(context).colorScheme.errorColor,
     );
   }
 
@@ -316,16 +312,16 @@ class _AccountPageState extends State<AccountPage> {
           textCapitalization: TextCapitalization.sentences,
         ),
       ),
+      validationMessage: _roleValidationType == ValidationType.error
+          ? _showRoleErrorMessage()
+          : null,
     );
   }
 
   Widget _showRoleErrorMessage() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: ParagraphText(
-        text: 'Role is required',
-        textColor: Theme.of(context).colorScheme.disabledText,
-      ),
+    return ParagraphText(
+      text: 'Role is required',
+      textColor: Theme.of(context).colorScheme.errorColor,
     );
   }
 

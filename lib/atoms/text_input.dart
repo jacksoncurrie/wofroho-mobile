@@ -4,6 +4,7 @@ import '../theme.dart';
 
 class TextInput extends StatelessWidget {
   TextInput({
+    this.key,
     @required this.controller,
     this.hintText,
     this.enabled = true,
@@ -15,6 +16,7 @@ class TextInput extends StatelessWidget {
     this.textCapitalization = TextCapitalization.none,
   });
 
+  final Key key;
   final TextEditingController controller;
   final String hintText;
   final bool enabled;
@@ -81,6 +83,7 @@ class TextInput extends StatelessWidget {
               color: _getBorderColor(validationType, context), width: 1),
         ),
         child: TextField(
+          key: key,
           decoration: InputDecoration(
             border: OutlineInputBorder(
                 borderRadius: _borderRadius, borderSide: BorderSide.none),

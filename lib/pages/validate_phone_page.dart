@@ -158,7 +158,6 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
           children: [
             _showInformation(),
             _showCodeField(),
-            if (_validationType == ValidationType.error) _showErrorMessage(),
             _showResend(),
           ],
         ),
@@ -189,16 +188,15 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
           onChanged: (_) => _unsetValidation(),
         ),
       ),
+      validationMessage:
+          _validationType == ValidationType.error ? _showErrorMessage() : null,
     );
   }
 
   Widget _showErrorMessage() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: ParagraphText(
-        text: 'Code invalid',
-        textColor: Theme.of(context).colorScheme.disabledText,
-      ),
+    return ParagraphText(
+      text: 'Code invalid',
+      textColor: Theme.of(context).colorScheme.errorColor,
     );
   }
 

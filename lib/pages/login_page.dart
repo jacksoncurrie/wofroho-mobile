@@ -77,7 +77,6 @@ class _LoginPageState extends State<LoginPage> {
                 ),
                 _showCountryField(),
                 _showPhoneField(),
-                if (_validationType == ValidationType.error) _showErrorMessage()
               ],
             ),
             bottomWidget: _showBottomWidget(),
@@ -154,16 +153,15 @@ class _LoginPageState extends State<LoginPage> {
           ],
         ),
       ),
+      validationMessage:
+          _validationType == ValidationType.error ? _showErrorMessage() : null,
     );
   }
 
   Widget _showErrorMessage() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: ParagraphText(
-        text: 'Phone number is not valid',
-        textColor: Theme.of(context).colorScheme.disabledText,
-      ),
+    return ParagraphText(
+      text: 'Phone number is not valid',
+      textColor: Theme.of(context).colorScheme.errorColor,
     );
   }
 
