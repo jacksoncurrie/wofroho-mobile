@@ -104,6 +104,7 @@ class _LoginPageState extends State<LoginPage> {
         _countryController.text = countryPicked.name;
         _areaCodeController.text = "+${countryPicked.phoneCode}";
       },
+      countryFilter: ['NZ'],
     );
   }
 
