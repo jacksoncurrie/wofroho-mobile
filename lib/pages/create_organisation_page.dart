@@ -104,7 +104,6 @@ class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
           children: [
             _showInformation(),
             _showOrganisationField(),
-            if (_validationType != ValidationType.none) _showErrorMessage(),
           ],
         ),
       ),
@@ -135,16 +134,15 @@ class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
           textCapitalization: TextCapitalization.words,
         ),
       ),
+      validationMessage:
+          _validationType != ValidationType.none ? _showErrorMessage() : null,
     );
   }
 
   Widget _showErrorMessage() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: ParagraphText(
-        text: _message,
-        textColor: Theme.of(context).colorScheme.disabledText,
-      ),
+    return ParagraphText(
+      text: _message,
+      textColor: Theme.of(context).colorScheme.disabledText,
     );
   }
 

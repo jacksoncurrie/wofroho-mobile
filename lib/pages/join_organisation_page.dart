@@ -129,7 +129,6 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
           children: [
             _showInformation(),
             _showOrganisationField(),
-            if (_validationType == ValidationType.error) _showErrorMessage(),
             _showCreateOrganisation(),
           ],
         ),
@@ -160,16 +159,15 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
           textCapitalization: TextCapitalization.words,
         ),
       ),
+      validationMessage:
+          _validationType == ValidationType.error ? _showErrorMessage() : null,
     );
   }
 
   Widget _showErrorMessage() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: ParagraphText(
-        text: 'Organisation not found',
-        textColor: Theme.of(context).colorScheme.disabledText,
-      ),
+    return ParagraphText(
+      text: 'Organisation not found',
+      textColor: Theme.of(context).colorScheme.errorColor,
     );
   }
 
