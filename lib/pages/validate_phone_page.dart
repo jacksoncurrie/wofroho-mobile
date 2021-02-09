@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
 import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
-import 'package:wofroho_mobile/atoms/notification.dart';
+import 'package:wofroho_mobile/atoms/notification_toast.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
@@ -101,6 +101,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
   void initState() {
     _validationType = ValidationType.none;
     _isResendingCode = false;
+    _showNotification = false;
     super.initState();
   }
 
