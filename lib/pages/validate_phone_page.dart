@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
 import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
+import 'package:wofroho_mobile/atoms/notification.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
@@ -33,6 +34,8 @@ class ValidatePhonePage extends StatefulWidget {
 class _ValidatePhonePageState extends State<ValidatePhonePage> {
   final _codeController = TextEditingController();
   ValidationType _validationType;
+  bool _isResendingCode;
+  bool _showNotification;
 
   bool _validateCode() {
     if (_codeController.text.isEmpty) {
@@ -42,6 +45,27 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
       return false;
     }
     return true;
+  }
+
+  Future _resendCode() async {
+    setState(() {
+      _isResendingCode = true;
+    });
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {
+      _isResendingCode = false;
+    });
+  }
+
+  Future _showNotificationNow() async {
+    if (_showNotification == true) return;
+    setState(() {
+      _showNotification = true;
+    });
+    await Future.delayed(Duration(seconds: 3));
+    setState(() {
+      _showNotification = false;
+    });
   }
 
   void _unsetValidation() {
@@ -76,6 +100,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
   @override
   void initState() {
     _validationType = ValidationType.none;
+    _isResendingCode = false;
     super.initState();
   }
 
@@ -91,6 +116,18 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
           bottomWidget: _showBottomWidget(),
         ),
       ),
+      overlayWidget: _showNotificationWidget(),
+    );
+  }
+
+  Widget _showNotificationWidget() {
+    return NotificationToast(
+      child: ParagraphText(
+        text: "Code resent",
+        textColor: Colors.white,
+      ),
+      isShown: _showNotification,
+      color: Theme.of(context).colorScheme.primaryColor,
     );
   }
 
@@ -164,14 +201,29 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     );
   }
 
-  Widget _showResend() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: LinkText(
-        text: 'Did not get code? Resend',
-        onTap: () {},
+  Widget _showLoading() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 15, left: 5),
+        child: CircularProgressIndicator(),
       ),
     );
+  }
+
+  Widget _showResend() {
+    return _isResendingCode
+        ? _showLoading()
+        : Padding(
+            padding: const EdgeInsets.only(bottom: 20.0),
+            child: LinkText(
+              text: 'Did not get code? Resend',
+              onTap: () async {
+                await _resendCode();
+                await _showNotificationNow();
+              },
+            ),
+          );
   }
 
   Widget _showBottomWidget() {

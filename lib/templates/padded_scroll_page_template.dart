@@ -3,13 +3,12 @@ import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
 import 'package:wofroho_mobile/templates/simple_template.dart';
 
 class PaddedScrollPageTemplate extends StatelessWidget {
-  PaddedScrollPageTemplate({
-    @required this.pageWidgets,
-    this.background,
-  });
+  PaddedScrollPageTemplate(
+      {@required this.pageWidgets, this.background, this.overlayWidget});
 
   final Widget pageWidgets;
   final Widget background;
+  final Widget overlayWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -36,6 +35,7 @@ class PaddedScrollPageTemplate extends StatelessWidget {
           ],
         ),
       ),
+      overlayWidget: overlayWidget,
     );
   }
 }

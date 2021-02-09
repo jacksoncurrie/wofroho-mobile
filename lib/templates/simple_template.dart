@@ -4,16 +4,23 @@ import '../theme.dart';
 class SimpleTemplate extends StatelessWidget {
   SimpleTemplate({
     @required this.pageWidgets,
+    this.overlayWidget,
   });
 
   final Widget pageWidgets;
+  final Widget overlayWidget;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.backgroundColor,
       appBar: _showEmptyAppBar(context),
-      body: pageWidgets,
+      body: Stack(
+        children: [
+          pageWidgets,
+          if (overlayWidget != null) overlayWidget,
+        ],
+      ),
     );
   }
 
