@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
+import 'package:wofroho_mobile/atoms/rich_text_paragraph.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -60,25 +61,34 @@ class _AboutPageState extends State<AboutPage> {
     return Column(
       children: [
         _showParagraph(
-          'We all know our companies wanted us to work from home/romote working but did not know how to implement it. Covid19 hit us all hard and we will never go back to how we worked before.',
+          ParagraphText(
+            text:
+                'We all know our companies wanted us to work from home/romote working but did not know how to implement it. Covid19 hit us all hard and we will never go back to how we worked before.',
+            fontSize: 20.0,
+          ),
         ),
         _showParagraph(
-          'Thus we created rewo to keep up with your work or organisation.',
+          RichTextParagraph(
+            textSpanItems: [
+              TextSpanItem(text: 'Thus we created '),
+              TextSpanItem(text: 'wofroho', fontWeight: FontWeight.bold),
+              TextSpanItem(text: ' to keep up with your work or organisation.'),
+            ],
+          ),
         ),
         _showParagraph(
-          'Thank you for your support! Please let us know if you have any suggestions at help@rewo.com',
+          ParagraphText(
+            text:
+                'Thank you for your support! Please let us know if you have any suggestions at help@wofro.home',
+            fontSize: 20,
+          ),
         ),
       ],
     );
   }
 
-  Widget _showParagraph(String text) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20),
-      child: ParagraphText(
-        text: text,
-      ),
-    );
+  Widget _showParagraph(Widget text) {
+    return Padding(padding: const EdgeInsets.only(bottom: 20), child: text);
   }
 
   Widget _showAboutDetails() {
