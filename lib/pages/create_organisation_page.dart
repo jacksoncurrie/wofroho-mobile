@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
+import 'package:wofroho_mobile/atoms/rich_text_paragraph.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
@@ -104,7 +105,6 @@ class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
           children: [
             _showInformation(),
             _showOrganisationField(),
-            if (_validationType != ValidationType.none) _showErrorMessage(),
           ],
         ),
       ),
@@ -114,10 +114,14 @@ class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
   Widget _showInformation() {
     return Padding(
       padding: const EdgeInsets.only(bottom: 20.0),
-      child: ParagraphText(
-        text:
-            'This will be the name of your wofroho workspace - choose something that your team will recognize.',
-        fontSize: 20,
+      child: RichTextParagraph(
+        textSpanItems: [
+          TextSpanItem(text: 'This will be the name of your '),
+          TextSpanItem(text: 'wofroho', fontWeight: FontWeight.bold),
+          TextSpanItem(
+              text:
+                  ' workspace - choose something that your team will recognize.'),
+        ],
       ),
     );
   }
@@ -135,16 +139,15 @@ class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
           textCapitalization: TextCapitalization.words,
         ),
       ),
+      validationMessage:
+          _validationType != ValidationType.none ? _showErrorMessage() : null,
     );
   }
 
   Widget _showErrorMessage() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: ParagraphText(
-        text: _message,
-        textColor: Theme.of(context).colorScheme.disabledText,
-      ),
+    return ParagraphText(
+      text: _message,
+      textColor: Theme.of(context).colorScheme.disabledText,
     );
   }
 

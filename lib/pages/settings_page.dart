@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
 import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
+import 'package:wofroho_mobile/atoms/rich_text_paragraph.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/pages/about_page.dart';
@@ -149,9 +150,20 @@ class _SettingsPageState extends State<SettingsPage> {
         ),
         Padding(
           padding: const EdgeInsets.only(top: 20.0, bottom: 25.0),
-          child: ParagraphText(
-            text: "Working from home = wofroho",
-            textColor: Theme.of(context).colorScheme.disabledText,
+          child: RichTextParagraph(
+            textSpanItems: [
+              TextSpanItem(
+                text: 'Working from home = ',
+                textColor: Theme.of(context).colorScheme.disabledText,
+                fontSize: 16,
+              ),
+              TextSpanItem(
+                text: 'wofroho',
+                fontWeight: FontWeight.bold,
+                textColor: Theme.of(context).colorScheme.disabledText,
+                fontSize: 16,
+              ),
+            ],
           ),
         ),
       ],
