@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
+import 'package:wofroho_mobile/atoms/rich_text_paragraph.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/molecules/week_row.dart';
@@ -140,9 +141,12 @@ class _SetupPageState extends State<SetupPage> {
 
   Widget _showHowManyDaysInput() {
     return SettingInputTemplate(
-      labelWidget: ParagraphText(
-        text: "How many days per week do you wofroho?",
-        fontSize: 20.0,
+      labelWidget: RichTextParagraph(
+        textSpanItems: [
+          TextSpanItem(text: 'How many days per week do you '),
+          TextSpanItem(text: 'wofroho', fontWeight: FontWeight.bold),
+          TextSpanItem(text: '?'),
+        ],
       ),
       inputWidget: WeekRow(
         days: [1, 2, 3, 4, 5, 6, 7],
@@ -172,9 +176,12 @@ class _SetupPageState extends State<SetupPage> {
 
   Widget _showThisWeekWofroho() {
     return SettingInputTemplate(
-      labelWidget: ParagraphText(
-        text: "Please select the wofroho for this week",
-        fontSize: 20.0,
+      labelWidget: RichTextParagraph(
+        textSpanItems: [
+          TextSpanItem(text: 'Please select the '),
+          TextSpanItem(text: 'wofroho', fontWeight: FontWeight.bold),
+          TextSpanItem(text: ' for this week'),
+        ],
       ),
       inputWidget: CalendarWeekPicker(
         dayBegin: _startWeekDay,
