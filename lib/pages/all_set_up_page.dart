@@ -41,7 +41,7 @@ class _AllSetUpPageState extends State<AllSetUpPage> {
   Widget _showPageWidgets() {
     return Center(
       child: TextWithImage(
-        text: 'All set up yeah',
+        text: 'All set up, yeah!',
         image: _showPartyPopper(),
       ),
     );
