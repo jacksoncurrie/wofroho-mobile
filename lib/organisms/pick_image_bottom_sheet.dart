@@ -63,7 +63,7 @@ Widget _showMinimiseIcon() {
     child: Center(
       child: SvgPicture.asset(
         'assets/images/minimise.svg',
-        semanticsLabel: "Minmise icon",
+        semanticsLabel: "Minimise icon",
       ),
     ),
   );
