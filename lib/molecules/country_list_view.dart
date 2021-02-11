@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
-
 import 'package:wofroho_mobile/models/country.dart';
 import 'package:wofroho_mobile/utils/country_codes.dart';
 import 'package:wofroho_mobile/utils/utils.dart';
+import '../theme.dart';
 
 class CountryListView extends StatefulWidget {
   /// Called when a country is select.
@@ -68,8 +69,8 @@ class _CountryListViewState extends State<CountryListView> {
   @override
   Widget build(BuildContext context) {
     return Column(
-      children: <Widget>[
-        const SizedBox(height: 12),
+      children: [
+        _showMinimiseIcon(),
         Padding(
           padding: const EdgeInsets.only(
             left: 14,
@@ -88,12 +89,21 @@ class _CountryListViewState extends State<CountryListView> {
         ),
         Expanded(
           child: ListView(
-            children: _filteredList
-                .map<Widget>((country) => _listRow(country))
-                .toList(),
+            children:
+                _filteredList.map((country) => _listRow(country)).toList(),
           ),
         ),
       ],
+    );
+  }
+
+  Widget _showMinimiseIcon() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 15.0),
+      child: SvgPicture.asset(
+        'assets/images/minimise.svg',
+        semanticsLabel: "Minmise icon",
+      ),
     );
   }
 
