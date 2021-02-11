@@ -55,6 +55,7 @@ class _ProfilePageState extends State<ProfilePage> {
         _showProfileImage(),
         _showNameField(),
         _showRoleField(),
+        _showOrganisationField(),
       ],
     );
   }
@@ -97,6 +98,15 @@ class _ProfilePageState extends State<ProfilePage> {
           tag: "${widget.person.id}_role",
           child: ParagraphText(text: widget.person.role),
         ),
+      ),
+    );
+  }
+
+  Widget _showOrganisationField() {
+    return FormItemSpace(
+      child: DataField(
+        title: 'Organisation',
+        child: ParagraphText(text: 'Wayne Enterprises'),
       ),
     );
   }
