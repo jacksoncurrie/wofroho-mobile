@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wofroho_mobile/animations/fade_page_transition.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/rich_text_paragraph.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
@@ -34,10 +35,9 @@ class _SetupPageState extends State<SetupPage> {
 
   void _skipPressed() {
     widget.initialSetup
-        ? Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (ctx) => DetailsPage(),
+        ? Navigator.of(context).pushReplacement(
+            FadePageTransition(
+              DetailsPage(),
             ),
           )
         : Navigator.pop(context);
@@ -45,10 +45,9 @@ class _SetupPageState extends State<SetupPage> {
 
   void _savePressed() {
     widget.initialSetup
-        ? Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (ctx) => DetailsPage(),
+        ? Navigator.of(context).pushReplacement(
+            FadePageTransition(
+              DetailsPage(),
             ),
           )
         : Navigator.pop(context);

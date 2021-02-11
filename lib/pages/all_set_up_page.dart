@@ -1,21 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:wofroho_mobile/animations/fade_page_transition.dart';
+import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/molecules/text_with_image.dart';
-import 'package:wofroho_mobile/pages/details_page.dart';
+import 'package:wofroho_mobile/pages/setup_page.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
 import 'package:wofroho_mobile/templates/padded_scroll_page_template.dart';
 
-class AllSetUpPage extends StatefulWidget {
-  @override
-  _AllSetUpPageState createState() => _AllSetUpPageState();
-}
-
-class _AllSetUpPageState extends State<AllSetUpPage> {
-  void _homePressed() {
-    var nextPage = DetailsPage();
-    Navigator.of(context).pushReplacement(FadePageTransition(nextPage));
+class AllSetUpPage extends StatelessWidget {
+  void _getStartedPressed(BuildContext context) {
+    var nextPage = SetupPage(initialSetup: true);
+    Navigator.of(context).pushReplacement(SlideRightTransition(nextPage));
   }
 
   @override
@@ -23,7 +18,7 @@ class _AllSetUpPageState extends State<AllSetUpPage> {
     return PaddedScrollPageTemplate(
       pageWidgets: InputTemplate(
         pageWidgets: _showPageWidgets(),
-        bottomWidget: _showBottomWidget(),
+        bottomWidget: _showBottomWidget(context),
       ),
       background: _showBackground(),
     );
@@ -47,10 +42,10 @@ class _AllSetUpPageState extends State<AllSetUpPage> {
     );
   }
 
-  Widget _showBottomWidget() {
+  Widget _showBottomWidget(BuildContext context) {
     return PrimaryButton(
       text: 'Let\'s get started',
-      onPressed: _homePressed,
+      onPressed: () => _getStartedPressed(context),
     );
   }
 
