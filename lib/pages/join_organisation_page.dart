@@ -56,6 +56,25 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
     }
   }
 
+  void _openValidateClose() {
+    showDialog(
+      context: context,
+      builder: (_) => AlertDialog(
+        content: ParagraphText(text: "Are you sure you want to end setup?"),
+        actions: [
+          FlatButton(
+            child: Text('Cancel'),
+            onPressed: () => Navigator.of(context).pop(),
+          ),
+          FlatButton(
+            child: Text('Continue'),
+            onPressed: _closePressed,
+          ),
+        ],
+      ),
+    );
+  }
+
   void _closePressed() {
     Navigator.of(context).pushAndRemoveUntil(
       FadePageTransition(
@@ -113,7 +132,7 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
             'assets/images/close.svg',
             semanticsLabel: "Close icon",
           ),
-          onPressed: _closePressed,
+          onPressed: _openValidateClose,
         ),
       ),
     );
