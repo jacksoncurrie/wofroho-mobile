@@ -51,6 +51,7 @@ flutter:
     - assets/images/check.svg
     - assets/images/error.svg
     - assets/images/add.svg
+    - assets/images/minimise.svg
 
   fonts:
     - family: Poppins

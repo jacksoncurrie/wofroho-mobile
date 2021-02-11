@@ -1,6 +1,7 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import '../theme.dart';
 
@@ -34,8 +35,9 @@ Widget _builder(
     ),
     child: Wrap(
       children: [
+        _showMinimiseIcon(),
         Padding(
-          padding: const EdgeInsets.only(left: 20.0, top: 20.0, bottom: 10),
+          padding: const EdgeInsets.only(left: 14.0, top: 20.0, bottom: 10),
           child: ParagraphText(text: 'Choose image provider', fontSize: 14),
         ),
         _showListItem(
@@ -51,6 +53,18 @@ Widget _builder(
           context,
         ),
       ],
+    ),
+  );
+}
+
+Widget _showMinimiseIcon() {
+  return Padding(
+    padding: const EdgeInsets.only(top: 15.0),
+    child: Center(
+      child: SvgPicture.asset(
+        'assets/images/minimise.svg',
+        semanticsLabel: "Minmise icon",
+      ),
     ),
   );
 }
