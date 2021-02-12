@@ -83,10 +83,7 @@ class _AccountPageState extends State<AccountPage> {
       error = true;
     }
 
-    if (error) {
-      return false;
-    }
-    return true;
+    return !error;
   }
 
   void _openValidateClose() {
