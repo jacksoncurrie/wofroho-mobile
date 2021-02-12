@@ -44,6 +44,7 @@ class _AccountPageState extends State<AccountPage> {
   final _organisationController = TextEditingController();
   ValidationType _nameValidationType;
   ValidationType _roleValidationType;
+  ValidationType _imageValidationType;
 
   void _unsetNameValidation() {
     if (_nameValidationType != ValidationType.none) {
@@ -74,6 +75,11 @@ class _AccountPageState extends State<AccountPage> {
         _roleValidationType = ValidationType.error;
       });
       error = true;
+    }
+    if (_image == null) {
+      setState(() {
+        _imageValidationType = ValidationType.error;
+      });
     }
 
     if (error) {
@@ -132,9 +138,12 @@ class _AccountPageState extends State<AccountPage> {
       maxWidth: 300,
     );
 
-    setState(() {
-      _image = File(image.path);
-    });
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+        _imageValidationType = ValidationType.none;
+      });
+    }
   }
 
   _imgFromGallery() async {
@@ -144,9 +153,12 @@ class _AccountPageState extends State<AccountPage> {
       maxWidth: 300,
     );
 
-    setState(() {
-      _image = File(image.path);
-    });
+    if (image != null) {
+      setState(() {
+        _image = File(image.path);
+        _imageValidationType = ValidationType.none;
+      });
+    }
   }
 
   void _editPhoto() {
@@ -291,6 +303,16 @@ class _AccountPageState extends State<AccountPage> {
           ),
         ],
       ),
+      validationMessage: _imageValidationType == ValidationType.error
+          ? _showImageErrorMessage()
+          : null,
+    );
+  }
+
+  Widget _showImageErrorMessage() {
+    return ParagraphText(
+      text: 'Photo is required',
+      textColor: Theme.of(context).colorScheme.errorColor,
     );
   }
 
