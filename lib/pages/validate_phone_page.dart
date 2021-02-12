@@ -85,6 +85,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
       primaryText: 'Continue',
       secondaryText: 'Cancel',
       primaryPressed: _closePressed,
+      secondaryPressed: () => Navigator.pop(context),
     );
   }
 

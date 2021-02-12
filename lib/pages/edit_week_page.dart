@@ -3,6 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/rich_text_paragraph.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
+import 'package:wofroho_mobile/molecules/dialog_popup.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/organisms/calendar_week_picker.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
@@ -23,7 +24,32 @@ class _EditWeekPageState extends State<EditWeekPage> {
   List<DateTime> _focusedDaysWeek = [];
   int _currentDay;
 
-  void _skipPressed() {
+  void _openValidateClose() {
+    // Check if changes have been made
+    if (_focusedDaysWeek.isEmpty) {
+      _closePressed();
+      return;
+    }
+
+    showDialogPopup(
+      context: context,
+      title: 'Unsaved changes',
+      message: 'Would you like to save the changes you have made?',
+      primaryText: 'Save changes',
+      secondaryText: 'Close without saving',
+      primaryPressed: () {
+        // Drop popup
+        Navigator.pop(context);
+        _savePressed();
+      },
+      secondaryPressed: () {
+        Navigator.pop(context);
+        _closePressed();
+      },
+    );
+  }
+
+  void _closePressed() {
     Navigator.pop(context);
   }
 
@@ -67,7 +93,7 @@ class _EditWeekPageState extends State<EditWeekPage> {
             'assets/images/close.svg',
             semanticsLabel: "Close icon",
           ),
-          onPressed: _skipPressed,
+          onPressed: _openValidateClose,
         ),
       ),
     );
