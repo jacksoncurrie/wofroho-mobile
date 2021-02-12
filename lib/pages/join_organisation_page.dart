@@ -7,6 +7,7 @@ import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
 import 'package:wofroho_mobile/models/person.dart';
+import 'package:wofroho_mobile/molecules/dialog_popup.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/organisms/button_pair.dart';
@@ -57,21 +58,13 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
   }
 
   void _openValidateClose() {
-    showDialog(
+    showDialogPopup(
       context: context,
-      builder: (_) => AlertDialog(
-        content: ParagraphText(text: "Are you sure you want to end setup?"),
-        actions: [
-          FlatButton(
-            child: Text('Cancel'),
-            onPressed: () => Navigator.of(context).pop(),
-          ),
-          FlatButton(
-            child: Text('Continue'),
-            onPressed: _closePressed,
-          ),
-        ],
-      ),
+      title: 'Leave setup',
+      message: 'Are you sure you want leave the setup?',
+      primaryText: 'Continue',
+      secondaryText: 'Cancel',
+      primaryPressed: _closePressed,
     );
   }
 
