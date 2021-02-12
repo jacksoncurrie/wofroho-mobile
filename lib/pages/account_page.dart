@@ -87,6 +87,32 @@ class _AccountPageState extends State<AccountPage> {
     return !error;
   }
 
+  void _openValidateSave() {
+    // Check if changes have been made
+    if (_nameController.text == widget.person.name &&
+        _roleController.text == widget.person.role) {
+      _backPressed();
+      return;
+    }
+
+    showDialogPopup(
+      context: context,
+      title: 'Unsaved changes',
+      message: 'Would you like to save the changes you have made?',
+      primaryText: 'Save changes',
+      secondaryText: 'Close without saving',
+      primaryPressed: () {
+        // Drop popup
+        Navigator.pop(context);
+        if (_validateInputs()) _nextPressed();
+      },
+      secondaryPressed: () {
+        Navigator.pop(context);
+        _backPressed();
+      },
+    );
+  }
+
   void _openValidateClose() {
     showDialogPopup(
       context: context,
@@ -95,6 +121,7 @@ class _AccountPageState extends State<AccountPage> {
       primaryText: 'Continue',
       secondaryText: 'Cancel',
       primaryPressed: _backPressed,
+      secondaryPressed: () => Navigator.pop(context),
     );
   }
 
@@ -177,6 +204,7 @@ class _AccountPageState extends State<AccountPage> {
       primaryText: 'Continue',
       secondaryText: 'Cancel',
       primaryPressed: _changeOrganisation,
+      secondaryPressed: () => Navigator.pop(context),
     );
   }
 
@@ -242,7 +270,7 @@ class _AccountPageState extends State<AccountPage> {
             'assets/images/back.svg',
             semanticsLabel: 'Back icon',
           ),
-          onPressed: _backPressed,
+          onPressed: _openValidateSave,
         ),
       ),
     );

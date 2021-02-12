@@ -4,6 +4,7 @@ import 'package:wofroho_mobile/animations/fade_page_transition.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/rich_text_paragraph.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
+import 'package:wofroho_mobile/molecules/dialog_popup.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/molecules/week_row.dart';
 import 'package:wofroho_mobile/organisms/button_pair.dart';
@@ -33,14 +34,41 @@ class _SetupPageState extends State<SetupPage> {
   List<DateTime> _focusedDaysWeek = [];
   int _currentDay;
 
-  void _skipPressed() {
-    widget.initialSetup
-        ? Navigator.of(context).pushReplacement(
-            FadePageTransition(
-              DetailsPage(),
-            ),
-          )
-        : Navigator.pop(context);
+  void _openValidateClose(void Function() backAction) {
+    // Check if changes have been made
+    if (_focusedDaysWeek.isEmpty && _focusedDay == 2) {
+      backAction();
+      return;
+    }
+
+    showDialogPopup(
+      context: context,
+      title: 'Unsaved changes',
+      message: 'Would you like to save the changes you have made?',
+      primaryText: 'Save changes',
+      secondaryText: 'Close without saving',
+      primaryPressed: () {
+        // Drop popup
+        Navigator.pop(context);
+        _savePressed();
+      },
+      secondaryPressed: () {
+        Navigator.pop(context);
+        backAction();
+      },
+    );
+  }
+
+  void _closePressed() {
+    Navigator.of(context).pushReplacement(
+      FadePageTransition(
+        DetailsPage(),
+      ),
+    );
+  }
+
+  void _backPressed() {
+    Navigator.pop(context);
   }
 
   void _savePressed() {
@@ -90,7 +118,7 @@ class _SetupPageState extends State<SetupPage> {
             'assets/images/close.svg',
             semanticsLabel: "Close icon",
           ),
-          onPressed: _skipPressed,
+          onPressed: () => _openValidateClose(_closePressed),
         ),
       ),
     );
@@ -106,7 +134,7 @@ class _SetupPageState extends State<SetupPage> {
             'assets/images/back.svg',
             semanticsLabel: "Back icon",
           ),
-          onPressed: _skipPressed,
+          onPressed: () => _openValidateClose(_backPressed),
         ),
       ),
     );
@@ -228,7 +256,7 @@ class _SetupPageState extends State<SetupPage> {
               primaryText: "Save",
               primaryOnPressed: _savePressed,
               secondaryText: "Skip",
-              secondaryOnPressed: _skipPressed,
+              secondaryOnPressed: _closePressed,
             )
           : PrimaryButton(
               text: "Save",

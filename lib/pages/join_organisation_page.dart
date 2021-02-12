@@ -65,6 +65,7 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
       primaryText: 'Continue',
       secondaryText: 'Cancel',
       primaryPressed: _closePressed,
+      secondaryPressed: () => Navigator.pop(context),
     );
   }
 

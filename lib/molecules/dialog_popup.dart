@@ -11,6 +11,7 @@ void showDialogPopup({
   @required String primaryText,
   @required String secondaryText,
   @required void Function() primaryPressed,
+  @required void Function() secondaryPressed,
 }) {
   showDialog(
     context: context,
@@ -35,7 +36,7 @@ void showDialogPopup({
           ),
           SecondaryButton(
             text: secondaryText,
-            onPressed: () => Navigator.of(context).pop(),
+            onPressed: secondaryPressed,
           ),
         ],
       ),
