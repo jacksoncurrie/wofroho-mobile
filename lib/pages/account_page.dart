@@ -80,6 +80,7 @@ class _AccountPageState extends State<AccountPage> {
       setState(() {
         _imageValidationType = ValidationType.error;
       });
+      error = true;
     }
 
     if (error) {
