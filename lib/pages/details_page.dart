@@ -9,6 +9,7 @@ import 'package:wofroho_mobile/molecules/empty_state.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/organisms/calendar_week_picker.dart';
 import 'package:wofroho_mobile/organisms/person_list.dart';
+import 'package:wofroho_mobile/pages/edit_week_page.dart';
 import 'package:wofroho_mobile/pages/profile_page.dart';
 import 'package:wofroho_mobile/pages/settings_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
@@ -30,6 +31,14 @@ class _DetailsPageState extends State<DetailsPage> {
     Navigator.of(context).push(
       FadePageTransition(
         SettingsPage(),
+      ),
+    );
+  }
+
+  void _editThisWeek() {
+    Navigator.of(context).push(
+      FadePageTransition(
+        EditWeekPage(),
       ),
     );
   }
@@ -114,7 +123,7 @@ class _DetailsPageState extends State<DetailsPage> {
       padding: const EdgeInsets.only(top: 20.0),
       child: LinkText(
         text: "Edit this week wofroho",
-        onTap: () {},
+        onTap: _editThisWeek,
       ),
     );
   }
