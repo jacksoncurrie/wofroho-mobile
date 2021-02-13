@@ -5,7 +5,6 @@ import 'package:wofroho_mobile/atoms/text_input.dart';
 import 'package:wofroho_mobile/models/country.dart';
 import 'package:wofroho_mobile/utils/country_codes.dart';
 import 'package:wofroho_mobile/utils/utils.dart';
-import '../theme.dart';
 
 class CountryListView extends StatefulWidget {
   /// Called when a country is select.

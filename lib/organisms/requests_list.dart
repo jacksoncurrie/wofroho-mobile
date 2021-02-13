@@ -3,14 +3,16 @@ import 'package:flutter/rendering.dart';
 import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/person_list_item.dart';
 
-class PersonList extends StatelessWidget {
-  PersonList({
+class RequestsList extends StatelessWidget {
+  RequestsList({
     @required this.people,
     this.personTapped,
+    this.isScrollable = true,
   });
 
   final List<Person> people;
   final void Function(Person) personTapped;
+  final bool isScrollable;
 
   @override
   Widget build(BuildContext context) {
