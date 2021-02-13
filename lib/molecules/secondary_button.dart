@@ -7,10 +7,14 @@ class SecondaryButton extends StatelessWidget {
   SecondaryButton({
     @required this.text,
     @required this.onPressed,
+    this.padding,
+    this.fontSize,
   });
 
   final String text;
   final Function onPressed;
+  final EdgeInsetsGeometry padding;
+  final double fontSize;
 
   @override
   Widget build(BuildContext context) {
@@ -19,8 +23,10 @@ class SecondaryButton extends StatelessWidget {
       child: ParagraphText(
         text: text,
         textColor: Theme.of(context).colorScheme.textOnSecondary,
+        fontSize: fontSize,
       ),
       onPressed: onPressed,
+      padding: padding,
     );
   }
 }

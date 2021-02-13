@@ -21,7 +21,7 @@ class ParagraphText extends StatelessWidget {
         text,
         style: TextStyle(
           fontWeight: FontWeight.w400,
-          fontSize: fontSize,
+          fontSize: fontSize ?? 16,
           color: textColor,
         ),
         overflow: overflow,
