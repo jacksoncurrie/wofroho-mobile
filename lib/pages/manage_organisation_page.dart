@@ -131,7 +131,6 @@ class _ManageOrganisationPageState extends State<ManageOrganisationPage> {
 
   Widget _showRequestsList() {
     return RequestsList(
-      personTapped: (person) {},
       people: [
         Person(
           id: "3",
@@ -155,7 +154,7 @@ class _ManageOrganisationPageState extends State<ManageOrganisationPage> {
             DateTime.now().add(Duration(days: 2)),
             DateTime.now().add(Duration(days: 3)),
           ],
-          isUser: true,
+          isUser: false,
         ),
       ],
     );
