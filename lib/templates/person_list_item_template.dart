@@ -5,13 +5,13 @@ class PersonListItemTemplate extends StatelessWidget {
     @required this.image,
     @required this.itemTitle,
     @required this.itemSubtitle,
-    @required this.dates,
+    @required this.endWidget,
   });
 
   final Widget image;
   final Widget itemTitle;
   final Widget itemSubtitle;
-  final Widget dates;
+  final Widget endWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class PersonListItemTemplate extends StatelessWidget {
         Expanded(
           child: _showNameDetails(),
         ),
-        _showDates(),
+        _showEndWidget(),
       ],
     );
   }
@@ -43,10 +43,10 @@ class PersonListItemTemplate extends StatelessWidget {
     );
   }
 
-  Widget _showDates() {
+  Widget _showEndWidget() {
     return Padding(
       padding: const EdgeInsets.only(left: 20.0),
-      child: dates,
+      child: endWidget,
     );
   }
 }

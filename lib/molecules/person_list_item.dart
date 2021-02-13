@@ -14,6 +14,7 @@ class PersonListItem extends StatelessWidget {
     @required this.role,
     @required this.dates,
     this.onTap,
+    this.endWidget,
   });
 
   final String personId;
@@ -22,6 +23,7 @@ class PersonListItem extends StatelessWidget {
   final bool personOutlined;
   final String role;
   final List<DateTime> dates;
+  final Widget endWidget;
   final void Function() onTap;
 
   @override
@@ -37,7 +39,7 @@ class PersonListItem extends StatelessWidget {
           image: _showImage(context),
           itemTitle: _showName(),
           itemSubtitle: _showRole(),
-          dates: _showDates(),
+          endWidget: endWidget ?? _showDates(),
         ),
       ),
     );

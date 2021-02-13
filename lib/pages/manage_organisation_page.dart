@@ -5,6 +5,7 @@ import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/badge.dart';
+import 'package:wofroho_mobile/molecules/dialog_popup.dart';
 import 'package:wofroho_mobile/organisms/person_list.dart';
 import 'package:wofroho_mobile/organisms/requests_list.dart';
 import 'package:wofroho_mobile/organisms/tab_group.dart';
@@ -20,6 +21,7 @@ class ManageOrganisationPage extends StatefulWidget {
 
 class _ManageOrganisationPageState extends State<ManageOrganisationPage> {
   int _tabIndex;
+  int _requests;
 
   void _skipPressed() {
     Navigator.pop(context);
@@ -28,6 +30,7 @@ class _ManageOrganisationPageState extends State<ManageOrganisationPage> {
   @override
   void initState() {
     _tabIndex = 0;
+    _requests = 2;
 
     super.initState();
   }
@@ -90,10 +93,11 @@ class _ManageOrganisationPageState extends State<ManageOrganisationPage> {
           text: 'Requests',
           fontSize: 20,
         ),
-        Padding(
-          padding: const EdgeInsets.only(left: 10),
-          child: Badge(number: 2),
-        ),
+        if (_requests > 0)
+          Padding(
+            padding: const EdgeInsets.only(left: 10),
+            child: Badge(number: _requests),
+          ),
       ],
     );
   }
@@ -157,9 +161,33 @@ class _ManageOrganisationPageState extends State<ManageOrganisationPage> {
     );
   }
 
+  Widget _showRemoveEmployee() {
+    return SvgPicture.asset(
+      'assets/images/error.svg',
+      semanticsLabel: "Error icon",
+    );
+  }
+
+  void _openChangeOrganisation(Person person) {
+    showDialogPopup(
+      context: context,
+      title: 'Remove employee',
+      message: 'Are you sure you want to remove ${person.name}?',
+      primaryText: 'Continue',
+      secondaryText: 'Cancel',
+      primaryPressed: () => _removeEmployee(person),
+      secondaryPressed: () => Navigator.pop(context),
+    );
+  }
+
+  void _removeEmployee(Person person) {
+    Navigator.pop(context);
+  }
+
   Widget _showPersonList() {
     return PersonList(
-      personTapped: (person) {},
+      iconButton: _showRemoveEmployee(),
+      iconTapped: _openChangeOrganisation,
       people: [
         Person(
           id: "1",
