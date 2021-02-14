@@ -15,8 +15,10 @@ class FadePageTransition<T> extends PageRoute<T> {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
-    return FadeScaleTransition(
+    return SharedAxisTransition(
       animation: animation,
+      secondaryAnimation: secondaryAnimation,
+      transitionType: SharedAxisTransitionType.scaled,
       child: child,
     );
   }
@@ -25,5 +27,5 @@ class FadePageTransition<T> extends PageRoute<T> {
   bool get maintainState => true;
 
   @override
-  Duration get transitionDuration => Duration(milliseconds: 300);
+  Duration get transitionDuration => Duration(milliseconds: 400);
 }
