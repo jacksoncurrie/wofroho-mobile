@@ -15,9 +15,8 @@ class FadePageTransition<T> extends PageRoute<T> {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
-    return FadeThroughTransition(
+    return FadeScaleTransition(
       animation: animation,
-      secondaryAnimation: secondaryAnimation,
       child: child,
     );
   }
