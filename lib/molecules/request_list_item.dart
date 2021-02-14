@@ -3,7 +3,6 @@ import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/user_image.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/molecules/secondary_button.dart';
-import 'package:wofroho_mobile/templates/person_list_item_template.dart';
 import 'package:wofroho_mobile/templates/requests_list_item_template.dart';
 import '../theme.dart';
 
