@@ -1,65 +1,57 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:wofroho_mobile/organisms/button_pair.dart';
-import 'package:wofroho_mobile/pages/details_page.dart';
+import 'package:wofroho_mobile/animations/slide_right_transition.dart';
+import 'package:wofroho_mobile/molecules/primary_button.dart';
+import 'package:wofroho_mobile/molecules/text_with_image.dart';
 import 'package:wofroho_mobile/pages/setup_page.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
+import 'package:wofroho_mobile/templates/padded_scroll_page_template.dart';
 
-class AllSetUpPage extends StatefulWidget {
-  @override
-  _AllSetUpPageState createState() => _AllSetUpPageState();
-}
-
-class _AllSetUpPageState extends State<AllSetUpPage> {
-  void _homePressed() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => DetailsPage(),
-      ),
-    );
-  }
-
-  void _beginSetup() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (ctx) => SetupPage(),
-      ),
-    );
+class AllSetUpPage extends StatelessWidget {
+  void _getStartedPressed(BuildContext context) {
+    var nextPage = SetupPage(initialSetup: true);
+    Navigator.of(context).pushReplacement(SlideRightTransition(nextPage));
   }
 
   @override
   Widget build(BuildContext context) {
-    return InputTemplate(
-      pageWidgets: _showPageWidgets(),
-      bottomWidget: _showBottomWidget(),
+    return PaddedScrollPageTemplate(
+      pageWidgets: InputTemplate(
+        pageWidgets: _showPageWidgets(),
+        bottomWidget: _showBottomWidget(context),
+      ),
       background: _showBackground(),
+    );
+  }
+
+  Widget _showPartyPopper() {
+    return SvgPicture.asset(
+      'assets/images/party_popper.svg',
+      semanticsLabel: "Party popper",
+      fit: BoxFit.contain,
+      width: 50.0,
     );
   }
 
   Widget _showPageWidgets() {
     return Center(
-      child: SvgPicture.asset(
-        'assets/all_set_up.svg',
-        semanticsLabel: "All set up text",
-        fit: BoxFit.contain,
+      child: TextWithImage(
+        text: 'All set up, yeah!',
+        image: _showPartyPopper(),
       ),
     );
   }
 
-  Widget _showBottomWidget() {
-    return ButtonPair(
-      primaryText: "Setup",
-      primaryOnPressed: _beginSetup,
-      secondaryText: "Home",
-      secondaryOnPressed: _homePressed,
+  Widget _showBottomWidget(BuildContext context) {
+    return PrimaryButton(
+      text: 'Let\'s get started',
+      onPressed: () => _getStartedPressed(context),
     );
   }
 
   Widget _showBackground() {
     return SvgPicture.asset(
-      'assets/confetti.svg',
+      'assets/images/confetti.svg',
       semanticsLabel: "Success confetti",
       fit: BoxFit.cover,
     );

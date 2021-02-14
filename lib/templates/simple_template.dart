@@ -4,23 +4,34 @@ import '../theme.dart';
 class SimpleTemplate extends StatelessWidget {
   SimpleTemplate({
     @required this.pageWidgets,
+    this.overlayWidget,
   });
 
   final Widget pageWidgets;
+  final Widget overlayWidget;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.backgroundColor,
-      body: LayoutBuilder(builder: (context, viewportConstraints) {
-        return SingleChildScrollView(
-          child: ConstrainedBox(
-            constraints:
-                BoxConstraints(minHeight: viewportConstraints.maxHeight),
-            child: IntrinsicHeight(child: pageWidgets),
-          ),
-        );
-      }),
+      appBar: _showEmptyAppBar(context),
+      body: Stack(
+        children: [
+          pageWidgets,
+          if (overlayWidget != null) overlayWidget,
+        ],
+      ),
+    );
+  }
+
+  Widget _showEmptyAppBar(BuildContext context) {
+    return PreferredSize(
+      preferredSize: Size.fromHeight(0),
+      child: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.backgroundColor,
+        brightness: Brightness.light,
+        shadowColor: Colors.transparent,
+      ),
     );
   }
 }

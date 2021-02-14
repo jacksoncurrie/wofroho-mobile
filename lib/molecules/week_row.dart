@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:wofroho_mobile/molecules/day_tile.dart';
 import '../theme.dart';
 
@@ -6,7 +7,7 @@ class WeekRow extends StatelessWidget {
   WeekRow({
     @required this.days,
     @required this.dayTapped,
-    this.focusedDay,
+    this.focusedDays,
     this.focusedBackgroundColor,
     this.focusedTextColor,
     this.secondaryDay,
@@ -18,7 +19,7 @@ class WeekRow extends StatelessWidget {
 
   final List<int> days;
   final void Function(int) dayTapped;
-  final int focusedDay;
+  final List<int> focusedDays;
   final Color focusedBackgroundColor;
   final Color focusedTextColor;
   final int secondaryDay;
@@ -27,13 +28,18 @@ class WeekRow extends StatelessWidget {
   final List<int> outlinedDays;
   final Color outlinedColor;
 
+  void _dayTappedInitial(int day) {
+    HapticFeedback.mediumImpact();
+    dayTapped(day);
+  }
+
   Color _getBackgroundColor(
     BuildContext context,
     int day,
-    int focusedDay,
+    List<int> focusedDays,
     int secondaryDay,
   ) {
-    return day == focusedDay
+    return focusedDays.contains(day)
         ? focusedBackgroundColor ?? Theme.of(context).colorScheme.accent
         : day == secondaryDay
             ? secondaryBackgroundColor ??
@@ -44,10 +50,10 @@ class WeekRow extends StatelessWidget {
   Color _getTextColor(
     BuildContext context,
     int day,
-    int focusedDay,
+    List<int> focusedDays,
     int secondaryDay,
   ) {
-    return day == focusedDay
+    return focusedDays.contains(day)
         ? focusedTextColor ?? Theme.of(context).colorScheme.text
         : day == secondaryDay
             ? secondaryTextColor ?? Theme.of(context).colorScheme.disabledText
@@ -63,17 +69,17 @@ class WeekRow extends StatelessWidget {
   }
 
   Widget _showDayTile(BuildContext context, int day) {
-    return GestureDetector(
+    return InkWell(
       child: DayTile(
-        child: day,
+        child: day.toString(),
         backgroundColor:
-            _getBackgroundColor(context, day, focusedDay, secondaryDay),
-        textColor: _getTextColor(context, day, focusedDay, secondaryDay),
+            _getBackgroundColor(context, day, focusedDays, secondaryDay),
+        textColor: _getTextColor(context, day, focusedDays, secondaryDay),
         borderColor: outlinedDays?.contains(day) ?? false
             ? outlinedColor ?? Theme.of(context).colorScheme.accent
             : null,
       ),
-      onTap: () => dayTapped(day),
+      onTap: () => _dayTappedInitial(day),
     );
   }
 }
