@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:animations/animations.dart';
 
 class FadePageTransition<T> extends PageRoute<T> {
   FadePageTransition(this.child);
@@ -14,8 +15,9 @@ class FadePageTransition<T> extends PageRoute<T> {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
-    return FadeTransition(
-      opacity: animation,
+    return FadeThroughTransition(
+      animation: animation,
+      secondaryAnimation: secondaryAnimation,
       child: child,
     );
   }
