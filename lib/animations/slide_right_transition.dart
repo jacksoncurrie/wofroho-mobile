@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:animations/animations.dart';
 
 class SlideRightTransition<T> extends PageRoute<T> {
   SlideRightTransition(this.child);
@@ -14,14 +15,10 @@ class SlideRightTransition<T> extends PageRoute<T> {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
-    var begin = Offset(1.0, 0.0);
-    var end = Offset.zero;
-    var curve = Curves.ease;
-    var curveTween = CurveTween(curve: curve);
-    var tween = Tween(begin: begin, end: end).chain(curveTween);
-
-    return SlideTransition(
-      position: animation.drive(tween),
+    return SharedAxisTransition(
+      animation: animation,
+      secondaryAnimation: secondaryAnimation,
+      transitionType: SharedAxisTransitionType.horizontal,
       child: child,
     );
   }
@@ -30,5 +27,5 @@ class SlideRightTransition<T> extends PageRoute<T> {
   bool get maintainState => true;
 
   @override
-  Duration get transitionDuration => Duration(milliseconds: 300);
+  Duration get transitionDuration => Duration(milliseconds: 400);
 }
