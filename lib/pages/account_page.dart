@@ -99,14 +99,9 @@ class _AccountPageState extends State<AccountPage> {
       context: context,
       title: 'Unsaved changes',
       message: 'Would you like to save the changes you have made?',
-      primaryText: 'Save changes',
-      secondaryText: 'Close without saving',
+      primaryText: 'Leave without saving',
       primaryPressed: () {
         // Drop popup
-        Navigator.pop(context);
-        if (_validateInputs()) _nextPressed();
-      },
-      secondaryPressed: () {
         Navigator.pop(context);
         _backPressed();
       },
@@ -119,9 +114,7 @@ class _AccountPageState extends State<AccountPage> {
       title: 'Leave setup',
       message: 'Are you sure you want leave the setup?',
       primaryText: 'Continue',
-      secondaryText: 'Cancel',
       primaryPressed: _backPressed,
-      secondaryPressed: () => Navigator.pop(context),
     );
   }
 
@@ -202,9 +195,7 @@ class _AccountPageState extends State<AccountPage> {
       title: 'Change organisation',
       message: 'Are you sure you want to change organisation?',
       primaryText: 'Continue',
-      secondaryText: 'Cancel',
       primaryPressed: _changeOrganisation,
-      secondaryPressed: () => Navigator.pop(context),
     );
   }
 

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
+import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/models/person.dart';
@@ -29,7 +30,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
   void _settingsPressed() {
     Navigator.of(context).push(
-      FadePageTransition(
+      SlideRightTransition(
         SettingsPage(),
       ),
     );

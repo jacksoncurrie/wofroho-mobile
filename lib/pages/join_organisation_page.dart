@@ -63,9 +63,7 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
       title: 'Leave setup',
       message: 'Are you sure you want leave the setup?',
       primaryText: 'Continue',
-      secondaryText: 'Cancel',
       primaryPressed: _closePressed,
-      secondaryPressed: () => Navigator.pop(context),
     );
   }
 

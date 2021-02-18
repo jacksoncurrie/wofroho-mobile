@@ -35,14 +35,9 @@ class _EditWeekPageState extends State<EditWeekPage> {
       context: context,
       title: 'Unsaved changes',
       message: 'Would you like to save the changes you have made?',
-      primaryText: 'Save changes',
-      secondaryText: 'Close without saving',
+      primaryText: 'Leave without saving',
       primaryPressed: () {
         // Drop popup
-        Navigator.pop(context);
-        _savePressed();
-      },
-      secondaryPressed: () {
         Navigator.pop(context);
         _closePressed();
       },

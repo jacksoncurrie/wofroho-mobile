@@ -173,9 +173,7 @@ class _ManageOrganisationPageState extends State<ManageOrganisationPage> {
       title: 'Remove employee',
       message: 'Are you sure you want to remove ${person.name}?',
       primaryText: 'Continue',
-      secondaryText: 'Cancel',
       primaryPressed: () => _removeEmployee(person),
-      secondaryPressed: () => Navigator.pop(context),
     );
   }
 
