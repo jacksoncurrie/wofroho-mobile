@@ -142,7 +142,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
         textColor: Colors.white,
       ),
       isShown: _showNotification,
-      color: Theme.of(context).colorScheme.primaryColor,
+      color: Theme.of(context).colorScheme.darkBackground,
     );
   }
 
@@ -219,7 +219,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 15, left: 5),
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(strokeWidth: 2),
       ),
     );
   }

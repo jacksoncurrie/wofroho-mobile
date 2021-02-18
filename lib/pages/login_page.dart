@@ -21,7 +21,6 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _areaCodeController = TextEditingController();
   final _numberController = TextEditingController();
-  final _countryController = TextEditingController();
   ValidationType _validationType;
 
   void _unsetValidation() {
@@ -55,7 +54,6 @@ class _LoginPageState extends State<LoginPage> {
   @override
   void initState() {
     _areaCodeController.text = "+64";
-    _countryController.text = "New Zealand";
     _validationType = ValidationType.none;
     super.initState();
   }
@@ -75,7 +73,6 @@ class _LoginPageState extends State<LoginPage> {
                   padding: const EdgeInsets.only(bottom: 50.0),
                   child: _showLogo(),
                 ),
-                _showCountryField(),
                 _showPhoneField(),
               ],
             ),
@@ -100,24 +97,9 @@ class _LoginPageState extends State<LoginPage> {
       context: context,
       showPhoneCode: true,
       onSelect: (countryPicked) {
-        _countryController.text = countryPicked.name;
         _areaCodeController.text = "+${countryPicked.phoneCode}";
       },
       countryFilter: ['NZ'],
-    );
-  }
-
-  Widget _showCountryField() {
-    return FormItemSpace(
-      child: DataField(
-        title: 'Country',
-        child: TextInput(
-          controller: _countryController,
-          hintText: 'Please select country',
-          enabled: false,
-          onTap: _showCountryPicker,
-        ),
-      ),
     );
   }
 
@@ -137,6 +119,8 @@ class _LoginPageState extends State<LoginPage> {
                   keyboardType: TextInputType.phone,
                   validationType: _validationType,
                   showIconWithValidation: false,
+                  enabled: false,
+                  onTap: _showCountryPicker,
                   onChanged: (_) => _unsetValidation(),
                 ),
               ),

@@ -34,7 +34,7 @@ flutter_icons:
 flutter_native_splash:
   ios: false # iOS done manually at this stage
   image: "assets/wofroho_logo_full.png"
-  color: "FBFBFB"
+  color: "3756F6"
   android_disable_fullscreen: true
 
 flutter:
