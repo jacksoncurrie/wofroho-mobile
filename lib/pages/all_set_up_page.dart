@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:wofroho_mobile/animations/slide_right_transition.dart';
+import 'package:wofroho_mobile/animations/fade_page_transition.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/molecules/text_with_image.dart';
-import 'package:wofroho_mobile/pages/setup_page.dart';
+import 'package:wofroho_mobile/pages/details_page.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
 import 'package:wofroho_mobile/templates/padded_scroll_page_template.dart';
 
 class AllSetUpPage extends StatelessWidget {
   void _getStartedPressed(BuildContext context) {
-    var nextPage = SetupPage(initialSetup: true);
-    Navigator.of(context).pushReplacement(SlideRightTransition(nextPage));
+    var nextPage = DetailsPage();
+    Navigator.of(context).pushReplacement(FadePageTransition(nextPage));
   }
 
   @override

@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wofroho_mobile/animations/fade_page_transition.dart';
 import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/organisms/country_list_bottom_sheet.dart';
+import 'package:wofroho_mobile/pages/details_page.dart';
 import 'package:wofroho_mobile/pages/validate_phone_page.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -83,11 +85,21 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
+  // Just temporary
+  void _skipSetup() {
+    var nextPage = DetailsPage();
+    Navigator.of(context).pushReplacement(FadePageTransition(nextPage));
+  }
+
   Widget _showLogo() {
     return Center(
-      child: SvgPicture.asset(
-        'assets/images/wofroho_logo_full.svg',
-        semanticsLabel: "Wofroho logo",
+      // Just temporary
+      child: GestureDetector(
+        onDoubleTap: _skipSetup,
+        child: SvgPicture.asset(
+          'assets/images/wofroho_logo_full.svg',
+          semanticsLabel: "Wofroho logo",
+        ),
       ),
     );
   }

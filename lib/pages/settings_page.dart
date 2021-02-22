@@ -10,7 +10,6 @@ import 'package:wofroho_mobile/pages/about_page.dart';
 import 'package:wofroho_mobile/pages/account_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
 import 'package:wofroho_mobile/pages/manage_organisation_page.dart';
-import 'package:wofroho_mobile/pages/setup_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
 import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
@@ -25,12 +24,6 @@ class SettingsPage extends StatefulWidget {
 class _SettingsPageState extends State<SettingsPage> {
   void _closePressed() {
     Navigator.pop(context);
-  }
-
-  void _generalPressed() {
-    Navigator.of(context).push(
-      SlideRightTransition(SetupPage(initialSetup: false)),
-    );
   }
 
   void _accountPressed() {
@@ -109,13 +102,11 @@ class _SettingsPageState extends State<SettingsPage> {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         _showSettingDivider(),
-        _showSettingItem("General", _generalPressed),
-        _showSettingDivider(),
         _showSettingItem("Account", _accountPressed),
         _showSettingDivider(),
-        _showSettingItem("About", _aboutPressed),
-        _showSettingDivider(),
         _showSettingItem("Organisation", _organisationPressed),
+        _showSettingDivider(),
+        _showSettingItem("About", _aboutPressed),
         _showSettingDivider(),
         _showSettingItem("Logout", _logoutPressed),
         _showSettingDivider(),

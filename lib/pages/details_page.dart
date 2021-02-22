@@ -6,7 +6,7 @@ import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/models/person.dart';
-import 'package:wofroho_mobile/molecules/empty_state.dart';
+// import 'package:wofroho_mobile/molecules/empty_state.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/organisms/calendar_week_picker.dart';
 import 'package:wofroho_mobile/organisms/person_list.dart';
@@ -80,8 +80,8 @@ class _DetailsPageState extends State<DetailsPage> {
       alignment: Alignment.centerRight,
       child: SingleIconButton(
         icon: SvgPicture.asset(
-          'assets/images/settings.svg',
-          semanticsLabel: "Settings icon",
+          'assets/images/menu.svg',
+          semanticsLabel: "Menu icon",
         ),
         onPressed: _settingsPressed,
       ),
@@ -142,14 +142,14 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
-  Widget _showEmptyState() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 40.0),
-      child: EmptyState(
-        text: "No one is wofroho today",
-      ),
-    );
-  }
+  // Widget _showEmptyState() {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(top: 40.0),
+  //     child: EmptyState(
+  //       text: "No one is wofroho today",
+  //     ),
+  //   );
+  // }
 
   void _personTapped(Person person) {
     var profilePage = ProfilePage(person: person);
