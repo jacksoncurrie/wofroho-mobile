@@ -45,5 +45,8 @@
 	<string>Adds photos of users so that people can recognize their profile</string>
 	<key>NSCameraUsageDescription</key>
 	<string>Adds photos of users so that people can recognize their profile</string>
+	<key>UIStatusBarHidden</key>
+	<true/>
+
 </dict>
 </plist>

@@ -32,7 +32,7 @@ flutter_icons:
 
 # Run with: flutter pub pub run flutter_native_splash:create
 flutter_native_splash:
-  ios: false # iOS done manually at this stage
+  ios: true
   image: "assets/wofroho_logo_full.png"
   color: "3756F6"
   android_disable_fullscreen: true
