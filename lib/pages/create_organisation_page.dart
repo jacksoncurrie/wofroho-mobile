@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wofroho_mobile/animations/slide_right_transition.dart';
+import 'package:wofroho_mobile/animations/fade_page_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/rich_text_paragraph.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
-import 'package:wofroho_mobile/pages/all_set_up_page.dart';
+import 'package:wofroho_mobile/pages/details_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -53,9 +53,9 @@ class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
   }
 
   void _createPressed() {
-    var nextPage = AllSetUpPage();
+    var nextPage = DetailsPage();
     Navigator.of(context)
-        .pushAndRemoveUntil(SlideRightTransition(nextPage), (_) => false);
+        .pushAndRemoveUntil(FadePageTransition(nextPage), (_) => false);
   }
 
   @override

@@ -11,9 +11,9 @@ import 'package:wofroho_mobile/molecules/dialog_popup.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/organisms/button_pair.dart';
+import 'package:wofroho_mobile/pages/all_set_up_page.dart';
 import 'package:wofroho_mobile/pages/create_organisation_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
-import 'package:wofroho_mobile/pages/waiting_for_organisation_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -83,7 +83,7 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
   }
 
   void _nextPressed() {
-    var nextPage = WaitingForOrganisationPage();
+    var nextPage = AllSetUpPage();
     Navigator.of(context)
         .pushAndRemoveUntil(SlideRightTransition(nextPage), (_) => false);
   }

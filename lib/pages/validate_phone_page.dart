@@ -194,7 +194,6 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
         title: 'Enter code',
         child: TextInput(
           controller: _codeController,
-          hintText: '123-456',
           keyboardType: TextInputType.number,
           validationType: _validationType,
           onChanged: (_) => _unsetValidation(),

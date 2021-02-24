@@ -43,6 +43,7 @@ class _AccountPageState extends State<AccountPage> {
   final _nameController = TextEditingController();
   final _roleController = TextEditingController();
   final _organisationController = TextEditingController();
+  final _phoneController = TextEditingController();
   ValidationType _nameValidationType;
   ValidationType _roleValidationType;
   ValidationType _imageValidationType;
@@ -209,6 +210,8 @@ class _AccountPageState extends State<AccountPage> {
       _organisationController.text = 'Wayne Enterprises';
     }
 
+    _phoneController.text = '+64123456789';
+
     _nameValidationType = ValidationType.none;
     _roleValidationType = ValidationType.none;
   }
@@ -274,6 +277,7 @@ class _AccountPageState extends State<AccountPage> {
         _showProfileImage(),
         _showNameField(),
         _showRoleField(),
+        _showNumberField(),
         if (!widget.initialSetup) _showOrganisationField(),
       ],
     );
@@ -364,6 +368,18 @@ class _AccountPageState extends State<AccountPage> {
     return ParagraphText(
       text: 'Role is required',
       textColor: Theme.of(context).colorScheme.errorColor,
+    );
+  }
+
+  Widget _showNumberField() {
+    return FormItemSpace(
+      child: DataField(
+        title: 'Phone number',
+        child: TextInput(
+          enabled: false,
+          controller: _phoneController,
+        ),
+      ),
     );
   }
 
