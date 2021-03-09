@@ -14,7 +14,7 @@ dependencies:
 
   flutter_svg: ^0.19.3
   intl: ^0.16.1
-  image_picker: ^0.6.7+17
+  image_picker: ^0.6.7+22
   animations: ^1.1.2
 
 dev_dependencies:
