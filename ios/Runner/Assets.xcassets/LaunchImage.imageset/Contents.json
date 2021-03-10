@@ -1,17 +1,17 @@
 {
   "images" : [
     {
-      "filename" : "wofroho - iOS - splashsreen.png",
+      "filename" : "LaunchImage.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "wofroho - iOS - splashsreen@2x.png",
+      "filename" : "LaunchImage@2x.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "wofroho - iOS - splashsreen@3x.png",
+      "filename" : "LaunchImage@3x.png",
       "idiom" : "universal",
       "scale" : "3x"
     }
