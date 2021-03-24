@@ -7,24 +7,24 @@ import '../theme.dart';
 
 class PersonListItem extends StatelessWidget {
   PersonListItem({
-    @required this.personId,
-    @required this.image,
-    @required this.name,
+    required this.personId,
+    required this.image,
+    required this.name,
     this.personOutlined = false,
-    @required this.role,
-    @required this.dates,
+    required this.role,
+    required this.dates,
     this.onTap,
     this.endWidget,
   });
 
-  final String personId;
+  final String? personId;
   final ImageProvider<Object> image;
   final String name;
-  final bool personOutlined;
+  final bool? personOutlined;
   final String role;
-  final List<DateTime> dates;
-  final Widget endWidget;
-  final void Function() onTap;
+  final List<DateTime>? dates;
+  final Widget? endWidget;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -53,7 +53,7 @@ class PersonListItem extends StatelessWidget {
         width: 50,
         image: image,
         borderColor:
-            personOutlined ? Theme.of(context).colorScheme.accent : null,
+            personOutlined! ? Theme.of(context).colorScheme.accent : null,
       ),
     );
   }

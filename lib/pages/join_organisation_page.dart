@@ -24,8 +24,8 @@ import '../theme.dart';
 
 class JoinOrganisationPage extends StatefulWidget {
   JoinOrganisationPage({
-    @required this.person,
-    @required this.initialSetup,
+    required this.person,
+    required this.initialSetup,
   });
 
   final bool initialSetup;
@@ -37,7 +37,7 @@ class JoinOrganisationPage extends StatefulWidget {
 
 class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
   final _organisationController = TextEditingController();
-  ValidationType _validationType;
+  ValidationType? _validationType;
 
   bool _validateCode() {
     if (_organisationController.text.isEmpty) {

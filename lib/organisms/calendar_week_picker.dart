@@ -6,9 +6,9 @@ import 'package:wofroho_mobile/molecules/weekday_name_row.dart';
 
 class CalendarWeekPicker extends StatelessWidget {
   CalendarWeekPicker({
-    @required this.dayBegin,
-    @required this.dayTapped,
-    @required this.focusedDays,
+    required this.dayBegin,
+    required this.dayTapped,
+    required this.focusedDays,
     this.startDay = 1,
     this.weekChanged,
     this.secondaryDay,
@@ -18,16 +18,16 @@ class CalendarWeekPicker extends StatelessWidget {
     this.outlinedColor,
   });
 
-  final DateTime dayBegin;
+  final DateTime? dayBegin;
   final void Function(DateTime) dayTapped;
   final List<int> focusedDays;
   final int startDay;
-  final void Function(int) weekChanged;
-  final int secondaryDay;
-  final Color focusedBackgroundColor;
-  final Color focusedTextColor;
-  final List<int> outlinedDays;
-  final Color outlinedColor;
+  final void Function(int)? weekChanged;
+  final int? secondaryDay;
+  final Color? focusedBackgroundColor;
+  final Color? focusedTextColor;
+  final List<int>? outlinedDays;
+  final Color? outlinedColor;
 
   final pageViewController = PageController(
     initialPage: 0,
@@ -36,11 +36,11 @@ class CalendarWeekPicker extends StatelessWidget {
   static const _monthStringFormat = 'MMMM';
 
   WeekDetails _getDays(int weekNumber) {
-    var days = List<int>();
-    int year;
-    String month;
+    var days = <int>[];
+    int? year;
+    String? month;
     for (var i = 0; i < 7; i++) {
-      final day = dayBegin.add(Duration(days: i + (weekNumber * 7)));
+      final day = dayBegin!.add(Duration(days: i + (weekNumber * 7)));
       days.add(day.day);
       if (i == 0) {
         final formatter = DateFormat(_monthStringFormat);
@@ -51,7 +51,7 @@ class CalendarWeekPicker extends StatelessWidget {
     return WeekDetails(year: year, month: month, days: days);
   }
 
-  void _dayTapped(int day, String month, int year) {
+  void _dayTapped(int day, String? month, int? year) {
     final dayTap =
         DateFormat('d $_monthStringFormat yyyy').parse("$day $month $year");
     dayTapped(dayTap);
@@ -90,7 +90,7 @@ class CalendarWeekPicker extends StatelessWidget {
     );
   }
 
-  Widget _showMonthAndYear(String month, int year) {
+  Widget _showMonthAndYear(String? month, int? year) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 10.0),
       child: ParagraphText(
@@ -107,7 +107,7 @@ class WeekDetails {
     this.days,
   });
 
-  int year;
-  String month;
-  List<int> days;
+  int? year;
+  String? month;
+  List<int>? days;
 }

@@ -23,7 +23,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final _areaCodeController = TextEditingController();
   final _numberController = TextEditingController();
-  ValidationType _validationType;
+  ValidationType? _validationType;
 
   void _unsetValidation() {
     if (_validationType != ValidationType.none) {

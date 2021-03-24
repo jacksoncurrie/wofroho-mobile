@@ -5,14 +5,14 @@ import '../theme.dart';
 
 class SignInButton extends StatelessWidget {
   SignInButton({
-    @required this.text,
-    @required this.onPressed,
+    required this.text,
+    required this.onPressed,
     this.image,
   });
 
   final String text;
-  final Function onPressed;
-  final Widget image;
+  final void Function() onPressed;
+  final Widget? image;
 
   @override
   Widget build(BuildContext context) {

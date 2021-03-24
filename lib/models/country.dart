@@ -16,42 +16,42 @@ class Country {
   });
 
   ///The country phone code
-  final String phoneCode;
+  final String? phoneCode;
 
   ///The country code, ISO (alpha-2)
-  final String countryCode;
-  final int e164Sc;
-  final bool geographic;
-  final int level;
+  final String? countryCode;
+  final int? e164Sc;
+  final bool? geographic;
+  final int? level;
 
   ///The country name in English
-  final String name;
+  final String? name;
 
   ///An example of a telephone number without the phone code
-  final String example;
+  final String? example;
 
   ///Country name (country code) [phone code]
-  final String displayName;
+  final String? displayName;
 
   ///An example of a telephone number with the phone code and plus sign
-  final String fullExampleWithPlusSign;
+  final String? fullExampleWithPlusSign;
 
   ///Country name (country code)
-  final String displayNameNoCountryCode;
-  final String e164Key;
+  final String? displayNameNoCountryCode;
+  final String? e164Key;
 
-  Country.from({Map<String, dynamic> json})
-      : phoneCode = json['e164_cc'] as String,
-        countryCode = json['iso2_cc'] as String,
-        e164Sc = json['e164_sc'] as int,
-        geographic = json['geographic'] as bool,
-        level = json['level'] as int,
-        name = json['name'] as String,
-        example = json['example'] as String,
-        displayName = json['display_name'] as String,
-        fullExampleWithPlusSign = json['full_example_with_plus_sign'] as String,
-        displayNameNoCountryCode = json['display_name_no_e164_cc'] as String,
-        e164Key = json['e164_key'] as String;
+  Country.from({required Map<String, dynamic> json})
+      : phoneCode = json['e164_cc'] as String?,
+        countryCode = json['iso2_cc'] as String?,
+        e164Sc = json['e164_sc'] as int?,
+        geographic = json['geographic'] as bool?,
+        level = json['level'] as int?,
+        name = json['name'] as String?,
+        example = json['example'] as String?,
+        displayName = json['display_name'] as String?,
+        fullExampleWithPlusSign = json['full_example_with_plus_sign'] as String?,
+        displayNameNoCountryCode = json['display_name_no_e164_cc'] as String?,
+        e164Key = json['e164_key'] as String?;
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
@@ -70,8 +70,8 @@ class Country {
   }
 
   bool startsWith(String query) =>
-      name.toLowerCase().startsWith(query.toLowerCase()) ||
-      countryCode.toLowerCase().startsWith(query.toLowerCase());
+      name!.toLowerCase().startsWith(query.toLowerCase()) ||
+      countryCode!.toLowerCase().startsWith(query.toLowerCase());
 
   @override
   String toString() => 'Country(countryCode: $countryCode, name: $name)';

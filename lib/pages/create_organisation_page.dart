@@ -23,8 +23,8 @@ class CreateOrganisationPage extends StatefulWidget {
 
 class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
   final _organisationController = TextEditingController();
-  ValidationType _validationType;
-  String _message;
+  ValidationType? _validationType;
+  String? _message;
 
   bool _validateCode() {
     if (_organisationController.text.isEmpty) {

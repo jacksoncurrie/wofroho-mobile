@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 class ItemTile extends StatelessWidget {
   ItemTile({
-    @required this.child,
-    @required this.backgroundColor,
+    required this.child,
+    required this.backgroundColor,
     this.borderColor,
     this.width = 40.0,
     this.height = 40.0,
   });
 
   final Widget child;
-  final Color backgroundColor;
-  final Color borderColor;
+  final Color? backgroundColor;
+  final Color? borderColor;
   final double width;
   final double height;
 
@@ -26,7 +26,7 @@ class ItemTile extends StatelessWidget {
         border: borderColor == null
             ? null
             : Border.all(
-                color: borderColor,
+                color: borderColor!,
                 width: 2,
               ),
       ),

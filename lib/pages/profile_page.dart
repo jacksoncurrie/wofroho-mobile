@@ -11,7 +11,7 @@ import 'package:wofroho_mobile/templates/padded_scroll_page_template.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({
-    @required this.person,
+    required this.person,
   });
 
   final Person person;

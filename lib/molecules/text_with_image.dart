@@ -4,8 +4,8 @@ import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 
 class TextWithImage extends StatelessWidget {
   TextWithImage({
-    @required this.text,
-    @required this.image,
+    required this.text,
+    required this.image,
   });
 
   final String text;

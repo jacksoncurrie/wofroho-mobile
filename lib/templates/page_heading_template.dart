@@ -3,8 +3,8 @@ import 'package:wofroho_mobile/atoms/heading_text.dart';
 
 class PageHeadingTemplate extends StatelessWidget {
   PageHeadingTemplate({
-    @required this.title,
-    @required this.pageWidgets,
+    required this.title,
+    required this.pageWidgets,
   });
 
   final String title;

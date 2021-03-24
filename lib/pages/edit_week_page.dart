@@ -20,9 +20,9 @@ class EditWeekPage extends StatefulWidget {
 
 class _EditWeekPageState extends State<EditWeekPage> {
   int _focusedDay = 2;
-  DateTime _startWeekDay;
+  DateTime? _startWeekDay;
   List<DateTime> _focusedDaysWeek = [];
-  int _currentDay;
+  int? _currentDay;
 
   void _openValidateClose() {
     // Check if changes have been made

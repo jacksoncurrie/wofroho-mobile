@@ -3,14 +3,14 @@ import 'package:wofroho_mobile/templates/simple_template.dart';
 
 class PaddedPageTemplate extends StatelessWidget {
   PaddedPageTemplate({
-    @required this.pageWidgets,
+    required this.pageWidgets,
     this.background,
     this.overlayWidget,
   });
 
   final Widget pageWidgets;
-  final Widget background;
-  final Widget overlayWidget;
+  final Widget? background;
+  final Widget? overlayWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class PaddedPageTemplate extends StatelessWidget {
           if (background != null)
             Positioned(
               top: 0,
-              child: background,
+              child: background!,
             ),
           SafeArea(
             child: Padding(

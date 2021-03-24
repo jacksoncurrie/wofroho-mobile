@@ -19,7 +19,7 @@ import 'package:wofroho_mobile/templates/simple_template.dart';
 
 class SetupPage extends StatefulWidget {
   SetupPage({
-    @required this.initialSetup,
+    required this.initialSetup,
   });
 
   final bool initialSetup;
@@ -30,9 +30,9 @@ class SetupPage extends StatefulWidget {
 
 class _SetupPageState extends State<SetupPage> {
   int _focusedDay = 2;
-  DateTime _startWeekDay;
+  DateTime? _startWeekDay;
   List<DateTime> _focusedDaysWeek = [];
-  int _currentDay;
+  int? _currentDay;
 
   void _openValidateClose(void Function() backAction) {
     // Check if changes have been made

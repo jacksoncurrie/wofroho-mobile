@@ -6,11 +6,11 @@ import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 
 void showDialogPopup({
-  @required BuildContext context,
-  @required String title,
-  @required String message,
-  @required String primaryText,
-  @required void Function() primaryPressed,
+  required BuildContext context,
+  required String title,
+  required String message,
+  required String primaryText,
+  required void Function() primaryPressed,
 }) {
   showDialog(
     context: context,

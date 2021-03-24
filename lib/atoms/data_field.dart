@@ -3,8 +3,8 @@ import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 
 class DataField extends StatelessWidget {
   DataField({
-    @required this.title,
-    @required this.child,
+    required this.title,
+    required this.child,
   });
 
   final String title;

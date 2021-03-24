@@ -59,7 +59,7 @@ class AllSetUpPage extends StatelessWidget {
   Widget _showAllSetUpText() {
     return TextWithImage(
       text: 'All set up, yeah!',
-      image: _showPartyPopper(),
+      image: _showPartyPopper() as SvgPicture,
     );
   }
 

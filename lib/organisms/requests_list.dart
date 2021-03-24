@@ -5,7 +5,7 @@ import 'package:wofroho_mobile/molecules/request_list_item.dart';
 
 class RequestsList extends StatelessWidget {
   RequestsList({
-    @required this.people,
+    required this.people,
   });
 
   final List<Person> people;

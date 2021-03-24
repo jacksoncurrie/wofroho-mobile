@@ -6,16 +6,16 @@ import 'package:wofroho_mobile/molecules/person_list_item.dart';
 
 class PersonList extends StatelessWidget {
   PersonList({
-    @required this.people,
+    required this.people,
     this.personTapped,
     this.iconButton,
     this.iconTapped,
   });
 
   final List<Person> people;
-  final void Function(Person) personTapped;
-  final Widget iconButton;
-  final void Function(Person) iconTapped;
+  final void Function(Person)? personTapped;
+  final Widget? iconButton;
+  final void Function(Person)? iconTapped;
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +37,13 @@ class PersonList extends StatelessWidget {
       dates: person.datesFromHome,
       endWidget: iconButton == null ? null : _showIconButton(person),
       personOutlined: person.isUser,
-      onTap: personTapped == null ? null : () => personTapped(person),
+      onTap: personTapped == null ? null : () => personTapped!(person),
     );
   }
 
   Widget _showIconButton(Person person) {
     return SingleIconButton(
-      onPressed: () => iconTapped(person),
+      onPressed: () => iconTapped!(person),
       icon: iconButton,
     );
   }

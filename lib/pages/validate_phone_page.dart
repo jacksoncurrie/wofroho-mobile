@@ -23,7 +23,7 @@ import '../theme.dart';
 
 class ValidatePhonePage extends StatefulWidget {
   ValidatePhonePage({
-    @required this.number,
+    required this.number,
   });
 
   final String number;
@@ -34,9 +34,9 @@ class ValidatePhonePage extends StatefulWidget {
 
 class _ValidatePhonePageState extends State<ValidatePhonePage> {
   final _codeController = TextEditingController();
-  ValidationType _validationType;
-  bool _isResendingCode;
-  bool _showNotification;
+  ValidationType? _validationType;
+  late bool _isResendingCode;
+  bool? _showNotification;
 
   bool _validateCode() {
     if (_codeController.text.isEmpty) {

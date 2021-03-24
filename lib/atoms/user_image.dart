@@ -5,18 +5,18 @@ import '../theme.dart';
 class UserImage extends StatelessWidget {
   UserImage(
       {this.image,
-      @required this.width,
-      @required this.height,
+      required this.width,
+      required this.height,
       this.borderColor,
       this.borderRadius = 3.0,
       this.onTap});
 
-  final ImageProvider<Object> image;
+  final ImageProvider<Object>? image;
   final double width;
   final double height;
   final double borderRadius;
-  final Color borderColor;
-  final void Function() onTap;
+  final Color? borderColor;
+  final void Function()? onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -30,13 +30,13 @@ class UserImage extends StatelessWidget {
           border: borderColor == null
               ? null
               : Border.all(
-                  color: borderColor,
+                  color: borderColor!,
                   width: 2,
                 ),
           image: image == null
               ? null
               : DecorationImage(
-                  image: image,
+                  image: image!,
                   fit: BoxFit.cover,
                 ),
           color: Theme.of(context).colorScheme.emptyPhoto,

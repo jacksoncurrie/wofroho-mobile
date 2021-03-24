@@ -4,16 +4,16 @@ import 'package:wofroho_mobile/molecules/secondary_button.dart';
 
 class ButtonPair extends StatelessWidget {
   ButtonPair({
-    @required this.primaryText,
-    @required this.primaryOnPressed,
-    @required this.secondaryText,
-    @required this.secondaryOnPressed,
+    required this.primaryText,
+    required this.primaryOnPressed,
+    required this.secondaryText,
+    required this.secondaryOnPressed,
   });
 
   final String primaryText;
-  final Function primaryOnPressed;
+  final void Function() primaryOnPressed;
   final String secondaryText;
-  final Function secondaryOnPressed;
+  final void Function() secondaryOnPressed;
 
   @override
   Widget build(BuildContext context) {

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class NotificationToast extends StatelessWidget {
   NotificationToast({
-    @required this.isShown,
-    @required this.child,
+    required this.isShown,
+    required this.child,
     this.color = Colors.white,
   });
 
-  final bool isShown;
+  final bool? isShown;
   final Widget child;
   final Color color;
 
@@ -19,7 +19,7 @@ class NotificationToast extends StatelessWidget {
         child: AnimatedOpacity(
           curve: Curves.ease,
           duration: Duration(milliseconds: 400),
-          opacity: isShown ? 1.0 : 0.0,
+          opacity: isShown! ? 1.0 : 0.0,
           child: Container(
             width: double.infinity,
             decoration: BoxDecoration(

@@ -28,8 +28,8 @@ import '../theme.dart';
 
 class AccountPage extends StatefulWidget {
   AccountPage({
-    @required this.initialSetup,
-    @required this.person,
+    required this.initialSetup,
+    required this.person,
   });
 
   final bool initialSetup;
@@ -44,9 +44,9 @@ class _AccountPageState extends State<AccountPage> {
   final _roleController = TextEditingController();
   final _organisationController = TextEditingController();
   final _phoneController = TextEditingController();
-  ValidationType _nameValidationType;
-  ValidationType _roleValidationType;
-  ValidationType _imageValidationType;
+  ValidationType? _nameValidationType;
+  ValidationType? _roleValidationType;
+  ValidationType? _imageValidationType;
 
   void _unsetNameValidation() {
     if (_nameValidationType != ValidationType.none) {
@@ -141,10 +141,10 @@ class _AccountPageState extends State<AccountPage> {
         : Navigator.pop(context);
   }
 
-  File _image;
+  File? _image;
 
   _imgFromCamera() async {
-    PickedFile image = await ImagePicker().getImage(
+    PickedFile? image = await ImagePicker().getImage(
       source: ImageSource.camera,
       imageQuality: 50,
       maxWidth: 300,
@@ -159,7 +159,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   _imgFromGallery() async {
-    PickedFile image = await ImagePicker().getImage(
+    PickedFile? image = await ImagePicker().getImage(
       source: ImageSource.gallery,
       imageQuality: 50,
       maxWidth: 300,
@@ -291,11 +291,11 @@ class _AccountPageState extends State<AccountPage> {
           UserImage(
             height: 100,
             width: 100,
-            image: widget.initialSetup
+            image: (widget.initialSetup
                 ? _image == null
                     ? null
-                    : FileImage(_image)
-                : NetworkImage(widget.person.imageUrl),
+                    : FileImage(_image!)
+                : NetworkImage(widget.person.imageUrl)) as ImageProvider<Object>?,
             borderRadius: 4,
             onTap: _editPhoto,
           ),

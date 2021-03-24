@@ -2,13 +2,13 @@ import 'package:flutter/material.dart';
 
 class TabGroup extends StatelessWidget {
   TabGroup({
-    @required this.selectedTab,
-    @required this.tabTitles,
-    @required this.tabPages,
-    @required this.tabTapped,
+    required this.selectedTab,
+    required this.tabTitles,
+    required this.tabPages,
+    required this.tabTapped,
   });
 
-  final int selectedTab;
+  final int? selectedTab;
   final List<Widget> tabTitles;
   final List<Widget> tabPages;
   final void Function(int) tabTapped;

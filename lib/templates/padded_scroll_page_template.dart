@@ -4,11 +4,11 @@ import 'package:wofroho_mobile/templates/simple_template.dart';
 
 class PaddedScrollPageTemplate extends StatelessWidget {
   PaddedScrollPageTemplate(
-      {@required this.pageWidgets, this.background, this.overlayWidget});
+      {required this.pageWidgets, this.background, this.overlayWidget});
 
   final Widget pageWidgets;
-  final Widget background;
-  final Widget overlayWidget;
+  final Widget? background;
+  final Widget? overlayWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -19,7 +19,7 @@ class PaddedScrollPageTemplate extends StatelessWidget {
             if (background != null)
               Positioned(
                 top: 0,
-                child: background,
+                child: background!,
               ),
             SafeArea(
               child: Padding(

@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class SettingInputTemplate extends StatelessWidget {
   SettingInputTemplate({
-    @required this.labelWidget,
-    @required this.inputWidget,
+    required this.labelWidget,
+    required this.inputWidget,
     this.inputPadding = 20.0,
     this.labelPadding = 30.0,
   });

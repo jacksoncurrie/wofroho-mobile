@@ -20,8 +20,8 @@ class ManageOrganisationPage extends StatefulWidget {
 }
 
 class _ManageOrganisationPageState extends State<ManageOrganisationPage> {
-  int _tabIndex;
-  int _requests;
+  int? _tabIndex;
+  int? _requests;
 
   void _skipPressed() {
     Navigator.pop(context);
@@ -93,7 +93,7 @@ class _ManageOrganisationPageState extends State<ManageOrganisationPage> {
           text: 'Requests',
           fontSize: 20,
         ),
-        if (_requests > 0)
+        if (_requests! > 0)
           Padding(
             padding: const EdgeInsets.only(left: 10),
             child: Badge(number: _requests),

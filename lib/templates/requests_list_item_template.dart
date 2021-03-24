@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 class RequestsListItemTemplate extends StatelessWidget {
   RequestsListItemTemplate({
-    @required this.image,
-    @required this.itemTitle,
-    @required this.itemSubtitle,
+    required this.image,
+    required this.itemTitle,
+    required this.itemSubtitle,
     this.endWidget,
     this.actions,
   });
@@ -12,8 +12,8 @@ class RequestsListItemTemplate extends StatelessWidget {
   final Widget image;
   final Widget itemTitle;
   final Widget itemSubtitle;
-  final Widget endWidget;
-  final Widget actions;
+  final Widget? endWidget;
+  final Widget? actions;
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +41,7 @@ class RequestsListItemTemplate extends StatelessWidget {
       children: [
         itemTitle,
         itemSubtitle,
-        actions,
+        actions!,
       ],
     );
   }

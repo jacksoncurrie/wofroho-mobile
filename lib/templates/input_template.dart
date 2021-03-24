@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class InputTemplate extends StatelessWidget {
   InputTemplate({
-    @required this.pageWidgets,
-    @required this.bottomWidget,
+    required this.pageWidgets,
+    required this.bottomWidget,
   });
 
   final Widget pageWidgets;

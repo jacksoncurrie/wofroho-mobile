@@ -10,7 +10,7 @@ class FadePageTransition<T> extends PageRoute<T> {
   Color get barrierColor => Colors.transparent;
 
   @override
-  String get barrierLabel => null;
+  String? get barrierLabel => null;
 
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,

@@ -7,11 +7,10 @@ import 'package:wofroho_mobile/molecules/secondary_button.dart';
 import '../theme.dart';
 
 void pickImageBottomSheet({
-  @required BuildContext context,
-  @required void Function() imgFromGallery,
-  @required void Function() imgFromCamera,
+  required BuildContext context,
+  required void Function() imgFromGallery,
+  required void Function() imgFromCamera,
 }) {
-  assert(context != null);
   showModalBottomSheet(
     context: context,
     backgroundColor: Colors.transparent,

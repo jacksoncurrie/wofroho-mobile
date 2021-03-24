@@ -23,9 +23,9 @@ class DetailsPage extends StatefulWidget {
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  DateTime _startWeekDay;
+  DateTime? _startWeekDay;
   int _currentDay = 0;
-  DateTime _focusedDay;
+  late DateTime _focusedDay;
   List<int> _outlinedDays = [9, 11];
 
   void _settingsPressed() {
@@ -94,7 +94,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
   void _weekChanged(int weekNumber) {
     // Get new weeks monday
-    final newWeekMonday = _startWeekDay.add(Duration(days: weekNumber * 7));
+    final newWeekMonday = _startWeekDay!.add(Duration(days: weekNumber * 7));
     setState(() {
       _focusedDay = newWeekMonday;
       _currentDay = weekNumber == 0 ? DateTime.now().day : 0;

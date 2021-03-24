@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 
 class PersonListItemTemplate extends StatelessWidget {
   PersonListItemTemplate({
-    @required this.image,
-    @required this.itemTitle,
-    @required this.itemSubtitle,
+    required this.image,
+    required this.itemTitle,
+    required this.itemSubtitle,
     this.endWidget,
   });
 
   final Widget image;
   final Widget itemTitle;
   final Widget itemSubtitle;
-  final Widget endWidget;
+  final Widget? endWidget;
 
   @override
   Widget build(BuildContext context) {

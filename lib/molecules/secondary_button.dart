@@ -5,16 +5,16 @@ import '../theme.dart';
 
 class SecondaryButton extends StatelessWidget {
   SecondaryButton({
-    @required this.text,
-    @required this.onPressed,
+    required this.text,
+    required this.onPressed,
     this.padding,
     this.fontSize,
   });
 
   final String text;
-  final Function onPressed;
-  final EdgeInsetsGeometry padding;
-  final double fontSize;
+  final void Function() onPressed;
+  final EdgeInsetsGeometry? padding;
+  final double? fontSize;
 
   @override
   Widget build(BuildContext context) {
