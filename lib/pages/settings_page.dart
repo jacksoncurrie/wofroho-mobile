@@ -33,7 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
           initialSetup: false,
           person: Person(
             id: "1",
-            imageUrl: "http://placekitten.com/300/300",
+            imageUrl: "https://placekitten.com/300/300",
             name: "Bruce Wayne",
             role: "Businessman, entrepreneur, accountant",
           ),
