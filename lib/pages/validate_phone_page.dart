@@ -1,19 +1,19 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/animations/child_page_transition.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
-import 'package:wofroho_mobile/animations/next_page_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/notification_toast.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
-import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/dialog_popup.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
-import 'package:wofroho_mobile/pages/account_page.dart';
+import 'package:wofroho_mobile/pages/details_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
+import 'package:wofroho_mobile/services/authentication.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -25,9 +25,13 @@ import '../theme.dart';
 class ValidatePhonePage extends StatefulWidget {
   ValidatePhonePage({
     required this.number,
+    required this.verificationId,
+    required this.resendToken,
   });
 
   final String number;
+  final String verificationId;
+  final int? resendToken;
 
   @override
   _ValidatePhonePageState createState() => _ValidatePhonePageState();
@@ -35,9 +39,13 @@ class ValidatePhonePage extends StatefulWidget {
 
 class _ValidatePhonePageState extends State<ValidatePhonePage> {
   final _codeController = TextEditingController();
-  ValidationType? _validationType;
+  late ValidationType _validationType;
   late bool _isResendingCode;
-  bool? _showNotification;
+  late bool _showNotification;
+  String? _newVerificationId;
+  int? _newResendToken;
+  late bool _nextLoading;
+  late BaseAuth _auth;
 
   bool _validateCode() {
     if (_codeController.text.isEmpty) {
@@ -53,10 +61,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     setState(() {
       _isResendingCode = true;
     });
-    await Future.delayed(Duration(seconds: 2));
-    setState(() {
-      _isResendingCode = false;
-    });
+    await _verifyPhoneNumber(widget.number);
   }
 
   Future _showNotificationNow() async {
@@ -68,6 +73,70 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     setState(() {
       _showNotification = false;
     });
+  }
+
+  void _automaticVerification() {
+    Navigator.push(
+      context,
+      FadePageTransition(
+        DetailsPage(),
+      ),
+    );
+    setState(() => _isResendingCode = false);
+  }
+
+  void _authenticationFailed(FirebaseAuthException e) {
+    setState(() {
+      _validationType = ValidationType.error;
+      _isResendingCode = false;
+    });
+  }
+
+  void _codeSent(String verificationId, int? resendToken) {
+    setState(() {
+      _newVerificationId = verificationId;
+      _newResendToken = resendToken;
+      _isResendingCode = false;
+    });
+    _showNotificationNow();
+  }
+
+  Future _verifyPhoneNumber(String phoneNumber) async {
+    await _auth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      resendToken: _newResendToken ?? widget.resendToken,
+      automaticVerification: _automaticVerification,
+      authenticationFailed: _authenticationFailed,
+      codeSent: _codeSent,
+    );
+  }
+
+  Future _loginOrRegister(String userId) async {
+    Navigator.pushAndRemoveUntil(
+      context,
+      FadePageTransition(
+        DetailsPage(),
+      ),
+      (_) => false,
+    );
+  }
+
+  Future _verifyCode() async {
+    setState(() => _nextLoading = true);
+    final verificationId = _newVerificationId ?? widget.verificationId;
+    final smsCode = _codeController.text;
+    String userId;
+    try {
+      userId = await _auth.signIn(verificationId, smsCode);
+    } catch (e) {
+      setState(() {
+        _validationType = ValidationType.error;
+        _nextLoading = false;
+      });
+      return;
+    }
+    await _loginOrRegister(userId);
+    setState(() => _nextLoading = false);
   }
 
   void _unsetValidation() {
@@ -98,23 +167,18 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     );
   }
 
-  void _nextPressed() {
-    var nextPage = AccountPage(
-      initialSetup: true,
-      person: Person(
-        name: '',
-        role: '',
-        imageUrl: '',
-      ),
-    );
-    Navigator.of(context).pushReplacement(NextPageTransition(nextPage));
+  void _nextPressed() async {
+    await _verifyCode();
   }
 
   @override
   void initState() {
     _validationType = ValidationType.none;
+    _nextLoading = false;
     _isResendingCode = false;
     _showNotification = false;
+    _auth = Auth();
+
     super.initState();
   }
 
@@ -229,10 +293,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
             padding: const EdgeInsets.only(bottom: 20.0),
             child: LinkText(
               text: 'Did not get code? Resend',
-              onTap: () async {
-                await _resendCode();
-                await _showNotificationNow();
-              },
+              onTap: _resendCode,
             ),
           );
   }
@@ -245,6 +306,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
         onPressed: () {
           if (_validateCode()) _nextPressed();
         },
+        isLoading: _nextLoading,
       ),
     );
   }

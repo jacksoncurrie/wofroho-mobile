@@ -6,12 +6,16 @@ class Button extends StatelessWidget {
     required this.onPressed,
     this.backgroundColor,
     this.padding = const EdgeInsets.symmetric(vertical: 10.0),
+    this.isLoading = false,
+    this.loadingWidget,
   });
 
   final Widget child;
   final void Function() onPressed;
   final Color? backgroundColor;
   final EdgeInsetsGeometry? padding;
+  final bool isLoading;
+  final Widget? loadingWidget;
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +33,7 @@ class Button extends StatelessWidget {
           ),
         ),
       ),
-      child: child,
+      child: isLoading ? loadingWidget : child,
     );
   }
 }
