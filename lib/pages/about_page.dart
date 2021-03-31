@@ -64,23 +64,26 @@ class _AboutPageState extends State<AboutPage> {
           ParagraphText(
             text:
                 'We all know our companies wanted us to work from home/romote working but did not know how to implement it. Covid19 hit us all hard and we will never go back to how we worked before.',
-            fontSize: 20.0,
+            fontSize: 18.0,
           ),
         ),
         _showParagraph(
           RichTextParagraph(
             textSpanItems: [
-              TextSpanItem(text: 'Thus we created '),
-              TextSpanItem(text: 'wofroho', fontWeight: FontWeight.bold),
-              TextSpanItem(text: ' to keep up with your work or organisation.'),
+              TextSpanItem(text: 'Thus we created ', fontSize: 18),
+              TextSpanItem(
+                  text: 'wofroho', fontWeight: FontWeight.bold, fontSize: 18),
+              TextSpanItem(
+                  text: ' to keep up with your work or organisation.',
+                  fontSize: 18),
             ],
           ),
         ),
         _showParagraph(
           ParagraphText(
             text:
-                'Thank you for your support! Please let us know if you have any suggestions at help@wofro.home',
-            fontSize: 20,
+                'Thank you for your support! Please let us know if you have any suggestions at help@wofroho.com',
+            fontSize: 18,
           ),
         ),
       ],

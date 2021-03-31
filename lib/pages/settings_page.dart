@@ -101,28 +101,19 @@ class _SettingsPageState extends State<SettingsPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _showSettingDivider(),
         _showSettingItem("Account", _accountPressed),
-        _showSettingDivider(),
         _showSettingItem("Organisation", _organisationPressed),
-        _showSettingDivider(),
         _showSettingItem("About", _aboutPressed),
-        _showSettingDivider(),
         _showSettingItem("Logout", _logoutPressed),
-        _showSettingDivider(),
       ],
     );
-  }
-
-  Widget _showSettingDivider() {
-    return Divider(thickness: 1);
   }
 
   Widget _showSettingItem(String text, void Function() onTap) {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
         child: ParagraphText(text: text),
       ),
     );
@@ -131,26 +122,18 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _showAboutDetails() {
     return Column(
       children: [
-        ParagraphText(
-          text: "Designed by Duann Schlechter",
-          textColor: Theme.of(context).colorScheme.disabledText,
-        ),
-        ParagraphText(
-          text: "Developed by Jackson Currie",
-          textColor: Theme.of(context).colorScheme.disabledText,
-        ),
         Padding(
           padding: const EdgeInsets.only(top: 20.0, bottom: 25.0),
           child: RichTextParagraph(
             textSpanItems: [
               TextSpanItem(
-                text: 'Working from home = ',
+                text: 'wofroho',
+                fontWeight: FontWeight.bold,
                 textColor: Theme.of(context).colorScheme.disabledText,
                 fontSize: 16,
               ),
               TextSpanItem(
-                text: 'wofroho',
-                fontWeight: FontWeight.bold,
+                text: ' = Working from home',
                 textColor: Theme.of(context).colorScheme.disabledText,
                 fontSize: 16,
               ),
