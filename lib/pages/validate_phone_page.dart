@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:wofroho_mobile/animations/child_page_transition.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
-import 'package:wofroho_mobile/animations/slide_right_transition.dart';
+import 'package:wofroho_mobile/animations/next_page_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/notification_toast.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
@@ -90,7 +91,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
   void _closePressed() {
     // Validate close
     Navigator.of(context).pushAndRemoveUntil(
-      FadePageTransition(
+      ChildPageTransition(
         LoginPage(),
       ),
       (_) => false,
@@ -106,7 +107,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
         imageUrl: '',
       ),
     );
-    Navigator.of(context).pushReplacement(SlideRightTransition(nextPage));
+    Navigator.of(context).pushReplacement(NextPageTransition(nextPage));
   }
 
   @override

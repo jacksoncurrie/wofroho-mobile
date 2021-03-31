@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
-import 'package:wofroho_mobile/animations/slide_right_transition.dart';
+import 'package:wofroho_mobile/animations/next_page_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
@@ -50,7 +50,7 @@ class _LoginPageState extends State<LoginPage> {
     var nextPage = ValidatePhonePage(
       number: '${_areaCodeController.text}${_numberController.text}',
     );
-    Navigator.of(context).pushReplacement(SlideRightTransition(nextPage));
+    Navigator.of(context).pushReplacement(NextPageTransition(nextPage));
   }
 
   @override

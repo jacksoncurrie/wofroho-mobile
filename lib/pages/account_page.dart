@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
-import 'package:wofroho_mobile/animations/slide_right_transition.dart';
+import 'package:wofroho_mobile/animations/next_page_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
@@ -132,7 +132,7 @@ class _AccountPageState extends State<AccountPage> {
   void _nextPressed() {
     widget.initialSetup
         ? Navigator.of(context).push(
-            SlideRightTransition(
+            NextPageTransition(
               JoinOrganisationPage(
                 person: widget.person,
                 initialSetup: true,

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
-class FadePageTransition<T> extends PageRoute<T> {
-  FadePageTransition(this.child);
+class SlideLeftPageTransition<T> extends PageRoute<T> {
+  SlideLeftPageTransition(this.child);
 
-  final Widget? child;
+  final Widget child;
 
   @override
   Color get barrierColor => Colors.transparent;
@@ -14,8 +14,14 @@ class FadePageTransition<T> extends PageRoute<T> {
   @override
   Widget buildPage(BuildContext context, Animation<double> animation,
       Animation<double> secondaryAnimation) {
-    return FadeTransition(
-      opacity: animation,
+    var begin = Offset(1.0, 0.0);
+    var end = Offset.zero;
+    var curve = Curves.ease;
+    var curveTween = CurveTween(curve: curve);
+    var tween = Tween(begin: begin, end: end).chain(curveTween);
+
+    return SlideTransition(
+      position: animation.drive(tween),
       child: child,
     );
   }

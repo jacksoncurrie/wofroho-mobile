@@ -23,6 +23,7 @@ class _EditWeekPageState extends State<EditWeekPage> {
   DateTime? _startWeekDay;
   List<DateTime> _focusedDaysWeek = [];
   int? _currentDay;
+  late int _currentWeek;
 
   void _openValidateClose() {
     // Check if changes have been made
@@ -59,6 +60,7 @@ class _EditWeekPageState extends State<EditWeekPage> {
         todaysDate.subtract(Duration(days: todaysDate.weekday - 1));
     _startWeekDay = mondaysDate;
     _currentDay = todaysDate.day;
+    _currentWeek = 0;
 
     super.initState();
   }
@@ -125,6 +127,7 @@ class _EditWeekPageState extends State<EditWeekPage> {
     setState(() {
       _focusedDaysWeek.clear();
       _currentDay = weekNumber == 0 ? DateTime.now().day : 0;
+      _currentWeek = weekNumber;
     });
   }
 
@@ -143,6 +146,7 @@ class _EditWeekPageState extends State<EditWeekPage> {
         focusedDays: _focusedDaysWeek.map((i) => i.day).toList(),
         weekChanged: _weekChanged,
         secondaryDay: _currentDay,
+        showLeftArrow: _currentWeek > 0,
       ),
     );
   }

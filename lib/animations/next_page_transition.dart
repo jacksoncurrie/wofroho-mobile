@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 
-class SlideRightTransition<T> extends PageRoute<T> {
-  SlideRightTransition(this.child);
+class NextPageTransition<T> extends PageRoute<T> {
+  NextPageTransition(this.child);
 
   final Widget child;
 

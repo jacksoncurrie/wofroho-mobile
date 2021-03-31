@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
-import 'package:wofroho_mobile/animations/slide_right_transition.dart';
+import 'package:wofroho_mobile/animations/next_page_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
@@ -85,7 +85,7 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
   void _nextPressed() {
     var nextPage = AllSetUpPage();
     Navigator.of(context)
-        .pushAndRemoveUntil(SlideRightTransition(nextPage), (_) => false);
+        .pushAndRemoveUntil(NextPageTransition(nextPage), (_) => false);
   }
 
   void _createOrganisationPressed() {
