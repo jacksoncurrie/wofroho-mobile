@@ -6,7 +6,7 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: '>=2.12.0 <3.0.0'
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -27,14 +27,17 @@ dev_dependencies:
 # Run with: flutter pub run flutter_launcher_icons:main
 flutter_icons:
   android: true
-  ios: false # iOS done manually at this stage
-  image_path: "assets/wofroho_logo.png"
+  ios: true
+  image_path: "assets/launcher_icons/wofroho_icon_full.png"
+  adaptive_icon_foreground: "assets/launcher_icons/wofroho_icon.png"
+  adaptive_icon_background: "#3756F6"
 
 # Run with: flutter pub pub run flutter_native_splash:create
 flutter_native_splash:
+  android: true
   ios: true
-  image: "assets/wofroho_logo_full.png"
-  color: "3756F6"
+  image: "assets/launcher_icons/wofroho_splash_icon.png"
+  color: "#3756F6"
   android_disable_fullscreen: true
 
 flutter:
