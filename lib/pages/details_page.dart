@@ -115,6 +115,7 @@ class _DetailsPageState extends State<DetailsPage> {
         outlinedDays: _outlinedDays,
         focusedBackgroundColor: Theme.of(context).colorScheme.primaryColor,
         focusedTextColor: Theme.of(context).colorScheme.onPrimary,
+        dateTapped: () {},
       ),
     );
   }
