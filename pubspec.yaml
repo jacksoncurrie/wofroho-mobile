@@ -59,6 +59,8 @@ flutter:
     - assets/images/camera.svg
     - assets/images/libary.svg
     - assets/images/menu.svg
+    - assets/images/arrow_right.svg
+    - assets/images/arrow_left.svg
 
   fonts:
     - family: Poppins

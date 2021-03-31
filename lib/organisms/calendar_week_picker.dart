@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/molecules/week_row.dart';
@@ -16,6 +17,8 @@ class CalendarWeekPicker extends StatelessWidget {
     this.focusedTextColor,
     this.outlinedDays,
     this.outlinedColor,
+    this.showLeftArrow = true,
+    this.showRightArrow = true,
   });
 
   final DateTime? dayBegin;
@@ -28,6 +31,8 @@ class CalendarWeekPicker extends StatelessWidget {
   final Color? focusedTextColor;
   final List<int>? outlinedDays;
   final Color? outlinedColor;
+  final bool showLeftArrow;
+  final bool showRightArrow;
 
   final pageViewController = PageController(
     initialPage: 0,
@@ -90,11 +95,50 @@ class CalendarWeekPicker extends StatelessWidget {
     );
   }
 
+  Widget _showArrowLeft() {
+    return GestureDetector(
+      onTap: () =>
+          pageViewController.jumpToPage(pageViewController.page!.round() - 1),
+      child: Padding(
+        padding: const EdgeInsets.only(right: 5.0),
+        child: SvgPicture.asset(
+          'assets/images/arrow_left.svg',
+          semanticsLabel: "Left icon",
+        ),
+      ),
+    );
+  }
+
+  Widget _showArrowRight() {
+    return GestureDetector(
+      onTap: () =>
+          pageViewController.jumpToPage(pageViewController.page!.round() + 1),
+      child: Padding(
+        padding: const EdgeInsets.only(left: 5.0),
+        child: SvgPicture.asset(
+          'assets/images/arrow_right.svg',
+          semanticsLabel: "Right icon",
+        ),
+      ),
+    );
+  }
+
   Widget _showMonthAndYear(String? month, int? year) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10.0),
-      child: ParagraphText(
-        text: "$month, $year",
+    return GestureDetector(
+      onTap: () =>
+          pageViewController.jumpToPage(pageViewController.initialPage),
+      child: Padding(
+        padding: const EdgeInsets.only(bottom: 10.0),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            if (showLeftArrow) _showArrowLeft(),
+            ParagraphText(
+              text: "$month, $year",
+            ),
+            if (showRightArrow) _showArrowRight(),
+          ],
+        ),
       ),
     );
   }

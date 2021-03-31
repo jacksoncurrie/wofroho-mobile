@@ -27,6 +27,7 @@ class _DetailsPageState extends State<DetailsPage> {
   int _currentDay = 0;
   late DateTime _focusedDay;
   List<int> _outlinedDays = [9, 11];
+  late int _weeknumber;
 
   void _settingsPressed() {
     Navigator.of(context).push(
@@ -52,6 +53,7 @@ class _DetailsPageState extends State<DetailsPage> {
     _startWeekDay = mondaysDate;
     _currentDay = todaysDate.day;
     _focusedDay = todaysDate;
+    _weeknumber = 0;
 
     super.initState();
   }
@@ -99,6 +101,7 @@ class _DetailsPageState extends State<DetailsPage> {
       _focusedDay = newWeekMonday;
       _currentDay = weekNumber == 0 ? DateTime.now().day : 0;
       _outlinedDays = weekNumber == 0 ? [9, 11] : [];
+      _weeknumber = weekNumber;
     });
     HapticFeedback.mediumImpact();
   }
@@ -115,7 +118,7 @@ class _DetailsPageState extends State<DetailsPage> {
         outlinedDays: _outlinedDays,
         focusedBackgroundColor: Theme.of(context).colorScheme.primaryColor,
         focusedTextColor: Theme.of(context).colorScheme.onPrimary,
-        dateTapped: () {},
+        showLeftArrow: _weeknumber > 0,
       ),
     );
   }
