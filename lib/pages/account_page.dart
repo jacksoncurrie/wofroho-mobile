@@ -44,6 +44,7 @@ class _AccountPageState extends State<AccountPage> {
   final _roleController = TextEditingController();
   final _organisationController = TextEditingController();
   final _phoneController = TextEditingController();
+  final _appRoleController = TextEditingController();
   ValidationType? _nameValidationType;
   ValidationType? _roleValidationType;
   ValidationType? _imageValidationType;
@@ -208,6 +209,7 @@ class _AccountPageState extends State<AccountPage> {
       _nameController.text = widget.person.name;
       _roleController.text = widget.person.role;
       _organisationController.text = 'Wayne Enterprises';
+      _appRoleController.text = 'Admin';
     }
 
     _phoneController.text = '+64123456789';
@@ -279,6 +281,7 @@ class _AccountPageState extends State<AccountPage> {
         _showRoleField(),
         _showNumberField(),
         if (!widget.initialSetup) _showOrganisationField(),
+        if (!widget.initialSetup) _showAppRoleField(),
       ],
     );
   }
@@ -292,10 +295,11 @@ class _AccountPageState extends State<AccountPage> {
             height: 100,
             width: 100,
             image: (widget.initialSetup
-                ? _image == null
-                    ? null
-                    : FileImage(_image!)
-                : NetworkImage(widget.person.imageUrl)) as ImageProvider<Object>?,
+                    ? _image == null
+                        ? null
+                        : FileImage(_image!)
+                    : NetworkImage(widget.person.imageUrl))
+                as ImageProvider<Object>?,
             borderRadius: 4,
             onTap: _editPhoto,
           ),
@@ -390,6 +394,18 @@ class _AccountPageState extends State<AccountPage> {
         child: TextInput(
           controller: _organisationController,
           onTap: _openChangeOrganisation,
+          enabled: false,
+        ),
+      ),
+    );
+  }
+
+  Widget _showAppRoleField() {
+    return FormItemSpace(
+      child: DataField(
+        title: 'App role',
+        child: TextInput(
+          controller: _appRoleController,
           enabled: false,
         ),
       ),
