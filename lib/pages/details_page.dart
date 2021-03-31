@@ -8,6 +8,7 @@ import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/models/person.dart';
 // import 'package:wofroho_mobile/molecules/empty_state.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
+import 'package:wofroho_mobile/molecules/secondary_button.dart';
 import 'package:wofroho_mobile/organisms/calendar_week_picker.dart';
 import 'package:wofroho_mobile/organisms/person_list.dart';
 import 'package:wofroho_mobile/pages/edit_week_page.dart';
@@ -63,6 +64,7 @@ class _DetailsPageState extends State<DetailsPage> {
     return PaddedPageTemplate(
       pageWidgets: ActionPageTemplate(
         pageWidgets: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _showCalendar(),
             _showEditLink(),
@@ -126,9 +128,9 @@ class _DetailsPageState extends State<DetailsPage> {
   Widget _showEditLink() {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
-      child: LinkText(
-        text: "Edit this week wofroho",
-        onTap: _editThisWeek,
+      child: SecondaryButton(
+        text: "Select",
+        onPressed: _editThisWeek,
       ),
     );
   }
