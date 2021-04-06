@@ -6,8 +6,10 @@ import 'package:wofroho_mobile/animations/next_page_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
+import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/organisms/country_list_bottom_sheet.dart';
+import 'package:wofroho_mobile/pages/account_page.dart';
 import 'package:wofroho_mobile/pages/details_page.dart';
 import 'package:wofroho_mobile/pages/validate_phone_page.dart';
 import 'package:wofroho_mobile/services/authentication.dart';
@@ -129,7 +131,14 @@ class _LoginPageState extends State<LoginPage> {
 
   // Just temporary
   void _skipSetup() {
-    var nextPage = DetailsPage();
+    var nextPage = AccountPage(
+      initialSetup: true,
+      person: Person(
+        imageUrl: '',
+        name: '',
+        role: '',
+      ),
+    );
     Navigator.of(context).pushReplacement(FadePageTransition(nextPage));
   }
 
