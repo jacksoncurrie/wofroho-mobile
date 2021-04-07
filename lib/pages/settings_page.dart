@@ -11,6 +11,7 @@ import 'package:wofroho_mobile/pages/about_page.dart';
 import 'package:wofroho_mobile/pages/account_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
 import 'package:wofroho_mobile/pages/manage_organisation_page.dart';
+import 'package:wofroho_mobile/services/authentication.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
 import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
@@ -59,7 +60,11 @@ class _SettingsPageState extends State<SettingsPage> {
     );
   }
 
-  void _logoutPressed() {
+  void _logoutPressed() async {
+    // Sign out
+    final auth = Auth();
+    await auth.signOut();
+
     Navigator.of(context).pushAndRemoveUntil(
       ChildPageTransition(
         LoginPage(),
