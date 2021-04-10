@@ -97,8 +97,11 @@ class CalendarWeekPicker extends StatelessWidget {
 
   Widget _showArrowLeft() {
     return GestureDetector(
-      onTap: () =>
-          pageViewController.jumpToPage(pageViewController.page!.round() - 1),
+      onTap: () => pageViewController.animateToPage(
+        pageViewController.page!.round() - 1,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      ),
       child: Padding(
         padding: const EdgeInsets.only(right: 5.0),
         child: SvgPicture.asset(
@@ -111,8 +114,11 @@ class CalendarWeekPicker extends StatelessWidget {
 
   Widget _showArrowRight() {
     return GestureDetector(
-      onTap: () =>
-          pageViewController.jumpToPage(pageViewController.page!.round() + 1),
+      onTap: () => pageViewController.animateToPage(
+        pageViewController.page!.round() + 1,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      ),
       child: Padding(
         padding: const EdgeInsets.only(left: 5.0),
         child: SvgPicture.asset(
@@ -125,8 +131,11 @@ class CalendarWeekPicker extends StatelessWidget {
 
   Widget _showMonthAndYear(String? month, int? year) {
     return GestureDetector(
-      onTap: () =>
-          pageViewController.jumpToPage(pageViewController.initialPage),
+      onTap: () => pageViewController.animateToPage(
+        pageViewController.initialPage,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeInOut,
+      ),
       child: Padding(
         padding: const EdgeInsets.only(bottom: 10.0),
         child: Row(
