@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -8,6 +9,7 @@ import 'package:wofroho_mobile/atoms/notification_toast.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
+import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/dialog_popup.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
@@ -21,6 +23,7 @@ import 'package:wofroho_mobile/templates/page_heading_template.dart';
 import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
 import 'package:wofroho_mobile/templates/simple_template.dart';
 import '../theme.dart';
+import 'account_page.dart';
 
 class ValidatePhonePage extends StatefulWidget {
   ValidatePhonePage({
@@ -75,13 +78,8 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     });
   }
 
-  void _automaticVerification() {
-    Navigator.push(
-      context,
-      FadePageTransition(
-        DetailsPage(),
-      ),
-    );
+  void _automaticVerification(String? userId) async {
+    await _loginOrSignup(userId);
     setState(() => _isResendingCode = false);
   }
 
@@ -111,23 +109,14 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     );
   }
 
-  Future _loginOrRegister(String userId) async {
-    Navigator.pushAndRemoveUntil(
-      context,
-      FadePageTransition(
-        DetailsPage(),
-      ),
-      (_) => false,
-    );
-  }
-
   Future _verifyCode() async {
     setState(() => _nextLoading = true);
     final verificationId = _newVerificationId ?? widget.verificationId;
     final smsCode = _codeController.text;
-    String userId;
+    String? userId;
     try {
       userId = await _auth.signIn(verificationId, smsCode);
+      await _loginOrSignup(userId);
     } catch (e) {
       setState(() {
         _validationType = ValidationType.error;
@@ -135,7 +124,6 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
       });
       return;
     }
-    await _loginOrRegister(userId);
     setState(() => _nextLoading = false);
   }
 
@@ -144,6 +132,36 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
       setState(() {
         _validationType = ValidationType.none;
       });
+    }
+  }
+
+  Future<bool> _userExists() async {
+    final user = _auth.getCurrentUser();
+    final firestore = FirebaseFirestore.instance;
+    final doc = await firestore.collection('users').doc(user?.uid).get();
+    return doc.exists;
+  }
+
+  Future _loginOrSignup(String? userId) async {
+    if (await _userExists()) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        FadePageTransition(
+          child: DetailsPage(),
+          routeName: DetailsPage.routeName,
+        ),
+        (route) => false,
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        FadePageTransition(
+          child: AccountPage(
+            initialSetup: true,
+            person: Person(id: userId, imageUrl: '', name: '', role: ''),
+          ),
+        ),
+      );
     }
   }
 
@@ -161,7 +179,8 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     // Validate close
     Navigator.of(context).pushAndRemoveUntil(
       ChildPageTransition(
-        LoginPage(),
+        child: LoginPage(),
+        routeName: LoginPage.routeName,
       ),
       (_) => false,
     );

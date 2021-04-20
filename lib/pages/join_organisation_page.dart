@@ -70,7 +70,8 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
   void _closePressed() {
     Navigator.of(context).pushAndRemoveUntil(
       FadePageTransition(
-        LoginPage(),
+        child: LoginPage(),
+        routeName: LoginPage.routeName,
       ),
       (_) => false,
     );
@@ -84,13 +85,17 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
 
   void _nextPressed() {
     var nextPage = AllSetUpPage();
-    Navigator.of(context)
-        .pushAndRemoveUntil(NextPageTransition(nextPage), (_) => false);
+    Navigator.of(context).pushAndRemoveUntil(
+      NextPageTransition(child: nextPage),
+      (_) => false,
+    );
   }
 
   void _createOrganisationPressed() {
     var nextPage = CreateOrganisationPage();
-    Navigator.of(context).push(FadePageTransition(nextPage));
+    Navigator.of(context).push(
+      FadePageTransition(child: nextPage),
+    );
   }
 
   @override

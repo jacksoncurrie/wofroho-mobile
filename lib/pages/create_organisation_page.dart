@@ -54,8 +54,13 @@ class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
 
   void _createPressed() {
     var nextPage = DetailsPage();
-    Navigator.of(context)
-        .pushAndRemoveUntil(FadePageTransition(nextPage), (_) => false);
+    Navigator.of(context).pushAndRemoveUntil(
+      FadePageTransition(
+        child: nextPage,
+        routeName: DetailsPage.routeName,
+      ),
+      (_) => false,
+    );
   }
 
   @override

@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 
 class FadePageTransition<T> extends PageRoute<T> {
-  FadePageTransition(this.child);
+  FadePageTransition({
+    required this.child,
+    String? routeName,
+  }) : super(settings: RouteSettings(name: routeName));
 
-  final Widget? child;
+  final Widget child;
 
   @override
   Color get barrierColor => Colors.transparent;

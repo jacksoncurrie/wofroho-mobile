@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -20,6 +21,8 @@ import 'package:wofroho_mobile/templates/simple_template.dart';
 import '../theme.dart';
 
 class LoginPage extends StatefulWidget {
+  static String routeName = '/login';
+
   @override
   _LoginPageState createState() => _LoginPageState();
 }
@@ -55,14 +58,43 @@ class _LoginPageState extends State<LoginPage> {
   void _signInPressed() async {
     setState(() => _loginLoading = true);
     await _verifyPhoneNumber(
-        '${_areaCodeController.text}${_numberController.text}');
+      '${_areaCodeController.text}${_numberController.text}',
+    );
   }
 
-  void _automaticVerification() {
-    Navigator.of(context).pushReplacement(
-      FadePageTransition(DetailsPage()),
-    );
+  void _automaticVerification(String? userId) async {
+    await _loginOrSignup(userId);
     setState(() => _loginLoading = false);
+  }
+
+  Future<bool> _userExists() async {
+    final user = _auth.getCurrentUser();
+    final firestore = FirebaseFirestore.instance;
+    final doc = await firestore.collection('users').doc(user?.uid).get();
+    return doc.exists;
+  }
+
+  Future _loginOrSignup(String? userId) async {
+    if (await _userExists()) {
+      Navigator.pushAndRemoveUntil(
+        context,
+        FadePageTransition(
+          child: DetailsPage(),
+          routeName: DetailsPage.routeName,
+        ),
+        (route) => false,
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        FadePageTransition(
+          child: AccountPage(
+            initialSetup: true,
+            person: Person(id: userId, imageUrl: '', name: '', role: ''),
+          ),
+        ),
+      );
+    }
   }
 
   void _authenticationFailed(FirebaseAuthException e) {
@@ -76,7 +108,7 @@ class _LoginPageState extends State<LoginPage> {
     Navigator.push(
       context,
       NextPageTransition(
-        ValidatePhonePage(
+        child: ValidatePhonePage(
           number: '${_areaCodeController.text}${_numberController.text}',
           verificationId: verificationId,
           resendToken: resendToken,
@@ -92,8 +124,9 @@ class _LoginPageState extends State<LoginPage> {
       automaticVerification: _automaticVerification,
       authenticationFailed: _authenticationFailed,
       codeSent: _codeSent,
-      timedOut: () =>
-          _authenticationFailed(FirebaseAuthException(code: "Timed out")),
+      timedOut: () => _authenticationFailed(
+        FirebaseAuthException(code: "Timed out"),
+      ),
     );
   }
 
@@ -131,28 +164,12 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // Just temporary
-  void _skipSetup() {
-    var nextPage = AccountPage(
-      initialSetup: true,
-      person: Person(
-        imageUrl: '',
-        name: '',
-        role: '',
-      ),
-    );
-    Navigator.of(context).pushReplacement(FadePageTransition(nextPage));
-  }
-
   Widget _showLogo() {
     return Center(
       // Just temporary
-      child: GestureDetector(
-        onDoubleTap: _skipSetup,
-        child: SvgPicture.asset(
-          'assets/images/wofroho_logo_full.svg',
-          semanticsLabel: "Wofroho logo",
-        ),
+      child: SvgPicture.asset(
+        'assets/images/wofroho_logo_full.svg',
+        semanticsLabel: "Wofroho logo",
       ),
     );
   }

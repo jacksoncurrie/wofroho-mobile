@@ -5,7 +5,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 abstract class BaseAuth {
   Future<void> verifyPhoneNumber({
     required String phoneNumber,
-    void Function()? automaticVerification,
+    void Function(String? userId)? automaticVerification,
     void Function(FirebaseAuthException e)? authenticationFailed,
     void Function(String verificationId, int? resendToken)? codeSent,
     void Function()? timedOut,
@@ -24,7 +24,7 @@ class Auth implements BaseAuth {
 
   Future<void> verifyPhoneNumber({
     required String phoneNumber,
-    void Function()? automaticVerification,
+    void Function(String? userId)? automaticVerification,
     void Function(FirebaseAuthException e)? authenticationFailed,
     void Function(String verificationId, int? resendToken)? codeSent,
     void Function()? timedOut,
@@ -34,9 +34,11 @@ class Auth implements BaseAuth {
       phoneNumber: phoneNumber,
       forceResendingToken: resendToken,
       verificationCompleted: (PhoneAuthCredential credential) async {
-        await _firebaseAuth.signInWithCredential(credential);
+        final userCredential =
+            await _firebaseAuth.signInWithCredential(credential);
         // Do automatic verification
-        if (automaticVerification != null) automaticVerification();
+        if (automaticVerification != null)
+          automaticVerification(userCredential.user?.uid);
       },
       verificationFailed: (FirebaseAuthException e) {
         log(e.message!);

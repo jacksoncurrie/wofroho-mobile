@@ -123,7 +123,10 @@ class _AccountPageState extends State<AccountPage> {
   void _backPressed() {
     widget.initialSetup
         ? Navigator.of(context).pushAndRemoveUntil(
-            FadePageTransition(LoginPage()),
+            FadePageTransition(
+              child: LoginPage(),
+              routeName: LoginPage.routeName,
+            ),
             (_) => false,
           )
         : Navigator.pop(context);
@@ -133,7 +136,7 @@ class _AccountPageState extends State<AccountPage> {
     widget.initialSetup
         ? Navigator.of(context).push(
             NextPageTransition(
-              JoinOrganisationPage(
+              child: JoinOrganisationPage(
                 person: widget.person,
                 initialSetup: true,
               ),
@@ -187,8 +190,10 @@ class _AccountPageState extends State<AccountPage> {
       person: widget.person,
       initialSetup: false,
     );
-    Navigator.of(context)
-        .pushAndRemoveUntil(FadePageTransition(nextPage), (_) => false);
+    Navigator.of(context).pushAndRemoveUntil(
+      FadePageTransition(child: nextPage),
+      (_) => false,
+    );
   }
 
   void _openChangeOrganisation() {

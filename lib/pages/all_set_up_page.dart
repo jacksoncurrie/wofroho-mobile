@@ -11,7 +11,9 @@ import 'package:wofroho_mobile/templates/padded_scroll_page_template.dart';
 class AllSetUpPage extends StatelessWidget {
   void _getStartedPressed(BuildContext context) {
     var nextPage = DetailsPage();
-    Navigator.of(context).pushReplacement(FadePageTransition(nextPage));
+    Navigator.of(context).pushReplacement(
+      FadePageTransition(child: nextPage),
+    );
   }
 
   @override

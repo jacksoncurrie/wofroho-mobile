@@ -18,6 +18,8 @@ import 'package:wofroho_mobile/templates/padded_page_template.dart';
 import '../theme.dart';
 
 class DetailsPage extends StatefulWidget {
+  static String routeName = '/details';
+
   @override
   _DetailsPageState createState() => _DetailsPageState();
 }
@@ -32,7 +34,7 @@ class _DetailsPageState extends State<DetailsPage> {
   void _settingsPressed() {
     Navigator.of(context).push(
       SlideLeftPageTransition(
-        SettingsPage(),
+        child: SettingsPage(),
       ),
     );
   }
@@ -40,7 +42,7 @@ class _DetailsPageState extends State<DetailsPage> {
   void _editThisWeek() {
     Navigator.of(context).push(
       FadePageTransition(
-        EditWeekPage(),
+        child: EditWeekPage(),
       ),
     );
   }
@@ -158,7 +160,9 @@ class _DetailsPageState extends State<DetailsPage> {
 
   void _personTapped(Person person) {
     var profilePage = ProfilePage(person: person);
-    Navigator.of(context).push(FadePageTransition(profilePage));
+    Navigator.of(context).push(
+      FadePageTransition(child: profilePage),
+    );
   }
 
   Widget _showPersonList() {

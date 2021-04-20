@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 
 class ChildPageTransition<T> extends PageRoute<T> {
-  ChildPageTransition(this.child);
+  ChildPageTransition({
+    required this.child,
+    String? routeName,
+  }) : super(settings: RouteSettings(name: routeName));
 
   final Widget child;
 

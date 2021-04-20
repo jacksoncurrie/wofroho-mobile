@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:animations/animations.dart';
 
 class NextPageTransition<T> extends PageRoute<T> {
-  NextPageTransition(this.child);
+  NextPageTransition({
+    required this.child,
+    String? routeName,
+  }) : super(settings: RouteSettings(name: routeName));
 
   final Widget child;
 

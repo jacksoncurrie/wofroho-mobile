@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 
 class SlideLeftPageTransition<T> extends PageRoute<T> {
-  SlideLeftPageTransition(this.child);
+  SlideLeftPageTransition({
+    required this.child,
+    String? routeName,
+  }) : super(settings: RouteSettings(name: routeName));
 
   final Widget child;
 

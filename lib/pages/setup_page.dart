@@ -57,7 +57,8 @@ class _SetupPageState extends State<SetupPage> {
   void _closePressed() {
     Navigator.of(context).pushReplacement(
       FadePageTransition(
-        DetailsPage(),
+        child: DetailsPage(),
+        routeName: DetailsPage.routeName,
       ),
     );
   }
@@ -70,7 +71,8 @@ class _SetupPageState extends State<SetupPage> {
     widget.initialSetup
         ? Navigator.of(context).pushReplacement(
             FadePageTransition(
-              DetailsPage(),
+              child: DetailsPage(),
+              routeName: DetailsPage.routeName,
             ),
           )
         : Navigator.pop(context);

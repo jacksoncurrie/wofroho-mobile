@@ -30,7 +30,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void _accountPressed() {
     Navigator.of(context).push(
       SlideLeftPageTransition(
-        AccountPage(
+        child: AccountPage(
           initialSetup: false,
           person: Person(
             id: "1",
@@ -46,7 +46,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void _aboutPressed() {
     Navigator.of(context).push(
       SlideLeftPageTransition(
-        AboutPage(),
+        child: AboutPage(),
       ),
     );
   }
@@ -54,7 +54,7 @@ class _SettingsPageState extends State<SettingsPage> {
   void _organisationPressed() {
     Navigator.of(context).push(
       SlideLeftPageTransition(
-        ManageOrganisationPage(),
+        child: ManageOrganisationPage(),
       ),
     );
   }
@@ -66,7 +66,8 @@ class _SettingsPageState extends State<SettingsPage> {
 
     Navigator.of(context).pushAndRemoveUntil(
       ChildPageTransition(
-        LoginPage(),
+        child: LoginPage(),
+        routeName: LoginPage.routeName,
       ),
       (_) => false,
     );
