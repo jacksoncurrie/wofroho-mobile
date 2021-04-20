@@ -92,6 +92,8 @@ class _LoginPageState extends State<LoginPage> {
       automaticVerification: _automaticVerification,
       authenticationFailed: _authenticationFailed,
       codeSent: _codeSent,
+      timedOut: () =>
+          _authenticationFailed(FirebaseAuthException(code: "Timed out")),
     );
   }
 

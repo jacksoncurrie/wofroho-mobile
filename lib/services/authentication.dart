@@ -5,9 +5,10 @@ import 'package:firebase_auth/firebase_auth.dart';
 abstract class BaseAuth {
   Future<void> verifyPhoneNumber({
     required String phoneNumber,
-    Function()? automaticVerification,
-    Function(FirebaseAuthException e)? authenticationFailed,
-    Function(String verificationId, int? resendToken)? codeSent,
+    void Function()? automaticVerification,
+    void Function(FirebaseAuthException e)? authenticationFailed,
+    void Function(String verificationId, int? resendToken)? codeSent,
+    void Function()? timedOut,
     int? resendToken,
   });
 
@@ -23,16 +24,17 @@ class Auth implements BaseAuth {
 
   Future<void> verifyPhoneNumber({
     required String phoneNumber,
-    Function()? automaticVerification,
-    Function(FirebaseAuthException e)? authenticationFailed,
-    Function(String verificationId, int? resendToken)? codeSent,
+    void Function()? automaticVerification,
+    void Function(FirebaseAuthException e)? authenticationFailed,
+    void Function(String verificationId, int? resendToken)? codeSent,
+    void Function()? timedOut,
     int? resendToken,
   }) async {
     await _firebaseAuth.verifyPhoneNumber(
       phoneNumber: phoneNumber,
       forceResendingToken: resendToken,
-      verificationCompleted: (PhoneAuthCredential credential) {
-        _firebaseAuth.signInWithCredential(credential);
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await _firebaseAuth.signInWithCredential(credential);
         // Do automatic verification
         if (automaticVerification != null) automaticVerification();
       },
@@ -45,7 +47,9 @@ class Auth implements BaseAuth {
         // Do code sent
         if (codeSent != null) codeSent(verificationId, resendToken);
       },
-      codeAutoRetrievalTimeout: (String verificationId) {},
+      codeAutoRetrievalTimeout: (String verificationId) {
+        if (timedOut != null) timedOut();
+      },
     );
   }
 
