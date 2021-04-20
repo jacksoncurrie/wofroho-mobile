@@ -29,17 +29,21 @@ class MyApp extends StatefulWidget {
 class _MyAppState extends State<MyApp> {
   AuthStatus? authStatus;
 
-  AuthStatus _getUserState() {
+  Future<void> _getUserState() async {
     final auth = Auth();
     final user = auth.getCurrentUser();
-    return user?.uid != null ? AuthStatus.LOGGED_IN : AuthStatus.NOT_LOGGED_IN;
+    setState(() {
+      authStatus =
+          user?.uid != null ? AuthStatus.LOGGED_IN : AuthStatus.NOT_LOGGED_IN;
+    });
   }
 
   @override
   void initState() {
     super.initState();
 
-    authStatus = _getUserState();
+    authStatus = AuthStatus.NOT_DETERMINED;
+    _getUserState();
   }
 
   @override
@@ -48,6 +52,19 @@ class _MyAppState extends State<MyApp> {
       title: 'wofroho',
       theme: MyTheme.companyThemeData,
       home: _buildMainPage(),
+      routes: {
+        LoginPage.routeName: (context) => LoginPage(),
+        DetailsPage.routeName: (context) => DetailsPage(),
+      },
+      builder: (BuildContext context, Widget? child) {
+        if (child == null) return LoadingPage();
+
+        // Disables text size changes - temporary UI fix
+        return MediaQuery(
+          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
+          child: child,
+        );
+      },
     );
   }
 
