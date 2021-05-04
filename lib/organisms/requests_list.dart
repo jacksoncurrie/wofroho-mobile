@@ -24,9 +24,9 @@ class RequestsList extends StatelessWidget {
   Widget _showPersonListItem(Person person) {
     return RequestListItem(
       personId: person.id,
-      image: NetworkImage(person.imageUrl),
-      name: person.name,
-      role: person.role,
+      image: NetworkImage(person.imageUrl ?? ''),
+      name: person.name ?? '',
+      role: person.role ?? '',
       dates: person.datesFromHome,
       personOutlined: person.isUser,
     );

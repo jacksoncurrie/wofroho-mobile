@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
@@ -47,7 +48,7 @@ class _AccountPageState extends State<AccountPage> {
   final _appRoleController = TextEditingController();
   ValidationType? _nameValidationType;
   ValidationType? _roleValidationType;
-  ValidationType? _imageValidationType;
+  late bool _nextLoading;
 
   void _unsetNameValidation() {
     if (_nameValidationType != ValidationType.none) {
@@ -76,12 +77,6 @@ class _AccountPageState extends State<AccountPage> {
     if (_roleController.text.isEmpty) {
       setState(() {
         _roleValidationType = ValidationType.error;
-      });
-      error = true;
-    }
-    if (_image == null) {
-      setState(() {
-        _imageValidationType = ValidationType.error;
       });
       error = true;
     }
@@ -132,7 +127,21 @@ class _AccountPageState extends State<AccountPage> {
         : Navigator.pop(context);
   }
 
-  void _nextPressed() {
+  void _nextPressed() async {
+    setState(() {
+      _nextLoading = true;
+    });
+
+    try {
+      await _addUserToFirestore();
+    } on Exception catch (e) {
+      log(e.toString());
+    } finally {
+      setState(() {
+        _nextLoading = false;
+      });
+    }
+
     widget.initialSetup
         ? Navigator.of(context).push(
             NextPageTransition(
@@ -143,6 +152,15 @@ class _AccountPageState extends State<AccountPage> {
             ),
           )
         : Navigator.pop(context);
+  }
+
+  Future _addUserToFirestore() async {
+    widget.person
+      ..name = _nameController.text
+      ..role = _roleController.text
+      ..image = _image;
+
+    await widget.person.addToFirebase();
   }
 
   File? _image;
@@ -157,7 +175,6 @@ class _AccountPageState extends State<AccountPage> {
     if (image != null) {
       setState(() {
         _image = File(image.path);
-        _imageValidationType = ValidationType.none;
       });
     }
   }
@@ -172,7 +189,6 @@ class _AccountPageState extends State<AccountPage> {
     if (image != null) {
       setState(() {
         _image = File(image.path);
-        _imageValidationType = ValidationType.none;
       });
     }
   }
@@ -210,9 +226,11 @@ class _AccountPageState extends State<AccountPage> {
   void initState() {
     super.initState();
 
+    _nextLoading = false;
+
     if (!widget.initialSetup) {
-      _nameController.text = widget.person.name;
-      _roleController.text = widget.person.role;
+      _nameController.text = widget.person.name ?? '';
+      _roleController.text = widget.person.role ?? '';
       _organisationController.text = 'Wayne Enterprises';
       _appRoleController.text = 'Admin';
     }
@@ -284,7 +302,7 @@ class _AccountPageState extends State<AccountPage> {
         _showProfileImage(),
         _showNameField(),
         _showRoleField(),
-        _showNumberField(),
+        // _showNumberField(),
         if (!widget.initialSetup) _showOrganisationField(),
         if (!widget.initialSetup) _showAppRoleField(),
       ],
@@ -303,7 +321,9 @@ class _AccountPageState extends State<AccountPage> {
                     ? _image == null
                         ? null
                         : FileImage(_image!)
-                    : NetworkImage(widget.person.imageUrl))
+                    : widget.person.imageUrl == null
+                        ? null
+                        : NetworkImage(widget.person.imageUrl!))
                 as ImageProvider<Object>?,
             borderRadius: 4,
             onTap: _editPhoto,
@@ -317,16 +337,6 @@ class _AccountPageState extends State<AccountPage> {
           ),
         ],
       ),
-      validationMessage: _imageValidationType == ValidationType.error
-          ? _showImageErrorMessage()
-          : null,
-    );
-  }
-
-  Widget _showImageErrorMessage() {
-    return ParagraphText(
-      text: 'Photo is required',
-      textColor: Theme.of(context).colorScheme.errorColor,
     );
   }
 
@@ -380,17 +390,17 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  Widget _showNumberField() {
-    return FormItemSpace(
-      child: DataField(
-        title: 'Phone number',
-        child: TextInput(
-          enabled: false,
-          controller: _phoneController,
-        ),
-      ),
-    );
-  }
+  // Widget _showNumberField() {
+  //   return FormItemSpace(
+  //     child: DataField(
+  //       title: 'Phone number',
+  //       child: TextInput(
+  //         enabled: false,
+  //         controller: _phoneController,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _showOrganisationField() {
     return FormItemSpace(
@@ -425,6 +435,7 @@ class _AccountPageState extends State<AccountPage> {
         onPressed: () {
           if (_validateInputs()) _nextPressed();
         },
+        isLoading: _nextLoading,
       ),
     );
   }

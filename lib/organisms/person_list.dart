@@ -31,9 +31,9 @@ class PersonList extends StatelessWidget {
   Widget _showPersonListItem(Person person) {
     return PersonListItem(
       personId: person.id,
-      image: NetworkImage(person.imageUrl),
-      name: person.name,
-      role: person.role,
+      image: NetworkImage(person.imageUrl ?? ''),
+      name: person.name ?? '',
+      role: person.role ?? '',
       dates: person.datesFromHome,
       endWidget: iconButton == null ? null : _showIconButton(person),
       personOutlined: person.isUser,
