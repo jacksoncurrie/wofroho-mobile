@@ -43,12 +43,11 @@ class Person {
     var userId = auth.currentUser!.uid;
 
     var data = {
-      'id': userId,
       'name': name,
       'role': role,
     };
 
-    var documentReference = firestore.collection('users').doc();
+    var documentReference = firestore.collection('users').doc(userId);
 
     if (image != null) {
       final fileExtension = p.extension(image!.path);
@@ -71,7 +70,6 @@ class Person {
     var firestore = FirebaseFirestore.instance;
 
     var data = {
-      'id': id,
       'name': name,
       'role': role,
       'datesFromHome': datesFromHome,

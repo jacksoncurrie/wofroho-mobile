@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/animations/child_page_transition.dart';
@@ -28,15 +29,16 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _accountPressed() {
+    final user = FirebaseAuth.instance.currentUser;
     Navigator.of(context).push(
       SlideLeftPageTransition(
         child: AccountPage(
           initialSetup: false,
           person: Person(
-            id: "1",
-            imageUrl: "https://placekitten.com/300/300",
-            name: "Bruce Wayne",
-            role: "Businessman, entrepreneur, accountant",
+            id: user?.uid,
+            imageUrl: '',
+            name: '',
+            role: '',
           ),
         ),
       ),

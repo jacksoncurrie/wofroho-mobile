@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'dart:io';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
@@ -86,23 +87,23 @@ class _AccountPageState extends State<AccountPage> {
 
   void _openValidateSave() {
     // Check if changes have been made
-    if (_nameController.text == widget.person.name &&
-        _roleController.text == widget.person.role) {
-      _backPressed();
-      return;
-    }
+    // if (_nameController.text == widget.person.name &&
+    //     _roleController.text == widget.person.role) {
+    _backPressed();
+    return;
+    // }
 
-    showDialogPopup(
-      context: context,
-      title: 'Unsaved changes',
-      message: 'Would you like to save the changes you have made?',
-      primaryText: 'Leave without saving',
-      primaryPressed: () {
-        // Drop popup
-        Navigator.pop(context);
-        _backPressed();
-      },
-    );
+    // showDialogPopup(
+    //   context: context,
+    //   title: 'Unsaved changes',
+    //   message: 'Would you like to save the changes you have made?',
+    //   primaryText: 'Leave without saving',
+    //   primaryPressed: () {
+    //     // Drop popup
+    //     Navigator.pop(context);
+    //     _backPressed();
+    //   },
+    // );
   }
 
   void _openValidateClose() {
@@ -296,20 +297,50 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Widget _showPageWidgets() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _showProfileImage(),
-        _showNameField(),
-        _showRoleField(),
-        // _showNumberField(),
-        if (!widget.initialSetup) _showOrganisationField(),
-        if (!widget.initialSetup) _showAppRoleField(),
-      ],
+    return FutureBuilder(
+      future: FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.person.id)
+          .get(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        final futureResult = snapshot.data as DocumentSnapshot;
+        final data = futureResult.data();
+        _nameController.text = data?['name'].toString() ?? '';
+        _roleController.text = data?['role'].toString() ?? '';
+
+        return FutureBuilder(
+          future: _loadImage(data?['imageUrl']?.toString()),
+          builder: (context, snapshot) {
+            final imageUrl = snapshot.data as String?;
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                _showProfileImage(imageUrl),
+                _showNameField(),
+                _showRoleField(),
+                // _showNumberField(),
+                // if (!widget.initialSetup) _showOrganisationField(),
+                // if (!widget.initialSetup) _showAppRoleField(),
+              ],
+            );
+          },
+        );
+      },
     );
   }
 
-  Widget _showProfileImage() {
+  Future<String?> _loadImage(String? imgUrl) async {
+    if (imgUrl == null) return null;
+    widget.person.imageUrl = imgUrl;
+    final finalUrl = await widget.person.loadImageUrl();
+    return finalUrl;
+  }
+
+  Widget _showProfileImage(String? imageUrl) {
     return FormItemSpace(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -318,13 +349,12 @@ class _AccountPageState extends State<AccountPage> {
             height: 100,
             width: 100,
             image: (widget.initialSetup
-                    ? _image == null
-                        ? null
-                        : FileImage(_image!)
-                    : widget.person.imageUrl == null
-                        ? null
-                        : NetworkImage(widget.person.imageUrl!))
-                as ImageProvider<Object>?,
+                ? _image == null
+                    ? null
+                    : FileImage(_image!)
+                : imageUrl == null
+                    ? null
+                    : NetworkImage(imageUrl)) as ImageProvider<Object>?,
             borderRadius: 4,
             onTap: _editPhoto,
           ),
@@ -415,17 +445,17 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  Widget _showAppRoleField() {
-    return FormItemSpace(
-      child: DataField(
-        title: 'App role',
-        child: TextInput(
-          controller: _appRoleController,
-          enabled: false,
-        ),
-      ),
-    );
-  }
+  // Widget _showAppRoleField() {
+  //   return FormItemSpace(
+  //     child: DataField(
+  //       title: 'App role',
+  //       child: TextInput(
+  //         controller: _appRoleController,
+  //         enabled: false,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   Widget _showBottomWidget() {
     return Padding(
