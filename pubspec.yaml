@@ -28,6 +28,8 @@ dev_dependencies:
   flutter_launcher_icons: ^0.9.0
   flutter_native_splash: ^1.1.5+1
 
+  device_preview: ^0.7.1
+
 # Run with: flutter pub run flutter_launcher_icons:main
 flutter_icons:
   android: true

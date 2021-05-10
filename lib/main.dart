@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:wofroho_mobile/pages/details_page.dart';
@@ -6,19 +7,24 @@ import 'package:wofroho_mobile/pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:wofroho_mobile/services/authentication.dart';
 import 'theme.dart' as MyTheme;
+import 'package:device_preview/device_preview.dart';
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
     statusBarColor: Colors.transparent,
     statusBarIconBrightness: Brightness.dark,
     statusBarBrightness: Brightness.light,
   ));
 
+  WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
 
-  runApp(MyApp());
+  runApp(
+    DevicePreview(
+      enabled: !kReleaseMode,
+      builder: (context) => MyApp(), // Wrap your app
+    ),
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -60,10 +66,12 @@ class _MyAppState extends State<MyApp> {
         if (child == null) return LoadingPage();
 
         // Disables text size changes - temporary UI fix
-        return MediaQuery(
+        final newWidget = MediaQuery(
           data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
           child: child,
         );
+
+        return DevicePreview.appBuilder(context, newWidget);
       },
     );
   }
