@@ -70,9 +70,9 @@ class _ProfilePageState extends State<ProfilePage> {
           child: UserImage(
             height: 100,
             width: 100,
-            image: widget.person.imageUrl == null
+            image: widget.person.downloadUrl == null
                 ? null
-                : NetworkImage(widget.person.imageUrl!),
+                : NetworkImage(widget.person.downloadUrl!),
             borderRadius: 4,
           ),
         ),

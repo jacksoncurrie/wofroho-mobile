@@ -20,8 +20,11 @@ class Person {
     imageUrl = data['imageUrl'];
     name = data['name'];
     role = data['role'];
-    datesFromHome = data['datesFromHome'];
-    isUser = isUser;
+    downloadUrl = data['downloadUrl'];
+    final list = data['datesFromHome'] as List<dynamic>;
+    final timestamps = list.map((i) => i as Timestamp).toList();
+    datesFromHome = timestamps.map((i) => i.toDate()).toList();
+    this.isUser = isUser;
   }
 
   String? id;
@@ -31,6 +34,7 @@ class Person {
   List<DateTime>? datesFromHome;
   bool? isUser;
   File? image;
+  String? downloadUrl;
 
   Future addToFirebase() async {
     var firestore = FirebaseFirestore.instance;
@@ -50,6 +54,10 @@ class Person {
       data['imageUrl'] = imageUrlStored;
       // Upload profile image
       await firebase_storage.uploadImage(imageUrlStored, image!);
+
+      // Save download URL
+      final downloadUrl = await firebase_storage.getImage(imageUrlStored);
+      data['downloadUrl'] = downloadUrl;
     }
 
     await firestore.runTransaction((transaction) async {

@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -6,7 +7,7 @@ import 'package:wofroho_mobile/animations/slide_left_page_transition.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/models/person.dart';
-// import 'package:wofroho_mobile/molecules/empty_state.dart';
+import 'package:wofroho_mobile/molecules/empty_state.dart';
 import 'package:wofroho_mobile/molecules/secondary_button.dart';
 import 'package:wofroho_mobile/organisms/calendar_week_picker.dart';
 import 'package:wofroho_mobile/organisms/person_list.dart';
@@ -30,22 +31,6 @@ class _DetailsPageState extends State<DetailsPage> {
   late DateTime _focusedDay;
   List<int> _outlinedDays = [9, 11];
   late int _weeknumber;
-
-  void _settingsPressed() {
-    Navigator.of(context).push(
-      SlideLeftPageTransition(
-        child: SettingsPage(),
-      ),
-    );
-  }
-
-  void _editThisWeek() {
-    Navigator.of(context).push(
-      FadePageTransition(
-        child: EditWeekPage(),
-      ),
-    );
-  }
 
   @override
   void initState() {
@@ -76,6 +61,22 @@ class _DetailsPageState extends State<DetailsPage> {
           ],
         ),
         actionWidget: _showTopActions(),
+      ),
+    );
+  }
+
+  void _settingsPressed() {
+    Navigator.of(context).push(
+      SlideLeftPageTransition(
+        child: SettingsPage(),
+      ),
+    );
+  }
+
+  void _editThisWeek() {
+    Navigator.of(context).push(
+      FadePageTransition(
+        child: EditWeekPage(),
       ),
     );
   }
@@ -149,14 +150,14 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
-  // Widget _showEmptyState() {
-  //   return Padding(
-  //     padding: const EdgeInsets.only(top: 40.0),
-  //     child: EmptyState(
-  //       text: "No one is wofroho today",
-  //     ),
-  //   );
-  // }
+  Widget _showEmptyState() {
+    return Padding(
+      padding: const EdgeInsets.only(top: 40.0),
+      child: EmptyState(
+        text: "No one is wofroho today",
+      ),
+    );
+  }
 
   void _personTapped(Person person) {
     var profilePage = ProfilePage(person: person);
@@ -166,37 +167,29 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   Widget _showPersonList() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: PersonList(
-        personTapped: _personTapped,
-        people: [
-          Person(
-            id: "1",
-            imageUrl:
-                "https://upload.wikimedia.org/wikipedia/en/thumb/1/19/Bruce_Wayne_%28The_Dark_Knight_Trilogy%29.jpg/220px-Bruce_Wayne_%28The_Dark_Knight_Trilogy%29.jpg",
-            name: "Bruce Wayne",
-            role: "Businessman, entrepreneur, accountant",
-            datesFromHome: [
-              DateTime.now().add(Duration(days: 2)),
-              DateTime.now().add(Duration(days: 3)),
-            ],
-            isUser: true,
+    return StreamBuilder(
+      stream: FirebaseFirestore.instance.collection('users').where(
+        'datesFromHome',
+        arrayContainsAny: [Timestamp.fromDate(_focusedDay)],
+      ).snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData)
+          return Center(child: CircularProgressIndicator());
+
+        final data = snapshot.data as QuerySnapshot;
+        final users = data.docs
+            .map((i) => Person.fromFirebase(i.data(), i.id, false))
+            .toList();
+
+        if (users.length == 0) return _showEmptyState();
+        return Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: PersonList(
+            personTapped: _personTapped,
+            people: users,
           ),
-          Person(
-            id: "2",
-            imageUrl:
-                "https://upload.wikimedia.org/wikipedia/en/thumb/c/c8/News-batbegins2-2.jpg/170px-News-batbegins2-2.jpg",
-            name: "Lucius Fox",
-            role: "CEO",
-            datesFromHome: [
-              DateTime.now().add(Duration(days: 5)),
-              DateTime.now().add(Duration(days: 6)),
-            ],
-            isUser: false,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }
