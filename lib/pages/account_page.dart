@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -19,6 +18,7 @@ import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/organisms/pick_image_bottom_sheet.dart';
 import 'package:wofroho_mobile/pages/join_organisation_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
+import 'package:wofroho_mobile/services/firebase_storage.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -146,10 +146,7 @@ class _AccountPageState extends State<AccountPage> {
     widget.initialSetup
         ? Navigator.of(context).push(
             NextPageTransition(
-              child: JoinOrganisationPage(
-                person: widget.person,
-                initialSetup: true,
-              ),
+              child: JoinOrganisationPage(),
             ),
           )
         : Navigator.pop(context);
@@ -203,10 +200,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   void _changeOrganisation() {
-    var nextPage = JoinOrganisationPage(
-      person: widget.person,
-      initialSetup: false,
-    );
+    var nextPage = JoinOrganisationPage();
     Navigator.of(context).pushAndRemoveUntil(
       FadePageTransition(child: nextPage),
       (_) => false,
@@ -336,7 +330,7 @@ class _AccountPageState extends State<AccountPage> {
   Future<String?> _loadImage(String? imgUrl) async {
     if (imgUrl == null) return null;
     widget.person.imageUrl = imgUrl;
-    final finalUrl = await widget.person.loadImageUrl();
+    final finalUrl = await getImage(imgUrl);
     return finalUrl;
   }
 

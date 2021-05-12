@@ -7,11 +7,10 @@ import 'package:wofroho_mobile/animations/next_page_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
-import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/organisms/country_list_bottom_sheet.dart';
-import 'package:wofroho_mobile/pages/account_page.dart';
 import 'package:wofroho_mobile/pages/details_page.dart';
+import 'package:wofroho_mobile/pages/sign_up_page.dart';
 import 'package:wofroho_mobile/pages/validate_phone_page.dart';
 import 'package:wofroho_mobile/services/authentication.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
@@ -34,25 +33,39 @@ class _LoginPageState extends State<LoginPage> {
   late bool _loginLoading;
   late BaseAuth _auth;
 
-  void _unsetValidation() {
-    if (_validationType != ValidationType.none) {
-      setState(() {
-        _validationType = ValidationType.none;
-      });
-    }
+  @override
+  void initState() {
+    _areaCodeController.text = "+64";
+    _validationType = ValidationType.none;
+    _loginLoading = false;
+    _auth = Auth();
+
+    super.initState();
   }
 
-  bool _validatePhone() {
-    var error = false;
-    if (!_areaCodeController.text.startsWith('+')) error = true;
-    if (_numberController.text.isEmpty) error = true;
-    if (error) {
-      setState(() {
-        _validationType = ValidationType.error;
-      });
-      return false;
-    }
-    return true;
+  @override
+  Widget build(BuildContext context) {
+    return SimpleTemplate(
+      pageWidgets: SimpleScrollTemplate(
+        pageWidgets: Padding(
+          padding: const EdgeInsets.all(25.0),
+          child: InputTemplate(
+            pageWidgets: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 50.0),
+                  child: _showLogo(),
+                ),
+                _showPhoneField(),
+              ],
+            ),
+            bottomWidget: _showBottomWidget(),
+          ),
+        ),
+      ),
+    );
   }
 
   void _signInPressed() async {
@@ -63,6 +76,7 @@ class _LoginPageState extends State<LoginPage> {
   }
 
   void _automaticVerification(String? userId) async {
+    if (userId == null) return;
     await _loginOrSignup(userId);
     setState(() => _loginLoading = false);
   }
@@ -74,7 +88,7 @@ class _LoginPageState extends State<LoginPage> {
     return doc.exists;
   }
 
-  Future _loginOrSignup(String? userId) async {
+  Future _loginOrSignup(String userId) async {
     if (await _userExists()) {
       Navigator.pushAndRemoveUntil(
         context,
@@ -88,9 +102,8 @@ class _LoginPageState extends State<LoginPage> {
       Navigator.pushReplacement(
         context,
         FadePageTransition(
-          child: AccountPage(
-            initialSetup: true,
-            person: Person(id: userId, imageUrl: '', name: '', role: ''),
+          child: SignUpPage(
+            userId: userId,
           ),
         ),
       );
@@ -130,40 +143,6 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  @override
-  void initState() {
-    _areaCodeController.text = "+64";
-    _validationType = ValidationType.none;
-    _loginLoading = false;
-    _auth = Auth();
-    super.initState();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SimpleTemplate(
-      pageWidgets: SimpleScrollTemplate(
-        pageWidgets: Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: InputTemplate(
-            pageWidgets: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 50.0),
-                  child: _showLogo(),
-                ),
-                _showPhoneField(),
-              ],
-            ),
-            bottomWidget: _showBottomWidget(),
-          ),
-        ),
-      ),
-    );
-  }
-
   Widget _showLogo() {
     return Center(
       // Just temporary
@@ -183,6 +162,27 @@ class _LoginPageState extends State<LoginPage> {
       },
       countryFilter: ['NZ'],
     );
+  }
+
+  void _unsetValidation() {
+    if (_validationType != ValidationType.none) {
+      setState(() {
+        _validationType = ValidationType.none;
+      });
+    }
+  }
+
+  bool _validatePhone() {
+    var error = false;
+    if (!_areaCodeController.text.startsWith('+')) error = true;
+    if (_numberController.text.isEmpty) error = true;
+    if (error) {
+      setState(() {
+        _validationType = ValidationType.error;
+      });
+      return false;
+    }
+    return true;
   }
 
   Widget _showPhoneField() {

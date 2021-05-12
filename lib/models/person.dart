@@ -7,11 +7,12 @@ import 'package:path/path.dart' as p;
 class Person {
   Person({
     this.id,
-    required this.imageUrl,
+    this.imageUrl,
     required this.name,
     required this.role,
     this.datesFromHome,
     this.isUser,
+    this.image,
   });
 
   Person.fromFirebase(Map<String, dynamic> data, String personId, bool isUser) {
@@ -30,12 +31,6 @@ class Person {
   List<DateTime>? datesFromHome;
   bool? isUser;
   File? image;
-
-  Future<String?> loadImageUrl() async {
-    if (imageUrl == null) return null;
-    final finalUrl = firebase_storage.getImage(imageUrl!);
-    return finalUrl;
-  }
 
   Future addToFirebase() async {
     var firestore = FirebaseFirestore.instance;
