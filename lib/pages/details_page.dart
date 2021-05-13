@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
@@ -168,17 +169,21 @@ class _DetailsPageState extends State<DetailsPage> {
 
   Widget _showPersonList() {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance.collection('users').where(
-        'datesFromHome',
-        arrayContainsAny: [Timestamp.fromDate(_focusedDay)],
-      ).snapshots(),
+      stream: FirebaseFirestore.instance
+          .collection('users')
+          .where(
+            'datesFromHome',
+            arrayContains: Timestamp.fromDate(_focusedDay),
+          )
+          .snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
           return Center(child: CircularProgressIndicator());
 
+        final userId = FirebaseAuth.instance.currentUser?.uid ?? '';
         final data = snapshot.data as QuerySnapshot;
         final users = data.docs
-            .map((i) => Person.fromFirebase(i.data(), i.id, false))
+            .map((i) => Person.fromFirebase(i.data(), i.id, i.id == userId))
             .toList();
 
         if (users.length == 0) return _showEmptyState();
