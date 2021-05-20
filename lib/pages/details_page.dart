@@ -30,7 +30,7 @@ class _DetailsPageState extends State<DetailsPage> {
   DateTime? _startWeekDay;
   int _currentDay = 0;
   late DateTime _focusedDay;
-  List<int> _outlinedDays = [9, 11];
+  List<int> _outlinedDays = [19, 20];
   late int _weeknumber;
 
   @override
@@ -105,7 +105,7 @@ class _DetailsPageState extends State<DetailsPage> {
     setState(() {
       _focusedDay = newWeekMonday;
       _currentDay = weekNumber == 0 ? DateTime.now().day : 0;
-      _outlinedDays = weekNumber == 0 ? [9, 11] : [];
+      _outlinedDays = weekNumber == 0 ? [19, 20] : [];
       _weeknumber = weekNumber;
     });
     HapticFeedback.mediumImpact();
