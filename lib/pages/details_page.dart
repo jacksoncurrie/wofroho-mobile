@@ -33,6 +33,8 @@ class _DetailsPageState extends State<DetailsPage> {
   List<int> _outlinedDays = [19, 20];
   late int _weeknumber;
 
+  final firestore = FirebaseFirestore.instance;
+
   @override
   void initState() {
     final todaysDate = DateTime.now();
@@ -40,7 +42,7 @@ class _DetailsPageState extends State<DetailsPage> {
         todaysDate.subtract(Duration(days: todaysDate.weekday - 1));
     _startWeekDay = mondaysDate;
     _currentDay = todaysDate.day;
-    _focusedDay = todaysDate;
+    _focusedDay = DateTime(todaysDate.year, todaysDate.month, todaysDate.day);
     _weeknumber = 0;
 
     super.initState();
@@ -169,7 +171,7 @@ class _DetailsPageState extends State<DetailsPage> {
 
   Widget _showPersonList() {
     return StreamBuilder(
-      stream: FirebaseFirestore.instance
+      stream: firestore
           .collection('users')
           .where(
             'datesFromHome',

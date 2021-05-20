@@ -199,23 +199,23 @@ class _AccountPageState extends State<AccountPage> {
     );
   }
 
-  void _changeOrganisation() {
-    var nextPage = JoinOrganisationPage();
-    Navigator.of(context).pushAndRemoveUntil(
-      FadePageTransition(child: nextPage),
-      (_) => false,
-    );
-  }
+  // void _changeOrganisation() {
+  //   var nextPage = JoinOrganisationPage();
+  //   Navigator.of(context).pushAndRemoveUntil(
+  //     FadePageTransition(child: nextPage),
+  //     (_) => false,
+  //   );
+  // }
 
-  void _openChangeOrganisation() {
-    showDialogPopup(
-      context: context,
-      title: 'Change organisation',
-      message: 'Are you sure you want to change organisation?',
-      primaryText: 'Continue',
-      primaryPressed: _changeOrganisation,
-    );
-  }
+  // void _openChangeOrganisation() {
+  //   showDialogPopup(
+  //     context: context,
+  //     title: 'Change organisation',
+  //     message: 'Are you sure you want to change organisation?',
+  //     primaryText: 'Continue',
+  //     primaryPressed: _changeOrganisation,
+  //   );
+  // }
 
   @override
   void initState() {
@@ -426,18 +426,18 @@ class _AccountPageState extends State<AccountPage> {
   //   );
   // }
 
-  Widget _showOrganisationField() {
-    return FormItemSpace(
-      child: DataField(
-        title: 'Organisation',
-        child: TextInput(
-          controller: _organisationController,
-          onTap: _openChangeOrganisation,
-          enabled: false,
-        ),
-      ),
-    );
-  }
+  // Widget _showOrganisationField() {
+  //   return FormItemSpace(
+  //     child: DataField(
+  //       title: 'Organisation',
+  //       child: TextInput(
+  //         controller: _organisationController,
+  //         onTap: _openChangeOrganisation,
+  //         enabled: false,
+  //       ),
+  //     ),
+  //   );
+  // }
 
   // Widget _showAppRoleField() {
   //   return FormItemSpace(

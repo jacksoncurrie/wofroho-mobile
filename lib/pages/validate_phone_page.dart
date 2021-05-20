@@ -9,13 +9,11 @@ import 'package:wofroho_mobile/atoms/notification_toast.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
-import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/dialog_popup.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/pages/details_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
-import 'package:wofroho_mobile/pages/setup_page.dart';
 import 'package:wofroho_mobile/pages/sign_up_page.dart';
 import 'package:wofroho_mobile/services/authentication.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
@@ -25,7 +23,6 @@ import 'package:wofroho_mobile/templates/page_heading_template.dart';
 import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
 import 'package:wofroho_mobile/templates/simple_template.dart';
 import '../theme.dart';
-import 'account_page.dart';
 
 class ValidatePhonePage extends StatefulWidget {
   ValidatePhonePage({
