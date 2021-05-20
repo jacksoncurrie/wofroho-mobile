@@ -15,6 +15,8 @@ import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/pages/details_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
+import 'package:wofroho_mobile/pages/setup_page.dart';
+import 'package:wofroho_mobile/pages/sign_up_page.dart';
 import 'package:wofroho_mobile/services/authentication.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
@@ -156,9 +158,8 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
       Navigator.pushReplacement(
         context,
         FadePageTransition(
-          child: AccountPage(
-            initialSetup: true,
-            person: Person(id: userId, imageUrl: '', name: '', role: ''),
+          child: SignUpPage(
+            userId: userId ?? '',
           ),
         ),
       );

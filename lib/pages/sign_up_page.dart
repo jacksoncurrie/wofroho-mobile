@@ -174,10 +174,14 @@ class _SignUpPageState extends State<SignUpPage> {
   void _editPhoto() {
     pickImageBottomSheet(
       context: context,
-      imgFromGallery: () => setState(
-          () async => _image = await ImagePickerHelper.imgFromGallery()),
-      imgFromCamera: () => setState(
-          () async => _image = await ImagePickerHelper.imgFromCamera()),
+      imgFromGallery: () async {
+        var newImage = await ImagePickerHelper.imgFromGallery();
+        setState(() => _image = newImage);
+      },
+      imgFromCamera: () async {
+        var newImage = await ImagePickerHelper.imgFromCamera();
+        setState(() => _image = newImage);
+      },
     );
   }
 
@@ -196,7 +200,7 @@ class _SignUpPageState extends State<SignUpPage> {
           Padding(
             padding: const EdgeInsets.only(left: 15.0),
             child: LinkText(
-              text: 'Add photo',
+              text: _image == null ? 'Add photo' : 'Edit photo',
               onTap: _editPhoto,
             ),
           ),
