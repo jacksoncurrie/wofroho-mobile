@@ -14,7 +14,7 @@ class SimpleTemplate extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.backgroundColor,
-      appBar: _showEmptyAppBar(context) as PreferredSizeWidget?,
+      appBar: _showEmptyAppBar(context),
       body: Stack(
         children: [
           pageWidgets,
@@ -24,7 +24,7 @@ class SimpleTemplate extends StatelessWidget {
     );
   }
 
-  Widget _showEmptyAppBar(BuildContext context) {
+  PreferredSizeWidget? _showEmptyAppBar(BuildContext context) {
     return PreferredSize(
       preferredSize: Size.fromHeight(0),
       child: AppBar(

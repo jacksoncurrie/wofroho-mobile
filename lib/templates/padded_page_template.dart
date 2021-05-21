@@ -6,11 +6,13 @@ class PaddedPageTemplate extends StatelessWidget {
     required this.pageWidgets,
     this.background,
     this.overlayWidget,
+    this.leftRightPadding,
   });
 
   final Widget pageWidgets;
   final Widget? background;
   final Widget? overlayWidget;
+  final double? leftRightPadding;
 
   @override
   Widget build(BuildContext context) {
@@ -24,10 +26,10 @@ class PaddedPageTemplate extends StatelessWidget {
             ),
           SafeArea(
             child: Padding(
-              padding: const EdgeInsets.only(
+              padding: EdgeInsets.only(
                 top: 15.0,
-                left: 25.0,
-                right: 25.0,
+                left: leftRightPadding ?? 25.0,
+                right: leftRightPadding ?? 25.0,
                 bottom: 25.0,
               ),
               child: pageWidgets,

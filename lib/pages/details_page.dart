@@ -50,7 +50,9 @@ class _DetailsPageState extends State<DetailsPage> {
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return PaddedPageTemplate(
+      leftRightPadding: width < 340 ? 10 : 25,
       pageWidgets: ActionPageTemplate(
         pageWidgets: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
