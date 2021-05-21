@@ -104,7 +104,7 @@ class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
   void _unsetValidation(String value) async {
     try {
       setState(() {
-        _verifyingLoading = false;
+        _verifyingLoading = true;
       });
 
       final doesExist =
@@ -213,7 +213,13 @@ class _CreateOrganisationPageState extends State<CreateOrganisationPage> {
 
   Widget _showErrorMessage() {
     if (_verifyingLoading) {
-      return CircularProgressIndicator();
+      return CircularProgressIndicator(
+        backgroundColor: Colors.transparent,
+        strokeWidth: 2,
+        valueColor: AlwaysStoppedAnimation<Color>(
+          Theme.of(context).colorScheme.textOnPrimary,
+        ),
+      );
     }
     return ParagraphText(
       text: _message,

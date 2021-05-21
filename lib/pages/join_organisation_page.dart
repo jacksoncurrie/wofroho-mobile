@@ -1,3 +1,6 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
@@ -28,10 +31,16 @@ class JoinOrganisationPage extends StatefulWidget {
 class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
   final _organisationController = TextEditingController();
   ValidationType? _validationType;
+  late String _validationText;
+  late bool _joinLoading;
+  late bool _verifyLoading;
 
   @override
   void initState() {
     _validationType = ValidationType.none;
+    _validationText = '';
+    _joinLoading = false;
+    _verifyLoading = false;
     super.initState();
   }
 
@@ -128,20 +137,77 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
     );
   }
 
-  bool _validateCode() {
-    if (_organisationController.text.isEmpty) {
-      setState(() {
-        _validationType = ValidationType.error;
-      });
-      return false;
-    }
-    return true;
+  Future<bool> _nameExists(String nameLower) async {
+    // Check if exists
+    final organisation = await FirebaseFirestore.instance
+        .collection('organisations')
+        .where('nameLower', isEqualTo: nameLower)
+        .get();
+    return organisation.size != 0;
   }
 
-  void _unsetValidation() {
-    if (_validationType != ValidationType.success) {
+  Future<bool> _validateCode() async {
+    try {
       setState(() {
-        _validationType = ValidationType.success;
+        _joinLoading = true;
+      });
+
+      // Check local data
+      if (_organisationController.text.isEmpty) {
+        setState(() {
+          _validationType = ValidationType.error;
+          _validationText = 'Name can\'t be empty';
+        });
+        return false;
+      }
+
+      // Check if exists
+      if (!await _nameExists(_organisationController.text.toLowerCase())) {
+        setState(() {
+          _validationType = ValidationType.error;
+          _validationText = 'Organisation not found';
+        });
+        return false;
+      }
+    } on Exception catch (e) {
+      log(e.toString());
+      setState(() {
+        _validationType = ValidationType.error;
+        _validationText = 'Error checking organisation name';
+      });
+      return false;
+    } finally {
+      setState(() {
+        _joinLoading = false;
+      });
+    }
+
+    return false;
+  }
+
+  void _unsetValidation() async {
+    try {
+      setState(() {
+        _verifyLoading = true;
+      });
+
+      final doesExist =
+          await _nameExists(_organisationController.text.toLowerCase());
+      if (doesExist) {
+        setState(() {
+          _validationType = ValidationType.success;
+        });
+      } else {
+        setState(() {
+          _validationText = 'Organisation not found';
+          _validationType = ValidationType.error;
+        });
+      }
+    } on Exception catch (e) {
+      log(e.toString());
+    } finally {
+      setState(() {
+        _verifyLoading = false;
       });
     }
   }
@@ -165,8 +231,17 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
   }
 
   Widget _showErrorMessage() {
+    if (_verifyLoading) {
+      return CircularProgressIndicator(
+        backgroundColor: Colors.transparent,
+        strokeWidth: 2,
+        valueColor: AlwaysStoppedAnimation<Color>(
+          Theme.of(context).colorScheme.textOnPrimary,
+        ),
+      );
+    }
     return ParagraphText(
-      text: 'Organisation not found',
+      text: _validationText,
       textColor: Theme.of(context).colorScheme.errorColor,
     );
   }
@@ -186,8 +261,9 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
       padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
       child: PrimaryButton(
         text: 'Join',
-        onPressed: () {
-          if (_validateCode()) _nextPressed();
+        isLoading: _joinLoading,
+        onPressed: () async {
+          if (await _validateCode()) _nextPressed();
         },
       ),
     );
