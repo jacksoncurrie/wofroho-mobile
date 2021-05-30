@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
 import 'package:wofroho_mobile/animations/next_page_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
@@ -94,6 +95,9 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   Future _addUserToFirestore() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('signedUp', true);
+
     final person = Person(
       name: _nameController.text,
       role: _roleController.text,
@@ -119,7 +123,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
     Navigator.of(context).push(
       NextPageTransition(
-        child: JoinOrganisationPage(),
+        child: JoinOrganisationPage(userId: widget.userId),
       ),
     );
   }

@@ -1,12 +1,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wofroho_mobile/animations/child_page_transition.dart';
 import 'package:wofroho_mobile/animations/slide_left_page_transition.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/rich_text_paragraph.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
-import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/pages/about_page.dart';
 import 'package:wofroho_mobile/pages/account_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
@@ -33,13 +33,7 @@ class _SettingsPageState extends State<SettingsPage> {
     Navigator.of(context).push(
       SlideLeftPageTransition(
         child: AccountPage(
-          initialSetup: false,
-          person: Person(
-            id: user?.uid,
-            imageUrl: '',
-            name: '',
-            role: '',
-          ),
+          userId: user?.uid ?? '',
         ),
       ),
     );
@@ -62,6 +56,10 @@ class _SettingsPageState extends State<SettingsPage> {
   }
 
   void _logoutPressed() async {
+    // Clear saved preferences
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
     // Sign out
     final auth = Auth();
     await auth.signOut();

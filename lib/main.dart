@@ -1,10 +1,13 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wofroho_mobile/pages/details_page.dart';
+import 'package:wofroho_mobile/pages/join_organisation_page.dart';
 import 'package:wofroho_mobile/pages/loading_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:wofroho_mobile/pages/sign_up_page.dart';
 import 'package:wofroho_mobile/services/authentication.dart';
 import 'theme.dart' as MyTheme;
 import 'package:device_preview/device_preview.dart';
@@ -33,14 +36,25 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  AuthStatus? authStatus;
+  AuthStatus? _authStatus;
+  String? _userId;
 
   Future<void> _getUserState() async {
     final auth = Auth();
     final user = auth.getCurrentUser();
+    _userId = user?.uid;
+    final isSignedIn = _userId != null;
+    final prefs = await SharedPreferences.getInstance();
+    final isSignedUp = prefs.containsKey("signedUp");
+    final inOrganisation = prefs.containsKey("inOrganisation");
     setState(() {
-      authStatus =
-          user?.uid != null ? AuthStatus.LOGGED_IN : AuthStatus.NOT_LOGGED_IN;
+      _authStatus = !isSignedIn
+          ? AuthStatus.NOT_LOGGED_IN
+          : !isSignedUp
+              ? AuthStatus.NOT_SIGNED_UP
+              : !inOrganisation
+                  ? AuthStatus.NOT_IN_ORGANISATION
+                  : AuthStatus.LOGGED_IN;
     });
   }
 
@@ -48,7 +62,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
 
-    authStatus = AuthStatus.NOT_DETERMINED;
+    _authStatus = AuthStatus.NOT_DETERMINED;
     _getUserState();
   }
 
@@ -77,9 +91,15 @@ class _MyAppState extends State<MyApp> {
   }
 
   Widget _buildMainPage() {
-    switch (authStatus) {
+    switch (_authStatus) {
       case AuthStatus.NOT_LOGGED_IN:
         return LoginPage();
+
+      case AuthStatus.NOT_SIGNED_UP:
+        return SignUpPage(userId: _userId!);
+
+      case AuthStatus.NOT_IN_ORGANISATION:
+        return JoinOrganisationPage(userId: _userId!);
 
       case AuthStatus.LOGGED_IN:
         return DetailsPage();
@@ -94,5 +114,7 @@ class _MyAppState extends State<MyApp> {
 enum AuthStatus {
   NOT_DETERMINED,
   NOT_LOGGED_IN,
+  NOT_SIGNED_UP,
+  NOT_IN_ORGANISATION,
   LOGGED_IN,
 }

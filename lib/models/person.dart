@@ -11,6 +11,7 @@ class Person {
     required this.name,
     required this.role,
     this.datesFromHome,
+    this.organisation,
     this.isUser,
     this.image,
   });
@@ -20,10 +21,11 @@ class Person {
     imageUrl = data['imageUrl'];
     name = data['name'];
     role = data['role'];
+    organisation = data['organisation'];
     downloadUrl = data['downloadUrl'];
-    final list = data['datesFromHome'] as List<dynamic>;
-    final timestamps = list.map((i) => i as Timestamp).toList();
-    datesFromHome = timestamps.map((i) => i.toDate()).toList();
+    final list = data['datesFromHome'] as List<dynamic>?;
+    final timestamps = list?.map((i) => i as Timestamp).toList();
+    datesFromHome = timestamps?.map((i) => i.toDate()).toList();
     this.isUser = isUser;
   }
 
@@ -32,6 +34,7 @@ class Person {
   String? name;
   String? role;
   List<DateTime>? datesFromHome;
+  String? organisation;
   bool? isUser;
   File? image;
   String? downloadUrl;
@@ -54,9 +57,7 @@ class Person {
       data['imageUrl'] = imageUrlStored;
       // Upload profile image
       await firebase_storage.uploadImage(imageUrlStored, image!);
-
-      // Save download URL
-      final downloadUrl = await firebase_storage.getImage(imageUrlStored);
+      downloadUrl = await firebase_storage.getImage(imageUrlStored);
       data['downloadUrl'] = downloadUrl;
     }
 
@@ -76,23 +77,23 @@ class Person {
       'name': name,
       'role': role,
       'datesFromHome': datesFromHome,
+      'organisation': organisation,
     };
 
     var documentReference = firestore.collection('users').doc(id);
 
-    // Delete old image
-    var documentData = await documentReference.get();
-    var oldImageUrl = documentData.data()?['imageUrl'].toString() ?? '';
-    await firebase_storage.deleteImage(oldImageUrl);
-
     if (image != null) {
-      final fileExtension = p.extension(image!.path);
-      final userId = documentData.data()?['id'].toString();
-      final imageUrlStored = 'user_images/$userId$fileExtension';
-      data['imageUrl'] = imageUrlStored;
+      // Delete old image
+      if (imageUrl != null) await firebase_storage.deleteImage(imageUrl!);
 
+      final fileExtension = p.extension(image!.path);
+      final imageUrlStored =
+          'user_images/${documentReference.id}$fileExtension';
+      data['imageUrl'] = imageUrlStored;
       // Upload profile image
       await firebase_storage.uploadImage(imageUrlStored, image!);
+      downloadUrl = await firebase_storage.getImage(imageUrlStored);
+      data['downloadUrl'] = downloadUrl;
     }
 
     await firestore.runTransaction((transaction) async {
@@ -110,9 +111,7 @@ class Person {
     var documentReference = firestore.collection('users').doc(id);
 
     // Delete old image
-    var documentData = await documentReference.get();
-    var oldImageUrl = documentData.data()?['imageUrl'].toString() ?? '';
-    await firebase_storage.deleteImage(oldImageUrl);
+    if (imageUrl != null) await firebase_storage.deleteImage(imageUrl!);
 
     await firestore.runTransaction((transaction) async {
       transaction.delete(documentReference);

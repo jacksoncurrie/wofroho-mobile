@@ -1,8 +1,8 @@
 import 'dart:developer';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
 import 'package:wofroho_mobile/animations/next_page_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
@@ -24,6 +24,12 @@ import 'package:wofroho_mobile/templates/simple_template.dart';
 import '../theme.dart';
 
 class JoinOrganisationPage extends StatefulWidget {
+  JoinOrganisationPage({
+    required this.userId,
+  });
+
+  final String userId;
+
   @override
   _JoinOrganisationPageState createState() => _JoinOrganisationPageState();
 }
@@ -77,6 +83,23 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
       ),
       (_) => false,
     );
+  }
+
+  Future _addOrganisationToUser() async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool('inOrganisation', true);
+
+    final firestore = FirebaseFirestore.instance;
+    final organisationQuery = await firestore
+        .collection('organisations')
+        .where('nameLower',
+            isEqualTo: _organisationController.text.toLowerCase())
+        .get();
+    final organisation = organisationQuery.docs.first.data()['name'].toString();
+    await firestore
+        .collection('users')
+        .doc(widget.userId)
+        .update({'organisation': organisation});
   }
 
   void _nextPressed() {
@@ -169,6 +192,8 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
         });
         return false;
       }
+
+      await _addOrganisationToUser();
     } on Exception catch (e) {
       log(e.toString());
       setState(() {
@@ -182,7 +207,7 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
       });
     }
 
-    return false;
+    return true;
   }
 
   void _unsetValidation() async {

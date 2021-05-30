@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
 import 'package:wofroho_mobile/animations/next_page_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
@@ -90,6 +91,10 @@ class _LoginPageState extends State<LoginPage> {
 
   Future _loginOrSignup(String userId) async {
     if (await _userExists()) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('signedUp', true);
+      await prefs.setBool('inOrganisation', true);
+
       Navigator.pushAndRemoveUntil(
         context,
         FadePageTransition(
