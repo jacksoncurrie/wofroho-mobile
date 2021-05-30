@@ -24,16 +24,17 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final _user = FirebaseAuth.instance.currentUser;
+
   void _closePressed() {
     Navigator.pop(context);
   }
 
   void _accountPressed() {
-    final user = FirebaseAuth.instance.currentUser;
     Navigator.of(context).push(
       SlideLeftPageTransition(
         child: AccountPage(
-          userId: user?.uid ?? '',
+          userId: _user?.uid ?? '',
         ),
       ),
     );
@@ -50,7 +51,9 @@ class _SettingsPageState extends State<SettingsPage> {
   void _organisationPressed() {
     Navigator.of(context).push(
       SlideLeftPageTransition(
-        child: ManageOrganisationPage(),
+        child: ManageOrganisationPage(
+          userId: _user?.uid ?? '',
+        ),
       ),
     );
   }

@@ -143,7 +143,7 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
           children: [
             _showInformation(),
             _showOrganisationField(),
-            _showCreateOrganisation(),
+            // _showCreateOrganisation(),
           ],
         ),
       ),
