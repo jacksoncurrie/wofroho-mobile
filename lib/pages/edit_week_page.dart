@@ -1,6 +1,8 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/rich_text_paragraph.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/molecules/dialog_popup.dart';
@@ -14,6 +16,14 @@ import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
 import 'package:wofroho_mobile/templates/simple_template.dart';
 
 class EditWeekPage extends StatefulWidget {
+  EditWeekPage({
+    this.focusedDays,
+    required this.userId,
+  });
+
+  final List<DateTime>? focusedDays;
+  final String userId;
+
   @override
   _EditWeekPageState createState() => _EditWeekPageState();
 }
@@ -22,12 +32,28 @@ class _EditWeekPageState extends State<EditWeekPage> {
   int _focusedDay = 2;
   DateTime? _startWeekDay;
   List<DateTime> _focusedDaysWeek = [];
-  int? _currentDay;
+  late DateTime _currentDay;
   late int _currentWeek;
+  late bool _saveLoading;
+
+  final _firestore = FirebaseFirestore.instance;
+
+  bool _areListsEqual(var list1, var list2) {
+    // check if both are lists
+    if (!(list1 is List && list2 is List) || list1.length != list2.length)
+      return false;
+
+    // check if elements are equal
+    for (var i = 0; i < list1.length; i++) {
+      if (list1[i] != list2[i]) return false;
+    }
+
+    return true;
+  }
 
   void _openValidateClose() {
     // Check if changes have been made
-    if (_focusedDaysWeek.isEmpty) {
+    if (_areListsEqual(_focusedDaysWeek, widget.focusedDays)) {
       _closePressed();
       return;
     }
@@ -49,7 +75,26 @@ class _EditWeekPageState extends State<EditWeekPage> {
     Navigator.pop(context);
   }
 
-  void _savePressed() {
+  void _savePressed() async {
+    try {
+      setState(() {
+        _saveLoading = true;
+      });
+
+      final timestamps =
+          _focusedDaysWeek.map((i) => Timestamp.fromDate(i)).toList();
+
+      await _firestore
+          .collection('users')
+          .doc(widget.userId)
+          .update({'datesFromHome': timestamps});
+    } on Exception catch (e) {
+      log(e.toString());
+    } finally {
+      setState(() {
+        _saveLoading = false;
+      });
+    }
     Navigator.pop(context);
   }
 
@@ -58,9 +103,12 @@ class _EditWeekPageState extends State<EditWeekPage> {
     final todaysDate = DateTime.now();
     final mondaysDate =
         todaysDate.subtract(Duration(days: todaysDate.weekday - 1));
-    _startWeekDay = mondaysDate;
-    _currentDay = todaysDate.day;
+    _startWeekDay =
+        DateTime(mondaysDate.year, mondaysDate.month, mondaysDate.day);
+    _currentDay = DateTime(todaysDate.year, todaysDate.month, todaysDate.day);
     _currentWeek = 0;
+    _focusedDaysWeek.addAll(widget.focusedDays ?? []);
+    _saveLoading = false;
 
     super.initState();
   }
@@ -105,7 +153,7 @@ class _EditWeekPageState extends State<EditWeekPage> {
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _showThisWeekWofroho(),
-            _showRemainderText(),
+            // _showRemainderText(),
           ],
         ),
       ),
@@ -117,16 +165,14 @@ class _EditWeekPageState extends State<EditWeekPage> {
       setState(() => _focusedDaysWeek.remove(day));
       return;
     }
-    if (_focusedDaysWeek.length >= _focusedDay) {
-      setState(() => _focusedDaysWeek.removeAt(0));
-    }
+    // if (_focusedDaysWeek.length >= _focusedDay) {
+    //   setState(() => _focusedDaysWeek.removeAt(0));
+    // }
     setState(() => _focusedDaysWeek.add(day));
   }
 
   void _weekChanged(int weekNumber) {
     setState(() {
-      _focusedDaysWeek.clear();
-      _currentDay = weekNumber == 0 ? DateTime.now().day : 0;
       _currentWeek = weekNumber;
     });
   }
@@ -143,7 +189,7 @@ class _EditWeekPageState extends State<EditWeekPage> {
       inputWidget: CalendarWeekPicker(
         dayBegin: _startWeekDay,
         dayTapped: _updateWeek,
-        focusedDays: _focusedDaysWeek.map((i) => i.day).toList(),
+        focusedDays: _focusedDaysWeek,
         weekChanged: _weekChanged,
         secondaryDay: _currentDay,
         showLeftArrow: _currentWeek > 0,
@@ -151,33 +197,33 @@ class _EditWeekPageState extends State<EditWeekPage> {
     );
   }
 
-  Widget _showCheckIcon() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 5.0),
-      child: SvgPicture.asset(
-        'assets/images/check.svg',
-        semanticsLabel: "Check icon",
-      ),
-    );
-  }
+  // Widget _showCheckIcon() {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(left: 5.0),
+  //     child: SvgPicture.asset(
+  //       'assets/images/check.svg',
+  //       semanticsLabel: "Check icon",
+  //     ),
+  //   );
+  // }
 
-  Widget _showRemainderText() {
-    final selections = _focusedDay - _focusedDaysWeek.length;
-    final plural = selections == 1 ? "" : "s";
+  // Widget _showRemainderText() {
+  //   final selections = _focusedDay - _focusedDaysWeek.length;
+  //   final plural = selections == 1 ? "" : "s";
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          ParagraphText(
-            text: "You have $selections selection$plural left",
-          ),
-          if (selections == 0) _showCheckIcon(),
-        ],
-      ),
-    );
-  }
+  //   return Padding(
+  //     padding: const EdgeInsets.only(bottom: 20.0),
+  //     child: Row(
+  //       mainAxisAlignment: MainAxisAlignment.center,
+  //       children: [
+  //         ParagraphText(
+  //           text: "You have $selections selection$plural left",
+  //         ),
+  //         if (selections == 0) _showCheckIcon(),
+  //       ],
+  //     ),
+  //   );
+  // }
 
   Widget _showBottomWidget() {
     return Padding(
@@ -185,6 +231,7 @@ class _EditWeekPageState extends State<EditWeekPage> {
       child: PrimaryButton(
         text: "Save",
         onPressed: _savePressed,
+        isLoading: _saveLoading,
       ),
     );
   }

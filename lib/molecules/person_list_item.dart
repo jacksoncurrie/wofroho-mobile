@@ -39,7 +39,7 @@ class PersonListItem extends StatelessWidget {
           image: _showImage(context),
           itemTitle: _showName(),
           itemSubtitle: _showRole(),
-          // endWidget: endWidget ?? _showDates(),
+          endWidget: endWidget ?? _showDates(),
         ),
       ),
     );

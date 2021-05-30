@@ -32,7 +32,7 @@ class _SetupPageState extends State<SetupPage> {
   int _focusedDay = 2;
   DateTime? _startWeekDay;
   List<DateTime> _focusedDaysWeek = [];
-  int? _currentDay;
+  late DateTime _currentDay;
 
   void _openValidateClose(void Function() backAction) {
     // Check if changes have been made
@@ -83,8 +83,10 @@ class _SetupPageState extends State<SetupPage> {
     final todaysDate = DateTime.now();
     final mondaysDate =
         todaysDate.subtract(Duration(days: todaysDate.weekday - 1));
-    _startWeekDay = mondaysDate;
-    _currentDay = todaysDate.day;
+    _startWeekDay =
+        DateTime(mondaysDate.year, mondaysDate.month, mondaysDate.day);
+    _currentDay = DateTime(todaysDate.year, todaysDate.month, todaysDate.day);
+    ;
 
     super.initState();
   }
@@ -194,7 +196,6 @@ class _SetupPageState extends State<SetupPage> {
   void _weekChanged(int weekNumber) {
     setState(() {
       _focusedDaysWeek.clear();
-      _currentDay = weekNumber == 0 ? DateTime.now().day : 0;
     });
   }
 
@@ -210,7 +211,7 @@ class _SetupPageState extends State<SetupPage> {
       inputWidget: CalendarWeekPicker(
         dayBegin: _startWeekDay,
         dayTapped: _updateWeek,
-        focusedDays: _focusedDaysWeek.map((i) => i.day).toList(),
+        focusedDays: _focusedDaysWeek,
         weekChanged: _weekChanged,
         secondaryDay: _currentDay,
       ),

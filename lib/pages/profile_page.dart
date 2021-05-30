@@ -108,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return FormItemSpace(
       child: DataField(
         title: 'Organisation',
-        child: ParagraphText(text: 'Wayne Enterprises'),
+        child: ParagraphText(text: widget.person.organisation),
       ),
     );
   }

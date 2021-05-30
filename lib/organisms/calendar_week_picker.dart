@@ -23,13 +23,13 @@ class CalendarWeekPicker extends StatelessWidget {
 
   final DateTime? dayBegin;
   final void Function(DateTime) dayTapped;
-  final List<int> focusedDays;
+  final List<DateTime> focusedDays;
   final int startDay;
   final void Function(int)? weekChanged;
-  final int? secondaryDay;
+  final DateTime? secondaryDay;
   final Color? focusedBackgroundColor;
   final Color? focusedTextColor;
-  final List<int>? outlinedDays;
+  final List<DateTime>? outlinedDays;
   final Color? outlinedColor;
   final bool showLeftArrow;
   final bool showRightArrow;
@@ -42,24 +42,40 @@ class CalendarWeekPicker extends StatelessWidget {
 
   WeekDetails _getDays(int weekNumber) {
     var days = <int>[];
+    var dates = <DateTime>[];
     int? year;
     String? month;
     for (var i = 0; i < 7; i++) {
       final day = dayBegin!.add(Duration(days: i + (weekNumber * 7)));
       days.add(day.day);
+      dates.add(day);
       if (i == 0) {
         final formatter = DateFormat(_monthStringFormat);
         month = formatter.format(day);
         year = day.year;
       }
     }
-    return WeekDetails(year: year, month: month, days: days);
+    return WeekDetails(year: year!, month: month!, days: days, dates: dates);
   }
 
-  void _dayTapped(int day, String? month, int? year) {
-    final dayTap =
-        DateFormat('d $_monthStringFormat yyyy').parse("$day $month $year");
-    dayTapped(dayTap);
+  void _dayTapped(int day, List<DateTime> dates) {
+    final dateTapped = dates.singleWhere((date) => date.day == day);
+    dayTapped(dateTapped);
+  }
+
+  int? _getDayFromDateTime(DateTime dateTime, List<DateTime> dates) {
+    if (!dates.contains(dateTime)) return null;
+    return dateTime.day;
+  }
+
+  List<int> _getDaysFromDate(
+      List<DateTime> dates, List<DateTime> datesCompare) {
+    final dateList = <int>[];
+    for (final date in dates) {
+      final dateInt = _getDayFromDateTime(date, datesCompare);
+      if (dateInt != null) dateList.add(dateInt);
+    }
+    return dateList;
   }
 
   @override
@@ -77,13 +93,15 @@ class CalendarWeekPicker extends StatelessWidget {
               ),
               WeekRow(
                 days: weekDetails.days,
-                dayTapped: (day) =>
-                    _dayTapped(day, weekDetails.month, weekDetails.year),
-                focusedDays: focusedDays,
-                secondaryDay: secondaryDay,
+                dayTapped: (day) => _dayTapped(day, weekDetails.dates),
+                focusedDays: _getDaysFromDate(focusedDays, weekDetails.dates),
+                secondaryDay: secondaryDay == null
+                    ? null
+                    : _getDayFromDateTime(secondaryDay!, weekDetails.dates),
                 focusedBackgroundColor: focusedBackgroundColor,
                 focusedTextColor: focusedTextColor,
-                outlinedDays: outlinedDays,
+                outlinedDays:
+                    _getDaysFromDate(outlinedDays ?? [], weekDetails.dates),
                 outlinedColor: outlinedColor,
               ),
             ],
@@ -155,12 +173,14 @@ class CalendarWeekPicker extends StatelessWidget {
 
 class WeekDetails {
   WeekDetails({
-    this.year,
-    this.month,
-    this.days,
+    required this.year,
+    required this.month,
+    required this.days,
+    required this.dates,
   });
 
-  int? year;
-  String? month;
-  List<int>? days;
+  int year;
+  String month;
+  List<int> days;
+  List<DateTime> dates;
 }

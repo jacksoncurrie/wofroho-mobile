@@ -120,6 +120,7 @@ class _ManageOrganisationPageState extends State<ManageOrganisationPage> {
 
         return PersonList(
           people: people,
+          iconButton: SizedBox.shrink(),
         );
       },
     );
