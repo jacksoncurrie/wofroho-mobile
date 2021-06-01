@@ -4,6 +4,7 @@ import 'package:intl/intl.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/molecules/week_row.dart';
 import 'package:wofroho_mobile/molecules/weekday_name_row.dart';
+import '../helpers/date_helper.dart';
 
 class CalendarWeekPicker extends StatelessWidget {
   CalendarWeekPicker({
@@ -63,21 +64,6 @@ class CalendarWeekPicker extends StatelessWidget {
     dayTapped(dateTapped);
   }
 
-  int? _getDayFromDateTime(DateTime dateTime, List<DateTime> dates) {
-    if (!dates.contains(dateTime)) return null;
-    return dateTime.day;
-  }
-
-  List<int> _getDaysFromDate(
-      List<DateTime> dates, List<DateTime> datesCompare) {
-    final dateList = <int>[];
-    for (final date in dates) {
-      final dateInt = _getDayFromDateTime(date, datesCompare);
-      if (dateInt != null) dateList.add(dateInt);
-    }
-    return dateList;
-  }
-
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -94,14 +80,16 @@ class CalendarWeekPicker extends StatelessWidget {
               WeekRow(
                 days: weekDetails.days,
                 dayTapped: (day) => _dayTapped(day, weekDetails.dates),
-                focusedDays: _getDaysFromDate(focusedDays, weekDetails.dates),
+                focusedDays:
+                    DateHelper.getDaysFromDate(focusedDays, weekDetails.dates),
                 secondaryDay: secondaryDay == null
                     ? null
-                    : _getDayFromDateTime(secondaryDay!, weekDetails.dates),
+                    : DateHelper.getDayFromDateTime(
+                        secondaryDay!, weekDetails.dates),
                 focusedBackgroundColor: focusedBackgroundColor,
                 focusedTextColor: focusedTextColor,
-                outlinedDays:
-                    _getDaysFromDate(outlinedDays ?? [], weekDetails.dates),
+                outlinedDays: DateHelper.getDaysFromDate(
+                    outlinedDays ?? [], weekDetails.dates),
                 outlinedColor: outlinedColor,
               ),
             ],

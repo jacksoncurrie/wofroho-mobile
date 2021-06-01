@@ -34,6 +34,7 @@ class _DetailsPageState extends State<DetailsPage> {
   late DateTime _focusedDay;
   late int _weeknumber;
   late bool _editLoading;
+  late DateTime _newWeekMonday;
 
   final _firestore = FirebaseFirestore.instance;
   final _user = FirebaseAuth.instance.currentUser?.uid ?? '';
@@ -49,6 +50,7 @@ class _DetailsPageState extends State<DetailsPage> {
     _focusedDay = DateTime(todaysDate.year, todaysDate.month, todaysDate.day);
     _weeknumber = 0;
     _editLoading = false;
+    _newWeekMonday = _startWeekDay;
 
     super.initState();
   }
@@ -131,6 +133,7 @@ class _DetailsPageState extends State<DetailsPage> {
     final newWeekMonday = _startWeekDay.add(Duration(days: weekNumber * 7));
     setState(() {
       _focusedDay = newWeekMonday;
+      _newWeekMonday = newWeekMonday;
       _weeknumber = weekNumber;
     });
     HapticFeedback.mediumImpact();
@@ -228,6 +231,15 @@ class _DetailsPageState extends State<DetailsPage> {
           child: PersonList(
             personTapped: _personTapped,
             people: users,
+            dates: [
+              _newWeekMonday,
+              _newWeekMonday.add(Duration(days: 1)),
+              _newWeekMonday.add(Duration(days: 2)),
+              _newWeekMonday.add(Duration(days: 3)),
+              _newWeekMonday.add(Duration(days: 4)),
+              _newWeekMonday.add(Duration(days: 5)),
+              _newWeekMonday.add(Duration(days: 6)),
+            ],
           ),
         );
       },
