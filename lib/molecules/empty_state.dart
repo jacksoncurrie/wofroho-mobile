@@ -4,7 +4,7 @@ import '../theme.dart';
 
 class EmptyState extends StatelessWidget {
   EmptyState({
-    @required this.text,
+    required this.text,
   });
 
   final String text;

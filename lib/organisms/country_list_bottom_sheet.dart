@@ -4,14 +4,12 @@ import 'package:wofroho_mobile/molecules/country_list_view.dart';
 import '../theme.dart';
 
 void showCountryListBottomSheet({
-  @required BuildContext context,
-  @required ValueChanged<Country> onSelect,
-  List<String> exclude,
-  List<String> countryFilter,
+  required BuildContext context,
+  required ValueChanged<Country> onSelect,
+  List<String>? exclude,
+  List<String>? countryFilter,
   bool showPhoneCode = false,
 }) {
-  assert(context != null);
-  assert(onSelect != null);
   showModalBottomSheet(
     context: context,
     isScrollControlled: true,
@@ -24,8 +22,8 @@ void showCountryListBottomSheet({
 Widget _builder(
   BuildContext context,
   ValueChanged<Country> onSelect,
-  List<String> exclude,
-  List<String> countryFilter,
+  List<String>? exclude,
+  List<String>? countryFilter,
   bool showPhoneCode,
 ) {
   final device = MediaQuery.of(context).size.height;

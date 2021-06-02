@@ -4,14 +4,14 @@ import '../theme.dart';
 
 class Badge extends StatelessWidget {
   Badge({
-    @required this.number,
+    required this.number,
     this.maxNumber = 999,
   });
 
-  final int number;
+  final int? number;
   final int maxNumber;
 
-  String get _finalNumber => number > maxNumber ? '$maxNumber+' : '$number';
+  String get _finalNumber => number! > maxNumber ? '$maxNumber+' : '$number';
 
   @override
   Widget build(BuildContext context) {

@@ -19,7 +19,7 @@ import 'package:wofroho_mobile/templates/simple_template.dart';
 
 class SetupPage extends StatefulWidget {
   SetupPage({
-    @required this.initialSetup,
+    required this.initialSetup,
   });
 
   final bool initialSetup;
@@ -30,9 +30,9 @@ class SetupPage extends StatefulWidget {
 
 class _SetupPageState extends State<SetupPage> {
   int _focusedDay = 2;
-  DateTime _startWeekDay;
+  DateTime? _startWeekDay;
   List<DateTime> _focusedDaysWeek = [];
-  int _currentDay;
+  late DateTime _currentDay;
 
   void _openValidateClose(void Function() backAction) {
     // Check if changes have been made
@@ -45,14 +45,9 @@ class _SetupPageState extends State<SetupPage> {
       context: context,
       title: 'Unsaved changes',
       message: 'Would you like to save the changes you have made?',
-      primaryText: 'Save changes',
-      secondaryText: 'Close without saving',
+      primaryText: 'Leave without saving',
       primaryPressed: () {
         // Drop popup
-        Navigator.pop(context);
-        _savePressed();
-      },
-      secondaryPressed: () {
         Navigator.pop(context);
         backAction();
       },
@@ -62,7 +57,8 @@ class _SetupPageState extends State<SetupPage> {
   void _closePressed() {
     Navigator.of(context).pushReplacement(
       FadePageTransition(
-        DetailsPage(),
+        child: DetailsPage(),
+        routeName: DetailsPage.routeName,
       ),
     );
   }
@@ -75,7 +71,8 @@ class _SetupPageState extends State<SetupPage> {
     widget.initialSetup
         ? Navigator.of(context).pushReplacement(
             FadePageTransition(
-              DetailsPage(),
+              child: DetailsPage(),
+              routeName: DetailsPage.routeName,
             ),
           )
         : Navigator.pop(context);
@@ -86,8 +83,10 @@ class _SetupPageState extends State<SetupPage> {
     final todaysDate = DateTime.now();
     final mondaysDate =
         todaysDate.subtract(Duration(days: todaysDate.weekday - 1));
-    _startWeekDay = mondaysDate;
-    _currentDay = todaysDate.day;
+    _startWeekDay =
+        DateTime(mondaysDate.year, mondaysDate.month, mondaysDate.day);
+    _currentDay = DateTime(todaysDate.year, todaysDate.month, todaysDate.day);
+    ;
 
     super.initState();
   }
@@ -197,7 +196,6 @@ class _SetupPageState extends State<SetupPage> {
   void _weekChanged(int weekNumber) {
     setState(() {
       _focusedDaysWeek.clear();
-      _currentDay = weekNumber == 0 ? DateTime.now().day : 0;
     });
   }
 
@@ -213,7 +211,7 @@ class _SetupPageState extends State<SetupPage> {
       inputWidget: CalendarWeekPicker(
         dayBegin: _startWeekDay,
         dayTapped: _updateWeek,
-        focusedDays: _focusedDaysWeek.map((i) => i.day).toList(),
+        focusedDays: _focusedDaysWeek,
         weekChanged: _weekChanged,
         secondaryDay: _currentDay,
       ),

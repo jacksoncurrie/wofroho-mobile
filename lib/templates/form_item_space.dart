@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class FormItemSpace extends StatelessWidget {
   FormItemSpace({
-    @required this.child,
+    required this.child,
     this.validationMessage,
   });
 
   final Widget child;
-  final Widget validationMessage;
+  final Widget? validationMessage;
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +21,7 @@ class FormItemSpace extends StatelessWidget {
                 EdgeInsets.only(bottom: validationMessage == null ? 0 : 10.0),
             child: child,
           ),
-          if (validationMessage != null) validationMessage,
+          if (validationMessage != null) validationMessage!,
         ],
       ),
     );

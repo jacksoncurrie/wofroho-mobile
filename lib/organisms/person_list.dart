@@ -1,21 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
+import 'package:wofroho_mobile/helpers/date_helper.dart';
 import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/person_list_item.dart';
 
 class PersonList extends StatelessWidget {
   PersonList({
-    @required this.people,
+    required this.people,
     this.personTapped,
     this.iconButton,
     this.iconTapped,
+    this.dates,
   });
 
   final List<Person> people;
-  final void Function(Person) personTapped;
-  final Widget iconButton;
-  final void Function(Person) iconTapped;
+  final void Function(Person)? personTapped;
+  final Widget? iconButton;
+  final void Function(Person)? iconTapped;
+  final List<DateTime>? dates;
 
   @override
   Widget build(BuildContext context) {
@@ -31,19 +34,20 @@ class PersonList extends StatelessWidget {
   Widget _showPersonListItem(Person person) {
     return PersonListItem(
       personId: person.id,
-      image: NetworkImage(person.imageUrl),
-      name: person.name,
-      role: person.role,
-      dates: person.datesFromHome,
+      image: NetworkImage(person.downloadUrl ?? ''),
+      name: person.name ?? '',
+      role: person.role ?? '',
+      dates:
+          DateHelper.getDatesFromDate(person.datesFromHome ?? [], dates ?? []),
       endWidget: iconButton == null ? null : _showIconButton(person),
       personOutlined: person.isUser,
-      onTap: personTapped == null ? null : () => personTapped(person),
+      onTap: personTapped == null ? null : () => personTapped!(person),
     );
   }
 
   Widget _showIconButton(Person person) {
     return SingleIconButton(
-      onPressed: () => iconTapped(person),
+      onPressed: () => iconTapped!(person),
       icon: iconButton,
     );
   }

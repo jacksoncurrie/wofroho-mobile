@@ -3,7 +3,7 @@ import '../theme.dart';
 
 class RichTextParagraph extends StatelessWidget {
   RichTextParagraph({
-    @required this.textSpanItems,
+    required this.textSpanItems,
   });
 
   final List<TextSpanItem> textSpanItems;
@@ -37,14 +37,14 @@ class RichTextParagraph extends StatelessWidget {
 
 class TextSpanItem {
   TextSpanItem({
-    @required this.text,
+    required this.text,
     this.fontWeight,
     this.textColor,
     this.fontSize,
   });
 
   final String text;
-  final FontWeight fontWeight;
-  final Color textColor;
-  final double fontSize;
+  final FontWeight? fontWeight;
+  final Color? textColor;
+  final double? fontSize;
 }

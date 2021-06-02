@@ -4,10 +4,10 @@ import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 
 class UserDates extends StatelessWidget {
   UserDates({
-    @required this.dates,
+    required this.dates,
   });
 
-  final List<DateTime> dates;
+  final List<DateTime>? dates;
 
   static final _monthStringFormat = "MMM";
 
@@ -24,7 +24,7 @@ class UserDates extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    _sortDates(dates);
+    _sortDates(dates!);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -37,13 +37,13 @@ class UserDates extends StatelessWidget {
 
   Widget _showDays() {
     return ParagraphText(
-      text: _getDays(dates),
+      text: _getDays(dates!),
     );
   }
 
   Widget _showMonths() {
     return ParagraphText(
-      text: _getMonths(dates),
+      text: _getMonths(dates!),
     );
   }
 }

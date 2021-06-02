@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 
 class ActionPageTemplate extends StatelessWidget {
   ActionPageTemplate({
-    @required this.pageWidgets,
-    @required this.actionWidget,
+    required this.pageWidgets,
+    required this.actionWidget,
   });
 
   final Widget pageWidgets;

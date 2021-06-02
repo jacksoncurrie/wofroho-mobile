@@ -1,16 +1,17 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:wofroho_mobile/animations/fade_page_transition.dart';
-import 'package:wofroho_mobile/animations/slide_right_transition.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wofroho_mobile/animations/child_page_transition.dart';
+import 'package:wofroho_mobile/animations/slide_left_page_transition.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/rich_text_paragraph.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
-import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/pages/about_page.dart';
 import 'package:wofroho_mobile/pages/account_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
 import 'package:wofroho_mobile/pages/manage_organisation_page.dart';
-import 'package:wofroho_mobile/pages/setup_page.dart';
+import 'package:wofroho_mobile/services/authentication.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
 import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
@@ -23,27 +24,17 @@ class SettingsPage extends StatefulWidget {
 }
 
 class _SettingsPageState extends State<SettingsPage> {
+  final _user = FirebaseAuth.instance.currentUser;
+
   void _closePressed() {
     Navigator.pop(context);
   }
 
-  void _generalPressed() {
-    Navigator.of(context).push(
-      SlideRightTransition(SetupPage(initialSetup: false)),
-    );
-  }
-
   void _accountPressed() {
     Navigator.of(context).push(
-      SlideRightTransition(
-        AccountPage(
-          initialSetup: false,
-          person: Person(
-            id: "1",
-            imageUrl: "http://placekitten.com/300/300",
-            name: "Bruce Wayne",
-            role: "Businessman, entrepreneur, accountant",
-          ),
+      SlideLeftPageTransition(
+        child: AccountPage(
+          userId: _user?.uid ?? '',
         ),
       ),
     );
@@ -51,24 +42,35 @@ class _SettingsPageState extends State<SettingsPage> {
 
   void _aboutPressed() {
     Navigator.of(context).push(
-      SlideRightTransition(
-        AboutPage(),
+      SlideLeftPageTransition(
+        child: AboutPage(),
       ),
     );
   }
 
   void _organisationPressed() {
     Navigator.of(context).push(
-      SlideRightTransition(
-        ManageOrganisationPage(),
+      SlideLeftPageTransition(
+        child: ManageOrganisationPage(
+          userId: _user?.uid ?? '',
+        ),
       ),
     );
   }
 
-  void _logoutPressed() {
+  void _logoutPressed() async {
+    // Clear saved preferences
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.clear();
+
+    // Sign out
+    final auth = Auth();
+    await auth.signOut();
+
     Navigator.of(context).pushAndRemoveUntil(
-      FadePageTransition(
-        LoginPage(),
+      ChildPageTransition(
+        child: LoginPage(),
+        routeName: LoginPage.routeName,
       ),
       (_) => false,
     );
@@ -108,30 +110,25 @@ class _SettingsPageState extends State<SettingsPage> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        _showSettingDivider(),
-        _showSettingItem("General", _generalPressed),
-        _showSettingDivider(),
         _showSettingItem("Account", _accountPressed),
-        _showSettingDivider(),
-        _showSettingItem("About", _aboutPressed),
-        _showSettingDivider(),
         _showSettingItem("Organisation", _organisationPressed),
-        _showSettingDivider(),
-        _showSettingItem("Logout", _logoutPressed),
-        _showSettingDivider(),
+        _showSettingItem("About", _aboutPressed),
+        InkWell(
+          onTap: _logoutPressed,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
+            child: ParagraphText(text: 'Logout'),
+          ),
+        ),
       ],
     );
-  }
-
-  Widget _showSettingDivider() {
-    return Divider(thickness: 1);
   }
 
   Widget _showSettingItem(String text, void Function() onTap) {
     return InkWell(
       onTap: onTap,
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 30),
         child: ParagraphText(text: text),
       ),
     );
@@ -140,26 +137,18 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget _showAboutDetails() {
     return Column(
       children: [
-        ParagraphText(
-          text: "Designed by Duann Schlechter",
-          textColor: Theme.of(context).colorScheme.disabledText,
-        ),
-        ParagraphText(
-          text: "Developed by Jackson Currie",
-          textColor: Theme.of(context).colorScheme.disabledText,
-        ),
         Padding(
           padding: const EdgeInsets.only(top: 20.0, bottom: 25.0),
           child: RichTextParagraph(
             textSpanItems: [
               TextSpanItem(
-                text: 'Working from home = ',
+                text: 'wofroho',
+                fontWeight: FontWeight.bold,
                 textColor: Theme.of(context).colorScheme.disabledText,
                 fontSize: 16,
               ),
               TextSpanItem(
-                text: 'wofroho',
-                fontWeight: FontWeight.bold,
+                text: ' = Working from home',
                 textColor: Theme.of(context).colorScheme.disabledText,
                 fontSize: 16,
               ),

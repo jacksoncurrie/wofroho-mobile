@@ -4,8 +4,8 @@ import '../theme.dart';
 
 class LinkText extends StatelessWidget {
   LinkText({
-    @required this.text,
-    @required this.onTap,
+    required this.text,
+    required this.onTap,
   });
 
   final String text;

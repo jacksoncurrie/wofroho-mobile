@@ -5,7 +5,7 @@ import 'package:wofroho_mobile/molecules/request_list_item.dart';
 
 class RequestsList extends StatelessWidget {
   RequestsList({
-    @required this.people,
+    required this.people,
   });
 
   final List<Person> people;
@@ -24,9 +24,9 @@ class RequestsList extends StatelessWidget {
   Widget _showPersonListItem(Person person) {
     return RequestListItem(
       personId: person.id,
-      image: NetworkImage(person.imageUrl),
-      name: person.name,
-      role: person.role,
+      image: NetworkImage(person.imageUrl ?? ''),
+      name: person.name ?? '',
+      role: person.role ?? '',
       dates: person.datesFromHome,
       personOutlined: person.isUser,
     );

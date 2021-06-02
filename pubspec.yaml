@@ -3,38 +3,48 @@ description: A new Flutter project.
 
 publish_to: "none"
 
-version: 1.0.0+1
+version: 0.0.1+1
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
     sdk: flutter
 
-  flutter_svg: ^0.19.1
-  intl: ^0.16.1
-  image_picker: ^0.6.7+17
-  animations: ^1.1.2
+  flutter_svg: ^0.21.0-nullsafety.0
+  intl: ^0.17.0
+  image_picker: ^0.7.3
+  animations: ^2.0.0
+  firebase_core: ^1.0.2
+  firebase_auth: ^1.0.1
+  cloud_firestore: ^1.0.6
+  firebase_storage: ^8.0.0
+  shared_preferences: ^2.0.6
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
 
-  flutter_launcher_icons: "^0.8.0"
-  flutter_native_splash: ^0.1.9
+  flutter_launcher_icons: ^0.9.0
+  flutter_native_splash: ^1.1.5+1
+
+  device_preview: ^0.7.1
 
 # Run with: flutter pub run flutter_launcher_icons:main
 flutter_icons:
   android: true
-  ios: false # iOS done manually at this stage
-  image_path: "assets/wofroho_logo.png"
+  ios: true
+  image_path: "assets/launcher_icons/wofroho_icon_full.png"
+  adaptive_icon_foreground: "assets/launcher_icons/wofroho_icon.png"
+  adaptive_icon_background: "#3756F6"
 
 # Run with: flutter pub pub run flutter_native_splash:create
 flutter_native_splash:
-  ios: false # iOS done manually at this stage
-  image: "assets/wofroho_logo_full.png"
-  color: "FBFBFB"
+  android: true
+  ios: true
+  image: "assets/launcher_icons/wofroho_splash_icon.png"
+  color: "#3756F6"
   android_disable_fullscreen: true
 
 flutter:
@@ -53,6 +63,11 @@ flutter:
     - assets/images/error.svg
     - assets/images/add.svg
     - assets/images/minimise.svg
+    - assets/images/camera.svg
+    - assets/images/libary.svg
+    - assets/images/menu.svg
+    - assets/images/arrow_right.svg
+    - assets/images/arrow_left.svg
 
   fonts:
     - family: Poppins

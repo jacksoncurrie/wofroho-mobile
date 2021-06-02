@@ -1,12 +1,17 @@
+import 'dart:developer';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
+import 'package:wofroho_mobile/animations/slide_left_page_transition.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/empty_state.dart';
-import 'package:wofroho_mobile/molecules/link_text.dart';
+import 'package:wofroho_mobile/molecules/secondary_button.dart';
 import 'package:wofroho_mobile/organisms/calendar_week_picker.dart';
 import 'package:wofroho_mobile/organisms/person_list.dart';
 import 'package:wofroho_mobile/pages/edit_week_page.dart';
@@ -17,49 +22,47 @@ import 'package:wofroho_mobile/templates/padded_page_template.dart';
 import '../theme.dart';
 
 class DetailsPage extends StatefulWidget {
+  static String routeName = '/details';
+
   @override
   _DetailsPageState createState() => _DetailsPageState();
 }
 
 class _DetailsPageState extends State<DetailsPage> {
-  DateTime _startWeekDay;
-  int _currentDay = 0;
-  DateTime _focusedDay;
-  List<int> _outlinedDays = [9, 11];
+  late DateTime _startWeekDay;
+  late DateTime _currentDay;
+  late DateTime _focusedDay;
+  late int _weeknumber;
+  late bool _editLoading;
+  late DateTime _newWeekMonday;
 
-  void _settingsPressed() {
-    Navigator.of(context).push(
-      FadePageTransition(
-        SettingsPage(),
-      ),
-    );
-  }
-
-  void _editThisWeek() {
-    Navigator.of(context).push(
-      FadePageTransition(
-        EditWeekPage(),
-      ),
-    );
-  }
+  final _firestore = FirebaseFirestore.instance;
+  final _user = FirebaseAuth.instance.currentUser?.uid ?? '';
 
   @override
   void initState() {
     final todaysDate = DateTime.now();
     final mondaysDate =
         todaysDate.subtract(Duration(days: todaysDate.weekday - 1));
-    _startWeekDay = mondaysDate;
-    _currentDay = todaysDate.day;
-    _focusedDay = todaysDate;
+    _startWeekDay =
+        DateTime(mondaysDate.year, mondaysDate.month, mondaysDate.day);
+    _currentDay = DateTime(todaysDate.year, todaysDate.month, todaysDate.day);
+    _focusedDay = DateTime(todaysDate.year, todaysDate.month, todaysDate.day);
+    _weeknumber = 0;
+    _editLoading = false;
+    _newWeekMonday = _startWeekDay;
 
     super.initState();
   }
 
   @override
   Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
     return PaddedPageTemplate(
+      leftRightPadding: width < 340 ? 10 : 25,
       pageWidgets: ActionPageTemplate(
         pageWidgets: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             _showCalendar(),
             _showEditLink(),
@@ -74,13 +77,47 @@ class _DetailsPageState extends State<DetailsPage> {
     );
   }
 
+  void _settingsPressed() {
+    Navigator.of(context).push(
+      SlideLeftPageTransition(
+        child: SettingsPage(),
+      ),
+    );
+  }
+
+  void _editThisWeek() async {
+    try {
+      setState(() {
+        _editLoading = true;
+      });
+
+      final userDoc = await _firestore.collection('users').doc(_user).get();
+      final person = Person.fromFirebase(userDoc.data() ?? {}, _user, true);
+
+      Navigator.of(context).push(
+        FadePageTransition(
+          child: EditWeekPage(
+            focusedDays: person.datesFromHome,
+            userId: _user,
+          ),
+        ),
+      );
+    } on Exception catch (e) {
+      log(e.toString());
+    } finally {
+      setState(() {
+        _editLoading = false;
+      });
+    }
+  }
+
   Widget _showTopActions() {
     return Align(
       alignment: Alignment.centerRight,
       child: SingleIconButton(
         icon: SvgPicture.asset(
-          'assets/images/settings.svg',
-          semanticsLabel: "Settings icon",
+          'assets/images/menu.svg',
+          semanticsLabel: "Menu icon",
         ),
         onPressed: _settingsPressed,
       ),
@@ -96,34 +133,47 @@ class _DetailsPageState extends State<DetailsPage> {
     final newWeekMonday = _startWeekDay.add(Duration(days: weekNumber * 7));
     setState(() {
       _focusedDay = newWeekMonday;
-      _currentDay = weekNumber == 0 ? DateTime.now().day : 0;
-      _outlinedDays = weekNumber == 0 ? [9, 11] : [];
+      _newWeekMonday = newWeekMonday;
+      _weeknumber = weekNumber;
     });
     HapticFeedback.mediumImpact();
   }
 
   Widget _showCalendar() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: CalendarWeekPicker(
-        dayBegin: _startWeekDay,
-        dayTapped: _updateWeek,
-        secondaryDay: _currentDay,
-        weekChanged: _weekChanged,
-        focusedDays: [_focusedDay.day],
-        outlinedDays: _outlinedDays,
-        focusedBackgroundColor: Theme.of(context).colorScheme.primaryColor,
-        focusedTextColor: Theme.of(context).colorScheme.onPrimary,
-      ),
+    return StreamBuilder<Object>(
+      stream: _firestore.collection('users').doc(_user).snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData)
+          return Center(child: CircularProgressIndicator());
+
+        final data = snapshot.data as DocumentSnapshot;
+        final person = Person.fromFirebase(data.data() ?? {}, _user, true);
+
+        return Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: CalendarWeekPicker(
+            dayBegin: _startWeekDay,
+            dayTapped: _updateWeek,
+            secondaryDay: _currentDay,
+            weekChanged: _weekChanged,
+            focusedDays: [_focusedDay],
+            outlinedDays: person.datesFromHome,
+            focusedBackgroundColor: Theme.of(context).colorScheme.primaryColor,
+            focusedTextColor: Theme.of(context).colorScheme.onPrimary,
+            showLeftArrow: _weeknumber > 0,
+          ),
+        );
+      },
     );
   }
 
   Widget _showEditLink() {
     return Padding(
       padding: const EdgeInsets.only(top: 20.0),
-      child: LinkText(
-        text: "Edit this week wofroho",
-        onTap: _editThisWeek,
+      child: SecondaryButton(
+        text: "Select",
+        onPressed: _editThisWeek,
+        isLoading: _editLoading,
       ),
     );
   }
@@ -152,41 +202,47 @@ class _DetailsPageState extends State<DetailsPage> {
 
   void _personTapped(Person person) {
     var profilePage = ProfilePage(person: person);
-    Navigator.of(context).push(FadePageTransition(profilePage));
+    Navigator.of(context).push(
+      FadePageTransition(child: profilePage),
+    );
   }
 
   Widget _showPersonList() {
-    return Padding(
-      padding: const EdgeInsets.only(top: 20.0),
-      child: PersonList(
-        personTapped: _personTapped,
-        people: [
-          Person(
-            id: "1",
-            imageUrl:
-                "https://upload.wikimedia.org/wikipedia/en/thumb/1/19/Bruce_Wayne_%28The_Dark_Knight_Trilogy%29.jpg/220px-Bruce_Wayne_%28The_Dark_Knight_Trilogy%29.jpg",
-            name: "Bruce Wayne",
-            role: "Businessman, entrepreneur, accountant",
-            datesFromHome: [
-              DateTime.now().add(Duration(days: 2)),
-              DateTime.now().add(Duration(days: 3)),
+    return StreamBuilder(
+      stream: _firestore
+          .collection('users')
+          .where(
+            'datesFromHome',
+            arrayContains: Timestamp.fromDate(_focusedDay),
+          )
+          .snapshots(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData)
+          return Center(child: CircularProgressIndicator());
+
+        final data = snapshot.data as QuerySnapshot;
+        final users = data.docs
+            .map((i) => Person.fromFirebase(i.data(), i.id, i.id == _user))
+            .toList();
+
+        if (users.length == 0) return _showEmptyState();
+        return Padding(
+          padding: const EdgeInsets.only(top: 20.0),
+          child: PersonList(
+            personTapped: _personTapped,
+            people: users,
+            dates: [
+              _newWeekMonday,
+              _newWeekMonday.add(Duration(days: 1)),
+              _newWeekMonday.add(Duration(days: 2)),
+              _newWeekMonday.add(Duration(days: 3)),
+              _newWeekMonday.add(Duration(days: 4)),
+              _newWeekMonday.add(Duration(days: 5)),
+              _newWeekMonday.add(Duration(days: 6)),
             ],
-            isUser: true,
           ),
-          Person(
-            id: "2",
-            imageUrl:
-                "https://upload.wikimedia.org/wikipedia/en/thumb/c/c8/News-batbegins2-2.jpg/170px-News-batbegins2-2.jpg",
-            name: "Lucius Fox",
-            role: "CEO",
-            datesFromHome: [
-              DateTime.now().add(Duration(days: 5)),
-              DateTime.now().add(Duration(days: 6)),
-            ],
-            isUser: false,
-          ),
-        ],
-      ),
+        );
+      },
     );
   }
 }

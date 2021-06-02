@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class SimpleScrollTemplate extends StatelessWidget {
   SimpleScrollTemplate({
-    @required this.pageWidgets,
+    required this.pageWidgets,
   });
 
   final Widget pageWidgets;

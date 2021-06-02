@@ -1,10 +1,10 @@
+import 'dart:developer';
 import 'dart:io';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
-import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
@@ -15,8 +15,6 @@ import 'package:wofroho_mobile/molecules/dialog_popup.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/organisms/pick_image_bottom_sheet.dart';
-import 'package:wofroho_mobile/pages/join_organisation_page.dart';
-import 'package:wofroho_mobile/pages/login_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -25,15 +23,14 @@ import 'package:wofroho_mobile/templates/simple_scroll_template.dart';
 import 'package:wofroho_mobile/templates/simple_template.dart';
 import 'package:image_picker/image_picker.dart';
 import '../theme.dart';
+import 'join_organisation_page.dart';
 
 class AccountPage extends StatefulWidget {
   AccountPage({
-    @required this.initialSetup,
-    @required this.person,
+    required this.userId,
   });
 
-  final bool initialSetup;
-  final Person person;
+  final String userId;
 
   @override
   _AccountPageState createState() => _AccountPageState();
@@ -43,9 +40,122 @@ class _AccountPageState extends State<AccountPage> {
   final _nameController = TextEditingController();
   final _roleController = TextEditingController();
   final _organisationController = TextEditingController();
-  ValidationType _nameValidationType;
-  ValidationType _roleValidationType;
-  ValidationType _imageValidationType;
+  late ValidationType _nameValidationType;
+  late ValidationType _roleValidationType;
+  late bool _nextLoading;
+  Person? _savedPerson;
+  File? _image;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _nameValidationType = ValidationType.none;
+    _roleValidationType = ValidationType.none;
+    _nextLoading = false;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return SimpleTemplate(
+      pageWidgets: SimpleScrollTemplate(
+        pageWidgets: InputTemplate(
+          pageWidgets: ActionPageTemplate(
+            actionWidget: _showBackAction(),
+            pageWidgets: Padding(
+              padding: const EdgeInsets.only(left: 25, right: 25),
+              child: PageHeadingTemplate(
+                title: 'Account',
+                pageWidgets: _showPageWidgets(),
+              ),
+            ),
+          ),
+          bottomWidget: _showBottomWidget(),
+        ),
+      ),
+    );
+  }
+
+  Widget _showBackAction() {
+    return Align(
+      alignment: Alignment.centerLeft,
+      child: Padding(
+        padding: const EdgeInsets.only(top: 15, left: 10),
+        child: SingleIconButton(
+          icon: SvgPicture.asset(
+            'assets/images/back.svg',
+            semanticsLabel: 'Back icon',
+          ),
+          onPressed: _openValidateSave,
+        ),
+      ),
+    );
+  }
+
+  void _openValidateSave() {
+    //Check if changes have been made
+    if (_nameController.text == _savedPerson?.name &&
+        _roleController.text == _savedPerson?.role) {
+      Navigator.pop(context);
+      return;
+    }
+
+    showDialogPopup(
+      context: context,
+      title: 'Unsaved changes',
+      message: 'Would you like to save the changes you have made?',
+      primaryText: 'Leave without saving',
+      primaryPressed: () {
+        // Drop popup
+        Navigator.pop(context);
+        Navigator.pop(context);
+      },
+    );
+  }
+
+  Widget _showPageWidgets() {
+    return FutureBuilder(
+      future: FirebaseFirestore.instance
+          .collection('users')
+          .doc(widget.userId)
+          .get(),
+      builder: (context, snapshot) {
+        if (!snapshot.hasData) {
+          return Center(child: CircularProgressIndicator());
+        }
+
+        final futureResult = snapshot.data as DocumentSnapshot;
+        final data = futureResult.data();
+        _savedPerson = Person.fromFirebase(data ?? {}, widget.userId, true);
+        _nameController.text = _savedPerson?.name ?? '';
+        _roleController.text = _savedPerson?.role ?? '';
+        _organisationController.text = _savedPerson?.organisation ?? '';
+
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _showProfileImage(_savedPerson?.downloadUrl),
+            _showNameField(),
+            _showRoleField(),
+            _showOrganisationField(),
+          ],
+        );
+      },
+    );
+  }
+
+  Widget _showBottomWidget() {
+    return Padding(
+      padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
+      child: PrimaryButton(
+        text: 'Save',
+        onPressed: () {
+          if (_validateInputs()) _nextPressed();
+        },
+        isLoading: _nextLoading,
+      ),
+    );
+  }
 
   void _unsetNameValidation() {
     if (_nameValidationType != ValidationType.none) {
@@ -77,80 +187,40 @@ class _AccountPageState extends State<AccountPage> {
       });
       error = true;
     }
-    if (_image == null) {
-      setState(() {
-        _imageValidationType = ValidationType.error;
-      });
-      error = true;
-    }
 
     return !error;
   }
 
-  void _openValidateSave() {
-    // Check if changes have been made
-    if (_nameController.text == widget.person.name &&
-        _roleController.text == widget.person.role) {
-      _backPressed();
-      return;
+  void _nextPressed() async {
+    setState(() {
+      _nextLoading = true;
+    });
+
+    try {
+      await _updateUserInFirestore();
+    } on Exception catch (e) {
+      log(e.toString());
+    } finally {
+      setState(() {
+        _nextLoading = false;
+      });
     }
 
-    showDialogPopup(
-      context: context,
-      title: 'Unsaved changes',
-      message: 'Would you like to save the changes you have made?',
-      primaryText: 'Save changes',
-      secondaryText: 'Close without saving',
-      primaryPressed: () {
-        // Drop popup
-        Navigator.pop(context);
-        if (_validateInputs()) _nextPressed();
-      },
-      secondaryPressed: () {
-        Navigator.pop(context);
-        _backPressed();
-      },
-    );
+    Navigator.pop(context);
   }
 
-  void _openValidateClose() {
-    showDialogPopup(
-      context: context,
-      title: 'Leave setup',
-      message: 'Are you sure you want leave the setup?',
-      primaryText: 'Continue',
-      secondaryText: 'Cancel',
-      primaryPressed: _backPressed,
-      secondaryPressed: () => Navigator.pop(context),
-    );
-  }
+  Future _updateUserInFirestore() async {
+    if (_savedPerson == null) return;
+    _savedPerson!
+      ..name = _nameController.text
+      ..role = _roleController.text
+      ..image = _image;
 
-  void _backPressed() {
-    widget.initialSetup
-        ? Navigator.of(context).pushAndRemoveUntil(
-            FadePageTransition(LoginPage()),
-            (_) => false,
-          )
-        : Navigator.pop(context);
+    await _savedPerson!.editInFirebase();
   }
-
-  void _nextPressed() {
-    widget.initialSetup
-        ? Navigator.of(context).push(
-            SlideRightTransition(
-              JoinOrganisationPage(
-                person: widget.person,
-                initialSetup: true,
-              ),
-            ),
-          )
-        : Navigator.pop(context);
-  }
-
-  File _image;
 
   _imgFromCamera() async {
-    PickedFile image = await ImagePicker().getImage(
+    PickedFile? image = await ImagePicker().getImage(
       source: ImageSource.camera,
       imageQuality: 50,
       maxWidth: 300,
@@ -159,13 +229,12 @@ class _AccountPageState extends State<AccountPage> {
     if (image != null) {
       setState(() {
         _image = File(image.path);
-        _imageValidationType = ValidationType.none;
       });
     }
   }
 
   _imgFromGallery() async {
-    PickedFile image = await ImagePicker().getImage(
+    PickedFile? image = await ImagePicker().getImage(
       source: ImageSource.gallery,
       imageQuality: 50,
       maxWidth: 300,
@@ -174,7 +243,6 @@ class _AccountPageState extends State<AccountPage> {
     if (image != null) {
       setState(() {
         _image = File(image.path);
-        _imageValidationType = ValidationType.none;
       });
     }
   }
@@ -188,12 +256,11 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   void _changeOrganisation() {
-    var nextPage = JoinOrganisationPage(
-      person: widget.person,
-      initialSetup: false,
+    var nextPage = JoinOrganisationPage(userId: widget.userId);
+    Navigator.of(context).pushAndRemoveUntil(
+      FadePageTransition(child: nextPage),
+      (_) => false,
     );
-    Navigator.of(context)
-        .pushAndRemoveUntil(FadePageTransition(nextPage), (_) => false);
   }
 
   void _openChangeOrganisation() {
@@ -202,93 +269,11 @@ class _AccountPageState extends State<AccountPage> {
       title: 'Change organisation',
       message: 'Are you sure you want to change organisation?',
       primaryText: 'Continue',
-      secondaryText: 'Cancel',
       primaryPressed: _changeOrganisation,
-      secondaryPressed: () => Navigator.pop(context),
     );
   }
 
-  @override
-  void initState() {
-    super.initState();
-
-    if (!widget.initialSetup) {
-      _nameController.text = widget.person.name;
-      _roleController.text = widget.person.role;
-      _organisationController.text = 'Wayne Enterprises';
-    }
-
-    _nameValidationType = ValidationType.none;
-    _roleValidationType = ValidationType.none;
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return SimpleTemplate(
-      pageWidgets: SimpleScrollTemplate(
-        pageWidgets: InputTemplate(
-          pageWidgets: ActionPageTemplate(
-            actionWidget:
-                widget.initialSetup ? _showCloseAction() : _showBackAction(),
-            pageWidgets: Padding(
-              padding: const EdgeInsets.only(left: 25, right: 25),
-              child: PageHeadingTemplate(
-                title: widget.initialSetup ? 'Create account' : 'Account',
-                pageWidgets: _showPageWidgets(),
-              ),
-            ),
-          ),
-          bottomWidget: _showBottomWidget(),
-        ),
-      ),
-    );
-  }
-
-  Widget _showCloseAction() {
-    return Align(
-      alignment: Alignment.centerRight,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 15, right: 25),
-        child: SingleIconButton(
-          icon: SvgPicture.asset(
-            'assets/images/close.svg',
-            semanticsLabel: 'Close icon',
-          ),
-          onPressed: _openValidateClose,
-        ),
-      ),
-    );
-  }
-
-  Widget _showBackAction() {
-    return Align(
-      alignment: Alignment.centerLeft,
-      child: Padding(
-        padding: const EdgeInsets.only(top: 15, left: 10),
-        child: SingleIconButton(
-          icon: SvgPicture.asset(
-            'assets/images/back.svg',
-            semanticsLabel: 'Back icon',
-          ),
-          onPressed: _openValidateSave,
-        ),
-      ),
-    );
-  }
-
-  Widget _showPageWidgets() {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.stretch,
-      children: [
-        _showProfileImage(),
-        _showNameField(),
-        _showRoleField(),
-        if (!widget.initialSetup) _showOrganisationField(),
-      ],
-    );
-  }
-
-  Widget _showProfileImage() {
+  Widget _showProfileImage(String? imageUrl) {
     return FormItemSpace(
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -296,33 +281,21 @@ class _AccountPageState extends State<AccountPage> {
           UserImage(
             height: 100,
             width: 100,
-            image: widget.initialSetup
-                ? _image == null
-                    ? null
-                    : FileImage(_image)
-                : NetworkImage(widget.person.imageUrl),
+            image: _image != null
+                ? FileImage(_image!)
+                : NetworkImage(imageUrl ?? '') as ImageProvider<Object>?,
             borderRadius: 4,
             onTap: _editPhoto,
           ),
           Padding(
             padding: const EdgeInsets.only(left: 15.0),
             child: LinkText(
-              text: widget.initialSetup ? 'Add photo' : 'Edit photo',
+              text: imageUrl == null ? 'Add photo' : 'Edit photo',
               onTap: _editPhoto,
             ),
           ),
         ],
       ),
-      validationMessage: _imageValidationType == ValidationType.error
-          ? _showImageErrorMessage()
-          : null,
-    );
-  }
-
-  Widget _showImageErrorMessage() {
-    return ParagraphText(
-      text: 'Photo is required',
-      textColor: Theme.of(context).colorScheme.errorColor,
     );
   }
 
@@ -385,18 +358,6 @@ class _AccountPageState extends State<AccountPage> {
           onTap: _openChangeOrganisation,
           enabled: false,
         ),
-      ),
-    );
-  }
-
-  Widget _showBottomWidget() {
-    return Padding(
-      padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
-      child: PrimaryButton(
-        text: widget.initialSetup ? 'Next' : 'Save',
-        onPressed: () {
-          if (_validateInputs()) _nextPressed();
-        },
       ),
     );
   }

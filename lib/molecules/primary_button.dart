@@ -5,16 +5,32 @@ import '../theme.dart';
 
 class PrimaryButton extends StatelessWidget {
   PrimaryButton({
-    @required this.text,
-    @required this.onPressed,
+    required this.text,
+    required this.onPressed,
     this.padding,
     this.fontSize,
+    this.isLoading = false,
   });
 
   final String text;
-  final Function onPressed;
-  final EdgeInsetsGeometry padding;
-  final double fontSize;
+  final void Function() onPressed;
+  final EdgeInsetsGeometry? padding;
+  final double? fontSize;
+  final bool isLoading;
+
+  Widget _showLoadingWidget(BuildContext context) {
+    return SizedBox(
+      width: 20.0,
+      height: 20.0,
+      child: CircularProgressIndicator(
+        backgroundColor: Colors.transparent,
+        strokeWidth: 2,
+        valueColor: AlwaysStoppedAnimation<Color>(
+          Theme.of(context).colorScheme.textOnPrimary,
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,6 +43,8 @@ class PrimaryButton extends StatelessWidget {
       ),
       onPressed: onPressed,
       padding: padding,
+      isLoading: isLoading,
+      loadingWidget: _showLoadingWidget(context),
     );
   }
 }

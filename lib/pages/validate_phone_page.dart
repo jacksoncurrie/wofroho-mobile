@@ -1,18 +1,22 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:wofroho_mobile/animations/child_page_transition.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
-import 'package:wofroho_mobile/animations/slide_right_transition.dart';
 import 'package:wofroho_mobile/atoms/data_field.dart';
 import 'package:wofroho_mobile/atoms/notification_toast.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
-import 'package:wofroho_mobile/models/person.dart';
 import 'package:wofroho_mobile/molecules/dialog_popup.dart';
 import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
-import 'package:wofroho_mobile/pages/account_page.dart';
+import 'package:wofroho_mobile/pages/details_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
+import 'package:wofroho_mobile/pages/sign_up_page.dart';
+import 'package:wofroho_mobile/services/authentication.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
 import 'package:wofroho_mobile/templates/input_template.dart';
@@ -23,10 +27,14 @@ import '../theme.dart';
 
 class ValidatePhonePage extends StatefulWidget {
   ValidatePhonePage({
-    @required this.number,
+    required this.number,
+    required this.verificationId,
+    required this.resendToken,
   });
 
   final String number;
+  final String verificationId;
+  final int? resendToken;
 
   @override
   _ValidatePhonePageState createState() => _ValidatePhonePageState();
@@ -34,9 +42,13 @@ class ValidatePhonePage extends StatefulWidget {
 
 class _ValidatePhonePageState extends State<ValidatePhonePage> {
   final _codeController = TextEditingController();
-  ValidationType _validationType;
-  bool _isResendingCode;
-  bool _showNotification;
+  late ValidationType _validationType;
+  late bool _isResendingCode;
+  late bool _showNotification;
+  String? _newVerificationId;
+  int? _newResendToken;
+  late bool _nextLoading;
+  late BaseAuth _auth;
 
   bool _validateCode() {
     if (_codeController.text.isEmpty) {
@@ -52,10 +64,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     setState(() {
       _isResendingCode = true;
     });
-    await Future.delayed(Duration(seconds: 2));
-    setState(() {
-      _isResendingCode = false;
-    });
+    await _verifyPhoneNumber(widget.number);
   }
 
   Future _showNotificationNow() async {
@@ -69,11 +78,93 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
     });
   }
 
+  void _automaticVerification(String? userId) async {
+    await _loginOrSignup(userId);
+    setState(() => _isResendingCode = false);
+  }
+
+  void _authenticationFailed(FirebaseAuthException e) {
+    setState(() {
+      _validationType = ValidationType.error;
+      _isResendingCode = false;
+    });
+  }
+
+  void _codeSent(String verificationId, int? resendToken) {
+    setState(() {
+      _newVerificationId = verificationId;
+      _newResendToken = resendToken;
+      _isResendingCode = false;
+    });
+    _showNotificationNow();
+  }
+
+  Future _verifyPhoneNumber(String phoneNumber) async {
+    await _auth.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      resendToken: _newResendToken ?? widget.resendToken,
+      automaticVerification: _automaticVerification,
+      authenticationFailed: _authenticationFailed,
+      codeSent: _codeSent,
+    );
+  }
+
+  Future _verifyCode() async {
+    setState(() => _nextLoading = true);
+    final verificationId = _newVerificationId ?? widget.verificationId;
+    final smsCode = _codeController.text;
+    String? userId;
+    try {
+      userId = await _auth.signIn(verificationId, smsCode);
+      await _loginOrSignup(userId);
+    } catch (e) {
+      setState(() {
+        _validationType = ValidationType.error;
+        _nextLoading = false;
+      });
+      return;
+    }
+    setState(() => _nextLoading = false);
+  }
+
   void _unsetValidation() {
     if (_validationType != ValidationType.none) {
       setState(() {
         _validationType = ValidationType.none;
       });
+    }
+  }
+
+  Future<bool> _userExists() async {
+    final user = _auth.getCurrentUser();
+    final firestore = FirebaseFirestore.instance;
+    final doc = await firestore.collection('users').doc(user?.uid).get();
+    return doc.exists;
+  }
+
+  Future _loginOrSignup(String? userId) async {
+    if (await _userExists()) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.setBool('signedUp', true);
+      await prefs.setBool('inOrganisation', true);
+
+      Navigator.pushAndRemoveUntil(
+        context,
+        FadePageTransition(
+          child: DetailsPage(),
+          routeName: DetailsPage.routeName,
+        ),
+        (route) => false,
+      );
+    } else {
+      Navigator.pushReplacement(
+        context,
+        FadePageTransition(
+          child: SignUpPage(
+            userId: userId ?? '',
+          ),
+        ),
+      );
     }
   }
 
@@ -83,39 +174,33 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
       title: 'Leave setup',
       message: 'Are you sure you want leave the setup?',
       primaryText: 'Continue',
-      secondaryText: 'Cancel',
       primaryPressed: _closePressed,
-      secondaryPressed: () => Navigator.pop(context),
     );
   }
 
   void _closePressed() {
     // Validate close
     Navigator.of(context).pushAndRemoveUntil(
-      FadePageTransition(
-        LoginPage(),
+      ChildPageTransition(
+        child: LoginPage(),
+        routeName: LoginPage.routeName,
       ),
       (_) => false,
     );
   }
 
-  void _nextPressed() {
-    var nextPage = AccountPage(
-      initialSetup: true,
-      person: Person(
-        name: '',
-        role: '',
-        imageUrl: '',
-      ),
-    );
-    Navigator.of(context).pushReplacement(SlideRightTransition(nextPage));
+  void _nextPressed() async {
+    await _verifyCode();
   }
 
   @override
   void initState() {
     _validationType = ValidationType.none;
+    _nextLoading = false;
     _isResendingCode = false;
     _showNotification = false;
+    _auth = Auth();
+
     super.initState();
   }
 
@@ -142,7 +227,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
         textColor: Colors.white,
       ),
       isShown: _showNotification,
-      color: Theme.of(context).colorScheme.primaryColor,
+      color: Theme.of(context).colorScheme.darkBackground,
     );
   }
 
@@ -196,7 +281,6 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
         title: 'Enter code',
         child: TextInput(
           controller: _codeController,
-          hintText: '123-456',
           keyboardType: TextInputType.number,
           validationType: _validationType,
           onChanged: (_) => _unsetValidation(),
@@ -219,7 +303,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
       alignment: Alignment.centerLeft,
       child: Padding(
         padding: const EdgeInsets.only(bottom: 15, left: 5),
-        child: CircularProgressIndicator(),
+        child: CircularProgressIndicator(strokeWidth: 2),
       ),
     );
   }
@@ -231,10 +315,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
             padding: const EdgeInsets.only(bottom: 20.0),
             child: LinkText(
               text: 'Did not get code? Resend',
-              onTap: () async {
-                await _resendCode();
-                await _showNotificationNow();
-              },
+              onTap: _resendCode,
             ),
           );
   }
@@ -247,6 +328,7 @@ class _ValidatePhonePageState extends State<ValidatePhonePage> {
         onPressed: () {
           if (_validateCode()) _nextPressed();
         },
+        isLoading: _nextLoading,
       ),
     );
   }

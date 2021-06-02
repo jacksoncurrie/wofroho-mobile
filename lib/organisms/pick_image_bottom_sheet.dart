@@ -3,14 +3,14 @@ import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
+import 'package:wofroho_mobile/molecules/secondary_button.dart';
 import '../theme.dart';
 
 void pickImageBottomSheet({
-  @required BuildContext context,
-  @required void Function() imgFromGallery,
-  @required void Function() imgFromCamera,
+  required BuildContext context,
+  required void Function() imgFromGallery,
+  required void Function() imgFromCamera,
 }) {
-  assert(context != null);
   showModalBottomSheet(
     context: context,
     backgroundColor: Colors.transparent,
@@ -29,29 +29,30 @@ Widget _builder(
     decoration: BoxDecoration(
       color: backgroundColor,
       borderRadius: const BorderRadius.only(
-        topLeft: Radius.circular(15.0),
-        topRight: Radius.circular(15.0),
+        topLeft: Radius.circular(10.0),
+        topRight: Radius.circular(10.0),
       ),
     ),
     child: Wrap(
       children: [
         _showMinimiseIcon(),
         Padding(
-          padding: const EdgeInsets.only(left: 14.0, top: 20.0, bottom: 10),
-          child: ParagraphText(text: 'Choose image provider', fontSize: 14),
+          padding: const EdgeInsets.all(20),
+          child: ParagraphText(text: 'Choose photo source'),
         ),
         _showListItem(
-          Icon(Icons.photo_library),
-          'Photo library',
-          imgFromGallery,
-          context,
-        ),
-        _showListItem(
-          Icon(Icons.photo_camera),
-          'Camera',
+          _showCameraIcon(),
+          'Take photo',
           imgFromCamera,
           context,
         ),
+        _showListItem(
+          _showLibraryIcon(),
+          'Choose existing',
+          imgFromGallery,
+          context,
+        ),
+        _showCancelButton(context),
       ],
     ),
   );
@@ -69,6 +70,35 @@ Widget _showMinimiseIcon() {
   );
 }
 
+Widget _showCancelButton(BuildContext context) {
+  return Padding(
+    padding: const EdgeInsets.all(20.0),
+    child: Container(
+      width: double.infinity,
+      child: SecondaryButton(
+        text: 'Cancel',
+        onPressed: () => Navigator.of(context).pop(),
+      ),
+    ),
+  );
+}
+
+Widget _showCameraIcon() {
+  return SvgPicture.asset(
+    'assets/images/camera.svg',
+    semanticsLabel: "Camera icon",
+    width: 32,
+  );
+}
+
+Widget _showLibraryIcon() {
+  return SvgPicture.asset(
+    'assets/images/libary.svg',
+    semanticsLabel: "Libary icon",
+    width: 32,
+  );
+}
+
 Widget _showListItem(
   Widget leadingIcon,
   String text,
@@ -80,7 +110,7 @@ Widget _showListItem(
     child: ListTile(
       leading: leadingIcon,
       title: ParagraphText(text: text),
-      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 30, vertical: 10),
       onTap: () {
         onTap();
         Navigator.of(context).pop();

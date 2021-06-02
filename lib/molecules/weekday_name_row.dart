@@ -18,7 +18,7 @@ class WeekdayNameRow extends StatelessWidget {
   };
 
   List<T> _rotate<T>(List<T> list, int v) {
-    if (list == null || list.isEmpty) return list;
+    if (list.isEmpty) return list;
     var i = v % list.length;
     return list.sublist(i)..addAll(list.sublist(0, i));
   }

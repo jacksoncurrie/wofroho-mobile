@@ -11,7 +11,7 @@ import 'package:wofroho_mobile/templates/padded_scroll_page_template.dart';
 
 class ProfilePage extends StatefulWidget {
   ProfilePage({
-    @required this.person,
+    required this.person,
   });
 
   final Person person;
@@ -70,7 +70,9 @@ class _ProfilePageState extends State<ProfilePage> {
           child: UserImage(
             height: 100,
             width: 100,
-            image: NetworkImage(widget.person.imageUrl),
+            image: widget.person.downloadUrl == null
+                ? null
+                : NetworkImage(widget.person.downloadUrl!),
             borderRadius: 4,
           ),
         ),
@@ -106,7 +108,7 @@ class _ProfilePageState extends State<ProfilePage> {
     return FormItemSpace(
       child: DataField(
         title: 'Organisation',
-        child: ParagraphText(text: 'Wayne Enterprises'),
+        child: ParagraphText(text: widget.person.organisation),
       ),
     );
   }

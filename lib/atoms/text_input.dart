@@ -5,7 +5,7 @@ import '../theme.dart';
 class TextInput extends StatelessWidget {
   TextInput({
     this.key,
-    @required this.controller,
+    required this.controller,
     this.hintText,
     this.enabled = true,
     this.onTap,
@@ -16,20 +16,20 @@ class TextInput extends StatelessWidget {
     this.textCapitalization = TextCapitalization.none,
   });
 
-  final Key key;
-  final TextEditingController controller;
-  final String hintText;
+  final Key? key;
+  final TextEditingController? controller;
+  final String? hintText;
   final bool enabled;
-  final void Function() onTap;
-  final void Function(String) onChanged;
-  final TextInputType keyboardType;
-  final ValidationType validationType;
+  final void Function()? onTap;
+  final void Function(String)? onChanged;
+  final TextInputType? keyboardType;
+  final ValidationType? validationType;
   final bool showIconWithValidation;
   final TextCapitalization textCapitalization;
 
   static final _borderRadius = BorderRadius.circular(2);
 
-  Color _getBorderColor(ValidationType validationType, BuildContext context) {
+  Color _getBorderColor(ValidationType? validationType, BuildContext context) {
     switch (validationType) {
       case ValidationType.none:
         return Colors.transparent;
@@ -42,7 +42,7 @@ class TextInput extends StatelessWidget {
     }
   }
 
-  Widget _getSuffixIcon(ValidationType validationType) {
+  Widget? _getSuffixIcon(ValidationType? validationType) {
     if (!showIconWithValidation) return null;
     switch (validationType) {
       case ValidationType.none:
