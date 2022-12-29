@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class SingleIconButton extends StatelessWidget {
-  SingleIconButton({
+  const SingleIconButton({
     required this.icon,
     required this.onPressed,
   });

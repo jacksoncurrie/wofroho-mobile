@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import '../theme.dart';
 
 class RichTextParagraph extends StatelessWidget {
-  RichTextParagraph({
+  const RichTextParagraph({
     required this.textSpanItems,
   });
 

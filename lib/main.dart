@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -10,7 +10,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:wofroho_mobile/pages/sign_up_page.dart';
 import 'package:wofroho_mobile/services/authentication.dart';
 import 'theme.dart' as MyTheme;
-import 'package:device_preview/device_preview.dart';
 
 void main() async {
   SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
@@ -21,13 +20,11 @@ void main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
-  runApp(
-    DevicePreview(
-      enabled: !kReleaseMode,
-      builder: (context) => MyApp(), // Wrap your app
-    ),
+  await FirebaseAppCheck.instance.activate(
+    webRecaptchaSiteKey: null, // No web implementation
   );
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -75,17 +72,6 @@ class _MyAppState extends State<MyApp> {
       routes: {
         LoginPage.routeName: (context) => LoginPage(),
         DetailsPage.routeName: (context) => DetailsPage(),
-      },
-      builder: (BuildContext context, Widget? child) {
-        if (child == null) return LoadingPage();
-
-        // Disables text size changes - temporary UI fix
-        final newWidget = MediaQuery(
-          data: MediaQuery.of(context).copyWith(textScaleFactor: 1.0),
-          child: child,
-        );
-
-        return DevicePreview.appBuilder(context, newWidget);
       },
     );
   }

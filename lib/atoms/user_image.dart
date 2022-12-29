@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import '../theme.dart';
 
 class UserImage extends StatelessWidget {
-  UserImage(
+  const UserImage(
       {this.image,
       required this.width,
       required this.height,

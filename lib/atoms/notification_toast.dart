@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class NotificationToast extends StatelessWidget {
-  NotificationToast({
+  const NotificationToast({
     required this.isShown,
     required this.child,
     this.color = Colors.white,

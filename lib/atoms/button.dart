@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Button extends StatelessWidget {
-  Button({
+  const Button({
     required this.child,
     required this.onPressed,
     this.backgroundColor,

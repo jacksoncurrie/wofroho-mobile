@@ -60,7 +60,7 @@ class _ManageOrganisationPageState extends State<ManageOrganisationPage> {
   }
 
   Widget _showPageWidgets() {
-    return FutureBuilder(
+    return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
       future: FirebaseFirestore.instance
           .collection('users')
           .doc(widget.userId)
@@ -70,7 +70,7 @@ class _ManageOrganisationPageState extends State<ManageOrganisationPage> {
           return Center(child: CircularProgressIndicator());
         }
 
-        final futureResult = snapshot.data as DocumentSnapshot;
+        final futureResult = snapshot.data!;
         final data = futureResult.data();
         final organisation = data?['organisation'] ?? '';
 
@@ -102,7 +102,7 @@ class _ManageOrganisationPageState extends State<ManageOrganisationPage> {
   }
 
   Widget _showPersonList(String organisation) {
-    return StreamBuilder(
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       stream: FirebaseFirestore.instance
           .collection('users')
           .where('organisation', isEqualTo: organisation)
@@ -112,7 +112,7 @@ class _ManageOrganisationPageState extends State<ManageOrganisationPage> {
           return Center(child: CircularProgressIndicator());
         }
 
-        final data = snapshot.data as QuerySnapshot;
+        final data = snapshot.data!;
         final people = data.docs
             .map((i) =>
                 Person.fromFirebase(i.data(), i.id, widget.userId == i.id))

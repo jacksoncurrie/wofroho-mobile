@@ -140,13 +140,13 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   Widget _showCalendar() {
-    return StreamBuilder<Object>(
+    return StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
       stream: _firestore.collection('users').doc(_user).snapshots(),
       builder: (context, snapshot) {
         if (!snapshot.hasData)
           return Center(child: CircularProgressIndicator());
 
-        final data = snapshot.data as DocumentSnapshot;
+        final data = snapshot.data!;
         final person = Person.fromFirebase(data.data() ?? {}, _user, true);
 
         return Padding(
@@ -208,7 +208,7 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   Widget _showPersonList() {
-    return StreamBuilder(
+    return StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
       stream: _firestore
           .collection('users')
           .where(
@@ -220,7 +220,7 @@ class _DetailsPageState extends State<DetailsPage> {
         if (!snapshot.hasData)
           return Center(child: CircularProgressIndicator());
 
-        final data = snapshot.data as QuerySnapshot;
+        final data = snapshot.data!;
         final users = data.docs
             .map((i) => Person.fromFirebase(i.data(), i.id, i.id == _user))
             .toList();

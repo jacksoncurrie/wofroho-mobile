@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:wofroho_mobile/animations/fade_page_transition.dart';
@@ -114,7 +113,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   Widget _showPageWidgets() {
-    return FutureBuilder(
+    return FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
       future: FirebaseFirestore.instance
           .collection('users')
           .doc(widget.userId)
@@ -124,7 +123,7 @@ class _AccountPageState extends State<AccountPage> {
           return Center(child: CircularProgressIndicator());
         }
 
-        final futureResult = snapshot.data as DocumentSnapshot;
+        final futureResult = snapshot.data!;
         final data = futureResult.data();
         _savedPerson = Person.fromFirebase(data ?? {}, widget.userId, true);
         _nameController.text = _savedPerson?.name ?? '';

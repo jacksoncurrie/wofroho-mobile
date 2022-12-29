@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 
 class DataField extends StatelessWidget {
-  DataField({
+  const DataField({
     required this.title,
     required this.child,
   });
