@@ -3,7 +3,7 @@ import 'package:flutter_svg/svg.dart';
 import '../theme.dart';
 
 class TextInput extends StatelessWidget {
-  TextInput({
+  const TextInput({
     this.key,
     required this.controller,
     this.hintText,

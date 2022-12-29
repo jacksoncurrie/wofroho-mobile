@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ItemTile extends StatelessWidget {
-  ItemTile({
+  const ItemTile({
     required this.child,
     required this.backgroundColor,
     this.borderColor,

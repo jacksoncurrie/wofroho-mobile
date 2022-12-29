@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class HeadingText extends StatelessWidget {
-  HeadingText({
+  const HeadingText({
     required this.text,
     this.fontSize = 32,
     this.textAlign,

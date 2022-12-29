@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class ParagraphText extends StatelessWidget {
-  ParagraphText({
+  const ParagraphText({
     required this.text,
     this.fontSize = 16,
     this.textColor,

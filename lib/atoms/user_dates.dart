@@ -3,7 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 
 class UserDates extends StatelessWidget {
-  UserDates({
+  const UserDates({
     required this.dates,
   });
 

@@ -24,7 +24,7 @@ import 'package:wofroho_mobile/templates/simple_template.dart';
 import '../theme.dart';
 
 class JoinOrganisationPage extends StatefulWidget {
-  JoinOrganisationPage({
+  const JoinOrganisationPage({
     required this.userId,
   });
 

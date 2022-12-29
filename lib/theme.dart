@@ -2,9 +2,6 @@ import 'package:flutter/material.dart';
 
 final companyThemeData = ThemeData(
   primaryColor: _Colors.primary,
-  primaryColorBrightness: Brightness.dark,
-  accentColor: _Colors.primary,
-  accentColorBrightness: Brightness.dark,
   errorColor: _Colors.error,
   fontFamily: 'Poppins',
 );
