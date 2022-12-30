@@ -9,6 +9,7 @@ import 'package:wofroho_mobile/pages/login_page.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:wofroho_mobile/pages/sign_up_page.dart';
 import 'package:wofroho_mobile/services/authentication.dart';
+import 'firebase_options.dart';
 import 'theme.dart' as MyTheme;
 
 void main() async {
@@ -19,7 +20,9 @@ void main() async {
   ));
 
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp();
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
   await FirebaseAppCheck.instance.activate(
     webRecaptchaSiteKey: null, // No web implementation
   );
