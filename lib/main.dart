@@ -25,7 +25,6 @@ void main() async {
   );
   await FirebaseAppCheck.instance.activate(
     webRecaptchaSiteKey: null, // No web implementation
-    androidProvider: AndroidProvider.debug,
   );
 
   runApp(MyApp());
