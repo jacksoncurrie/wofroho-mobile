@@ -21,16 +21,13 @@ class Button extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      style: ButtonStyle(
-        padding: MaterialStateProperty.all(
-          padding ?? const EdgeInsets.symmetric(vertical: 10.0),
-        ),
-        backgroundColor: MaterialStateProperty.all(backgroundColor),
-        elevation: MaterialStateProperty.all(5),
-        shape: MaterialStateProperty.all(
-          RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(1.0),
-          ),
+      style: ElevatedButton.styleFrom(
+        padding: padding ?? const EdgeInsets.symmetric(vertical: 10.0),
+        backgroundColor: backgroundColor,
+        surfaceTintColor: Colors.transparent,
+        elevation: 5,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(1.0),
         ),
       ),
       child: isLoading ? loadingWidget : child,

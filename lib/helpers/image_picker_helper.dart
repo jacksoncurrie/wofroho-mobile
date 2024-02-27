@@ -4,7 +4,7 @@ import 'package:image_picker/image_picker.dart';
 
 class ImagePickerHelper {
   static Future<File?> imgFromCamera() async {
-    PickedFile? image = await ImagePicker().getImage(
+    final image = await ImagePicker().pickImage(
       source: ImageSource.camera,
       imageQuality: 50,
       maxWidth: 300,
@@ -15,7 +15,7 @@ class ImagePickerHelper {
   }
 
   static Future<File?> imgFromGallery() async {
-    PickedFile? image = await ImagePicker().getImage(
+    final image = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 50,
       maxWidth: 300,

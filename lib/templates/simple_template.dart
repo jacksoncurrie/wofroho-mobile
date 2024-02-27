@@ -29,8 +29,8 @@ class SimpleTemplate extends StatelessWidget {
       preferredSize: Size.fromHeight(0),
       child: AppBar(
         backgroundColor: Theme.of(context).colorScheme.backgroundColor,
-        brightness: Brightness.light,
         shadowColor: Colors.transparent,
+        surfaceTintColor: Colors.transparent,
       ),
     );
   }

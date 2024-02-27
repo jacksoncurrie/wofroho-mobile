@@ -29,7 +29,6 @@ class EditWeekPage extends StatefulWidget {
 }
 
 class _EditWeekPageState extends State<EditWeekPage> {
-  int _focusedDay = 2;
   DateTime? _startWeekDay;
   List<DateTime> _focusedDaysWeek = [];
   late DateTime _currentDay;

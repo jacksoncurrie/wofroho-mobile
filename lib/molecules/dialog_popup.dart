@@ -4,6 +4,7 @@ import 'package:wofroho_mobile/atoms/heading_text.dart';
 import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
+import 'package:wofroho_mobile/theme.dart';
 
 void showDialogPopup({
   required BuildContext context,
@@ -15,6 +16,7 @@ void showDialogPopup({
   showDialog(
     context: context,
     builder: (_) => AlertDialog(
+      backgroundColor: Theme.of(context).colorScheme.secondaryColor,
       title: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

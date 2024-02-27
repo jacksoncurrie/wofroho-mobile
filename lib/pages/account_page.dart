@@ -219,7 +219,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   _imgFromCamera() async {
-    PickedFile? image = await ImagePicker().getImage(
+    final image = await ImagePicker().pickImage(
       source: ImageSource.camera,
       imageQuality: 50,
       maxWidth: 300,
@@ -233,7 +233,7 @@ class _AccountPageState extends State<AccountPage> {
   }
 
   _imgFromGallery() async {
-    PickedFile? image = await ImagePicker().getImage(
+    final image = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 50,
       maxWidth: 300,

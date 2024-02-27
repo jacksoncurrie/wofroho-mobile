@@ -86,7 +86,6 @@ class _SetupPageState extends State<SetupPage> {
     _startWeekDay =
         DateTime(mondaysDate.year, mondaysDate.month, mondaysDate.day);
     _currentDay = DateTime(todaysDate.year, todaysDate.month, todaysDate.day);
-    ;
 
     super.initState();
   }

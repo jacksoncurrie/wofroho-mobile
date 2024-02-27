@@ -10,10 +10,8 @@ import 'package:wofroho_mobile/atoms/paragraph_text.dart';
 import 'package:wofroho_mobile/atoms/single_icon_button.dart';
 import 'package:wofroho_mobile/atoms/text_input.dart';
 import 'package:wofroho_mobile/molecules/dialog_popup.dart';
-import 'package:wofroho_mobile/molecules/link_text.dart';
 import 'package:wofroho_mobile/molecules/primary_button.dart';
 import 'package:wofroho_mobile/pages/all_set_up_page.dart';
-import 'package:wofroho_mobile/pages/create_organisation_page.dart';
 import 'package:wofroho_mobile/pages/login_page.dart';
 import 'package:wofroho_mobile/templates/action_page_template.dart';
 import 'package:wofroho_mobile/templates/form_item_space.dart';
@@ -110,12 +108,12 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
     );
   }
 
-  void _createOrganisationPressed() {
-    var nextPage = CreateOrganisationPage();
-    Navigator.of(context).push(
-      FadePageTransition(child: nextPage),
-    );
-  }
+  // void _createOrganisationPressed() {
+  //   var nextPage = CreateOrganisationPage();
+  //   Navigator.of(context).push(
+  //     FadePageTransition(child: nextPage),
+  //   );
+  // }
 
   Widget _showCloseAction() {
     return Align(
@@ -271,15 +269,15 @@ class _JoinOrganisationPageState extends State<JoinOrganisationPage> {
     );
   }
 
-  Widget _showCreateOrganisation() {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 20.0),
-      child: LinkText(
-        text: 'Organisation not there? Create it',
-        onTap: _createOrganisationPressed,
-      ),
-    );
-  }
+  // Widget _showCreateOrganisation() {
+  //   return Padding(
+  //     padding: const EdgeInsets.only(bottom: 20.0),
+  //     child: LinkText(
+  //       text: 'Organisation not there? Create it',
+  //       onTap: _createOrganisationPressed,
+  //     ),
+  //   );
+  // }
 
   Widget _showBottomWidget() {
     return Padding(
